@@ -1,0 +1,25 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@if (ViewData["page_slaves_off"] == null && (Current.Page.PageItem?.HasSlaves ?? false))
+{
+	OutItems(Current.Page.PageItem.Slaves, x => !x.IsHidden);
+}
+
+@functions {
+	void OutItems(IEnumerable<MapPagesItem> items, Func<MapPagesItem, bool> filter)
+	{
+		var items1 = items.Where(filter);
+		if (items1.Any())
+		{
+			<ul>
+				@foreach (var item1 in items1)
+				{
+					var tag1 = item1.GetNavLink().GetTag();
+					<li class="nav-item">@tag1</li>
+				}
+			</ul>
+		}
+	}
+}

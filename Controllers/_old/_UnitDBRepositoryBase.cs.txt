@@ -1,0 +1,94 @@
+﻿using System;
+using System.Data.Entity;
+
+namespace AnsLibs5.MVC.UnitDB
+{
+
+	public interface IUnitDBRepository
+		: IDisposable
+	{
+		void Save();
+
+		string GetSqlIdentityInsertOn(string table);
+		string GetSqlIdentityInsertOff(string table);
+		void SqlClearTable(string table);
+		void SqlIdentityInserts(string table, string inserts);
+	}
+
+
+
+	public class _UnitDBRepositoryBase
+		: IUnitDBRepository
+	{
+
+		public DbContext DbContext { get; private set; }
+
+
+		public _UnitDBRepositoryBase(
+			DbContext dbContext)
+		{
+			this.DbContext = dbContext;
+		}
+
+		protected virtual void Dispose(
+			bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+					DbContext.Dispose();
+				disposedValue = true;
+			}
+		}
+		private bool disposedValue = false;
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+
+		public void Save()
+		{
+			DbContext.SaveChanges();
+		}
+
+
+		public string GetSqlIdentityInsertOn(
+			string table)
+		{
+			return "SET IDENTITY_INSERT [" + table + "] ON;";
+		}
+
+
+		public string GetSqlIdentityInsertOff(
+			string table)
+		{
+			return "SET IDENTITY_INSERT [" + table + "] OFF;";
+		}
+
+
+		public void SqlClearTable(
+			string table)
+		{
+			DbContext.Database.ExecuteSqlCommand(
+				string.Format("DELETE FROM [{0}];", table));
+			DbContext.Database.ExecuteSqlCommand(
+				string.Format("DBCC CHECKIDENT('{0}', RESEED, 0);", table));
+			Save();
+		}
+
+
+		public void SqlIdentityInserts(
+			string table,
+			string inserts)
+		{
+			string query = string.Format("{0}\r{1};\r{2}",
+				GetSqlIdentityInsertOn(table), inserts,
+				GetSqlIdentityInsertOff(table));
+			DbContext.Database.ExecuteSqlCommand(query);
+		}
+
+	}
+
+}

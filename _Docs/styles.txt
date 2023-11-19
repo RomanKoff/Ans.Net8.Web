@@ -1,0 +1,135 @@
+﻿
+	<header>
+		<div class="@Current.GetContainerCss()"></div>
+	</header>
+
+	<main class="@Current.GetMainCss()">
+		<div class="@Current.GetPageContentCss()"></div>
+	</main>
+
+	<footer>
+		<div class="@Current.GetContainerCss()"></div>
+	</footer>
+
+
+
+	Site
+		.DefaultContainerCss: "container-xxl"
+		.DefaultMainCss: "mt-5 mb-9"
+		.DefaultPageContentAddonCss: "document"
+	Node
+		.CustomContainerCss: null
+		.CustomMainCss: null
+		.CustomPageContentAddonCss: null
+	Page
+		.CustomContainerCss: null
+		.CustomMainCss: null
+		.CustomPageContentAddonCss: null
+	Current
+		.GetContainerCss(): "container-xxl"
+		.GetMainCss(): "mt-5 mb-9"
+		.GetPageContentCss(): "container-xxl document"
+
+	---------
+
+	Site
+		.DefaultContainerCss: "container-xxl"
+		.DefaultPageContentAddonCss: "mt-5 mb-9 document"
+	Node
+		.CustomContainerCss: null
+		.CustomPageContentAddonCss: null
+	Page
+		.CustomContentContainerCss: null
+		.CustomContentAddonCss: null
+	Current
+		.GetContainerCss(): "container-xxl"
+		.GetPageContentCss(): "container-xxl mt-5 mb-9 document"
+
+
+
+
+
+	Модули страницы:
+		site_header		- хидер сайта
+		node_header		- хидер узла
+		node_navigator	- навигатор узла
+		page_header		- хидер страницы
+		page_content	- контент страницы
+		node_footer		- футор узла
+		site_footer		- футор сайта
+
+	Сборка страницы:
+		1. viewstart сайта
+		2. viewstart узла
+		3. страница
+		4. layout узла
+		5. базовый layout
+
+
+	Site.DefaultContainerCss - строка классов контейнера для сайта (по умолчанию)
+	Site.DefaultPageContentAddonCss - строка дополнительных классов контента страницы для сайта (по умолчанию)
+	
+	Node.CustomContainerCss - переопределение строки классов контейнера для узла
+	Node.CustomPageContentAddonCss - переопределение строки дополнительных классов контента страницы для узла
+	
+	Page.CustomContentContainerCss - переопределение строки классов контейнера для страницы
+	Page.CustomContentAddonCss - переопределение строки дополнительных классов контента страницы
+
+
+	Current.GetContainerCss() - возвращает строку классов контейнера
+		- применяется в layout к
+			site_header, site_footer,
+			node_header, node_navigator, node_footer,
+			page_header
+		= Node.CustomContainerCss ?? Site.DefaultContainerCss ?? "container"
+
+	Current.GetPageContentCss() - возвращает строку классов контента страницы
+		- применяется в layout к page_content
+		= Page.CustomContentContainerCss ?? Current.GetContainerCss()
+			+ Page.CustomContentAddonCss ?? Node.CustomPageContentAddonCss ?? Site.DefaultPageContentAddonCss
+
+
+
+
+
+
+
+
+
+
+
+	<header>
+		<div id="site_header">
+			<div class="Site.ContainerCss"></div>
+		</div>
+		<div id="node_header">
+			<div class="Site.ContainerCss">
+				<h1 id="node_title"></h1>
+			</div>
+		</div>
+		<div id="node_navigator">
+			<div class="Site.ContainerCss"></div>
+		</div>
+	</header>
+
+	<main>
+		<div id="page_header">
+			<div class="Site.ContainerCss">
+				<div class="site-breadcrumb"></div>
+				<h1 class="page-title"><span class="page-title-parent"></span></h1>
+				<div class="page-slaves"></div>
+			</div>
+		</div>
+		<div id="page_content">
+			<div class="Current.GetContentCss()"></div>
+		</div>
+	</main>
+
+	<footer>
+		<div id="node_footer">
+			<div class="Site.ContainerCss"></div>
+		</div>
+		<div id="site_footer">
+			<div class="Site.ContainerCss"></div>
+		</div>
+	</footer>

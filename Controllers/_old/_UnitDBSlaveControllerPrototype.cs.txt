@@ -1,0 +1,146 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace Ans.Net8.Web.Controllers._old
+{
+
+    public interface IUnitDBSlaveController<TEntity>
+        : IUnitDBController<TEntity>
+    {
+        [HttpGet]
+        ActionResult List(int ptr, string order = null, bool descending = false);
+
+        [HttpGet]
+        ActionResult Create(int ptr);
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        ActionResult Create(int ptr, TEntity model);
+    }
+
+
+
+    public abstract class _UnitDBSlaveControllerPrototype<TEntity, TMasterEntity>
+        : __UnitDBControllerPrototype<TEntity>,
+        IUnitDBSlaveController<TEntity>
+    {
+
+        public abstract TMasterEntity __GetMaster(int ptr);
+        public abstract void __SetMasterPtr(TEntity model, int ptr);
+        public abstract int __GetMasterPtr(TEntity model);
+
+
+        public _UnitDBSlaveControllerPrototype(
+            IUnitDBRepository repository)
+            : base(repository)
+        {
+        }
+
+
+        public int GetMasterPtrFromRouteData()
+        {
+            return Convert.ToInt32(RouteData.Values["ptr"]);
+        }
+
+
+        public TMasterEntity GetMasterEntityFromRouteData()
+        {
+            int ptr = GetMasterPtrFromRouteData();
+            var entity = __GetMaster(ptr);
+            return entity;
+        }
+
+
+        // actions
+
+
+        [HttpGet]
+        public virtual ActionResult List(
+            int ptr,
+            string order = null,
+            bool descending = false)
+        {
+            Init();
+            var model = new SlaveListViewModel<TEntity, TMasterEntity>
+            {
+                Master = __GetMaster(ptr),
+                Items = _EntityRepository.GetItems(ptr, order, descending)
+            };
+            SaveRouteValues(order, descending);
+            PrepModel_ForList(model);
+            if (!string.IsNullOrEmpty(Mod_ViewName_List))
+                return View(Mod_ViewName_List, model);
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public virtual ActionResult Create(
+            int ptr)
+        {
+            Init();
+            var model = _EntityRepository.GetNew(ptr);
+            if (model == null)
+                return HttpNotFound();
+            return _getCreateView(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult Create(
+            int ptr,
+            TEntity model)
+        {
+            Init();
+            ModelFix(model);
+            ModelEncode(model);
+            TestModel_ForCreate(model);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    __SetMasterPtr(model, ptr);
+                    PrepRedirectToList(model);
+                    BeforeCreate(model);
+                    _EntityRepository.Add(model);
+                    _CommonRepository.Save();
+                    AfterCreate(model);
+                    if (IsAdvanced)
+                        return RedirectToEdit(model);
+                    return RedirectToList();
+                }
+                catch (Exception ex)
+                {
+                    ParseException(ex);
+                }
+            }
+            return _getCreateView(model);
+        }
+
+
+        // services
+
+
+        public virtual void PrepModel_ForList(
+            SlaveListViewModel<TEntity, TMasterEntity> model)
+        {
+            PrepView();
+        }
+
+
+        // overrides
+
+
+        public override void PrepRedirectToList(
+            TEntity model)
+        {
+            ListRouteValues.Add("ptr", __GetMasterPtr(model));
+            base.PrepRedirectToList(model);
+        }
+
+    }
+
+}

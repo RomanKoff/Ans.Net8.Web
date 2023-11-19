@@ -1,0 +1,43 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@model Ans.Net8.Web.Models.SiteErrorModel
+@{
+	Layout = Current.ErrorsLayout;
+}
+
+@RenderBody()
+
+<div class="pt-5">
+	<hr />
+	@if (Model.HasOriginalPath)
+	{
+		<p>
+			@Ans.Net8.Web.Resources.Errors.Text_AddressOfTheRequestedResource.ToHtml():<br />
+			<code>@Model.OriginalPath</code>
+		</p>
+	}
+	@if (Model.ShowInfo && Model.HasExceptionMessage)
+	{
+		<p>
+			@Ans.Net8.Web.Resources.Errors.Text_TheTextOfTheErrorMessage.ToHtml():<br />
+			<code>@Model.ExceptionMessage</code>
+		</p>
+	}
+	@if (Model.HasRefererUri)
+	{
+		<p>
+			<a class="btn btn-primary" href="@Model.RefererUri">
+				@Ans.Net8.Web.Resources.Errors.Text_GoBack.ToHtml()
+			</a>
+		</p>
+	}
+	@* @if (Model.HasRequestId)
+	{
+	<p>
+	@Ans.Net8.Web.Resources.Errors.Text_ErrorID.ToHtml():<br />
+	<code>@Model.RequestId</code>
+	</p>
+	} *@
+</div>

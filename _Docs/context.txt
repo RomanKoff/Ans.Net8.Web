@@ -1,0 +1,113 @@
+
+	MapActions
+		- навигация в соответствии с правами доступа
+		- родительские сущности
+		- автозаголовки представлений
+
+			MapActionItem
+				Title
+				FullTitle
+				Path => ActionPath
+				Access
+				Mode (Action, Section)
+
+				Действие
+				Раздел меню
+
+				Скрытый
+	
+	
+	
+	Current
+		Site
+		Node
+			MapPages
+		Page
+
+		MapActions
+		MapNodes
+
+
+
+		
+
+		MapNodes
+
+		MapPages
+
+
+
+
+
+
+
+		
+		string SiteContainerCss { get; }
+		string NodeContainerCss { get; }
+		string PageContainerCss { get; }
+		string MainCss { get; }
+		string MainStyle { get; }
+		string PageContentCss { get; }
+		string PageContentStyle { get; }
+
+
+	
+	header #site_header
+		.@(Current.SiteContainerCss)
+			#site_logo
+			#site_title
+			nav #site_nav
+	
+	header #node_header
+		.@(Current.NodeContainerCss)
+			#node_logo
+			#node_title
+			#node_info
+			nav #node_nav
+
+	main .@(Current.MainCss) !@(Current.MainStype)
+		nav #page_breadcrumb .@(Current.PageContainerCss)
+		h1 #page_title .@(Current.PageContainerCss)
+		#page_content .@(Current.PageContentCss) !@(Current.PageContentStype)	
+
+	.mt-auto
+		
+		footer #node_footer
+			.@(Current.NodeContainerCss)
+		
+		footer #site_footer
+			.@(Current.SiteContainerCss)
+	
+
+
+
+	<ans-container-outside></ans-container-outside>
+	<ans-container-off></ans-container-off>
+
+	Сценарии:
+
+		_ViewStart.cshtml
+			ContainerCss = "container-xxl"
+		Page.cshtml
+			ContainerCss = ""
+		_Layout.cshtml
+			ContainerCss = "container-fluid"
+
+
+
+	AppName
+	SiteName
+	NodeName
+	PageName
+
+	ContainerCss	"container-fluid"
+
+	MainCss			"pb-5"
+	MainStyles
+
+	PageContentCss
+	PageContentStyles
+
+	GetMainCss()
+
+	GetPageContentCss()

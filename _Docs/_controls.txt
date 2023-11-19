@@ -1,0 +1,124 @@
+﻿
+	.form-field
+		label.form-label
+			span.text-danger
+		div
+		div.text-danger
+		div.small lh-sm opacity-75 my-1
+
+
+
+
+	In__Value
+		string name,
+		string value,
+		int maxLength,
+		WidthsEnum width,
+		string inputCssClass,
+		string wrapperCssClass,
+		bool autocomplete,
+		object attributes
+	In__Text
+		string name,
+		int maxLength,
+		WidthsEnum width,
+		string inputCssClass,
+		string wrapperCssClass,
+		bool autocomplete,
+		object attributes
+	In__Select
+		string name,
+		string value,
+		Registry registry,
+		WidthsEnum width,
+		string inputCssClass = null,
+		string wrapperCssClass = null
+	In__SelectRadio
+		string name,
+		string value,
+		Registry registry,
+		bool inline
+
+	In_Memo
+		string name,
+		int rows = 5,
+		string inputCssClass = null
+	In_Text50
+		string name,
+		WidthsEnum width = WidthsEnum.Small,
+		string inputCssClass = null,
+		string wrapperCssClass = null,
+		bool autocomplete = true,
+		object attributes = null
+	In_Text100
+		string name,
+		WidthsEnum width = WidthsEnum.Large,
+		string inputCssClass = null,
+		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null)
+	In_Text250
+		string name,		WidthsEnum width = WidthsEnum.Full,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null)
+	In_Text400
+		string name,		WidthsEnum width = WidthsEnum.Full,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null)
+	In_Varname
+		string name,		WidthsEnum width = WidthsEnum.Small,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_Email
+		string name,		WidthsEnum width = WidthsEnum.Medium,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_Int
+		string name,		 WidthsEnum width = WidthsEnum.Extrasmall,		 string inputCssClass = null,		 string wrapperCssClass = null,		 bool autocomplete = true,		 object attributes = null
+	In_Long
+		string name,		WidthsEnum width = WidthsEnum.Small,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_Double
+		string name,		WidthsEnum width = WidthsEnum.Small,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_Single
+		string name,		WidthsEnum width = WidthsEnum.Small,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_DateTime
+		string name,		WidthsEnum width = WidthsEnum.Small,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_Date
+		string name,		WidthsEnum width = WidthsEnum.Small,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_Time
+		string name,		WidthsEnum width = WidthsEnum.Extrasmall,		string inputCssClass = null,		string wrapperCssClass = null,		bool autocomplete = true,		object attributes = null
+	In_Bool
+		string name
+	In_Enum
+		string name,		Registry registry
+	In_Set
+		string name,		Registry registry,		SetModeEnum mode = SetModeEnum.Checkbox
+	In_Registry
+		string name,		Registry registry
+	In_Password
+		string name,		WidthsEnum width = WidthsEnum.Small,		string cssClass = null
+	In_BoolCheckbox
+		string name,		string inner = null
+	In_EnumRadio
+		string name,		Registry registry,		bool inLine = true
+	In_Captcha
+
+
+
+
+
+
+
+									List		Display			Edit
+	Text50			string 50		text		text			text
+	Text100			string 100		text		text			text
+	Text250			string 250		text		text			text
+	Text400			string 400		text		textbox			area
+	TextBox400		string 400		text...		textbox			area
+	Memo			string *		text...		textbox			area
+	Doc				string *		text...		textbox			area
+	Name			string 50 re	text		text			text
+	Varname			string 50 re	text		text			text
+	Email			string 50 re	text		text			text
+	Int				int				number		number			number
+	Long			long			number		number			number
+	Float			float			number		number			number
+	Double			double			number		number			number
+	Decimal			decimal			number		number			number
+	Datetime		DateTime?		datetime	datetime		datetimepicker
+	Date			DateTime?		date		date			datepicker
+	Time			DateTime?		time		time			timepicker
+	Bool			bool			check		text			radios
+	Enum			int				text		text			select
+	Set				string 400		items		items			listbox
+	Reference		int?			text		text			select

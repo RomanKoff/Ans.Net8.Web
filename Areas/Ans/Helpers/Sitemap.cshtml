@@ -1,0 +1,62 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@{
+	OutNode(Current.Site.MapNodes.TopItems, x => !x.IsHidden);
+}
+
+@functions {
+
+	void OutNode(IEnumerable<MapNodesItem> items, Func<MapNodesItem, bool> filter)
+	{
+		if (items != null)
+		{
+			var items2 = items.Where(filter);
+			if (items2.Any())
+				foreach (var item1 in items2)
+				{
+					switch (item1.Type)
+					{
+						case MapItemTypeEnum.Catalog:
+							<h4>@item1.Title</h4>
+							<div class="mb-5">
+								@{
+									OutNode(item1.Slaves, filter);
+								}
+							</div>
+							break;
+						case MapItemTypeEnum.Item:
+							<p>@GetLinkTag(item1)</p>
+							<div class="ps-3 ps-md-5">
+								@{
+									OutNode(item1.Slaves, filter);
+								}
+							</div>
+							break;
+						case MapItemTypeEnum.InternalPath:
+						case MapItemTypeEnum.ExternalLink:
+							<p>@GetLinkTag(item1)</p>
+							break;
+						default:
+							break;
+					}
+				}
+		}
+	}
+
+
+	HtmlString GetLinkTag(MapNodesItem item)
+	{
+		var inner1 = item.Title;
+		var link1 = item.Link;
+		link1.InnerHtml = inner1;
+		if (item.Type == MapItemTypeEnum.ExternalLink)
+		{
+			link1.IsExternal = true;
+			return new HtmlString($"{link1.GetTag().GetString()}&nbsp;<i class='bi-box-arrow-up-right'></i>");
+		}
+		return link1.GetTag().ToHtml();
+	}
+
+}

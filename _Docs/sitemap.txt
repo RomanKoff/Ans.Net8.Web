@@ -1,0 +1,126 @@
+﻿
+	Карта сайта
+	Дерево узлов
+
+
+
+	Lifecycle
+	
+		Sitemap
+		- инициализация (формирование дерева и типа) 
+		- актуализация (формирование ссылок)
+
+		SitemapProvider
+		- обновление карты
+		- инициализация карты
+
+		CurrentContext
+		-
+		
+
+
+
+		SitemapProvider
+			.Refresh()
+			.GetSitemap(ApplicationUrl)
+		CurrentContext
+		Sitemap
+			.Initialization(ApplicationUrl)
+
+
+		SitemapProvider.New().Refresh(); // load and prepare sitemap
+
+		CurrentContext.New().SiteContext.Sitemap = SitemapProvider.GetSitemap(ApplicationUrl); // actialize sitemap
+
+
+
+
+
+
+
+	set|get:
+		* Title -> ShortTitle, FullTitle
+		Target -> Mode, Href
+		IsHidden
+
+	get:		
+		FullTitle
+		ShortTitle
+		Type (Node, ParentNode, Group, Plug)
+		Mode (Node, InternalPath, ExternalUrl, None)
+		Node
+		InternalPath
+		ExternalUrl
+
+	Mode
+		Empty : ''
+		InternalPath : '/*'
+		Node : '^([a-zA-Z_][0-9a-zA-Z_-]+)$'
+		ExternalUrl : *
+
+	Type
+		ParentNode : (Target + HasSlaves)
+			- отображается в навигации как ссылка на узел
+			- отображается в пути как ссылка на узел
+		Node : (Target + !HasSlaves)
+			- отображается в навигации как ссылка на узел
+			- отображается в пути как ссылка на корень узла (для подстраниц) или как метка (для стартовой страницы)
+		Group : (!Target + HasSlaves)	
+			- отображается в навигации как метка без ссылки
+			- отображается в пути как метка без ссылки
+		Section : (!Target + !Face)
+			- не отображается в навигации, но добавляет подчиненные вместо себя
+			- не отображается в пути
+			- отображается в карте сайта
+		Plug : (!Target + !HasSlaves)
+			- игнорируется
+
+
+
+	- скрытый узел
+		- не отображается в навигации
+		- отображается в пути как ссылка на корень узла (для подстраниц) или как метка (для стартовой страницы)
+	- скрытый родительский узел
+		- не отображается в навигации и останавливает сканирование
+		- отображается в пути как ссылка на узел
+	- скрытая группа узлов
+		- не отображается в навигации и останавливает сканирование
+		- отображается в пути как метка без ссылки
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+	Узел
+		.Name [name]
+		.Link [link]
+		.Title [title] (required)
+		.FullTitle [full]
+		.IsHidden [hidden]
+
+	Если Name && Link == empty, то это заглушка
+	Если IsHidden == true, то узел игнорируется в карте узлов, но он и подчиненные узлы обрабатываются
+
+
+	Узел - есть name|link
+	Узел с подчиненными
+	Заглушка - нет name|link
+	Группа
+	Сквозная (прозрачная) группа
+
+	
+	Узел
+	Заглушка - нет name|link
+	Группа - нет name|link + есть подчиненные. Отображается без перехода
+	Каталог - прозрачный (не отображается)
+
+	Скрытый - не отображается и не обрабатывается при сборке

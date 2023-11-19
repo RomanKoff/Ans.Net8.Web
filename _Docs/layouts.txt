@@ -1,0 +1,46 @@
+﻿	
+	Site.ContainerCss - классы стилей контейнера
+	Site.PageContentCss - классы стилей контента страницы
+	Site.DocumentCss - классы стилей блока документа
+
+	Node.ShowSuppages - показывать навигатор подстраниц на страницах узла
+
+	Page.ShowSuppages - показывать навигатор подстраниц на странице (приоритет над Node.ShowSuppages)
+	Page.CustomCss - настраиваемый класс страницы (использовать настраиваемый шаблон страницы)
+	Page.HideBreadcrumb - скрыть путь
+	Page.HideTitle - скрыть заголовок
+	Page.HideParentInTitle - скрыть название родительских страниц в заголовке
+	Page.ShowSlaves - показывать подстраницы
+
+
+Template:
+
+		#page_header
+			.Site.ContainerCss
+				!Page.HideBreadcrumb [Breadcrumb]
+				!Page.HideTitle > [PageTitle]
+				Page.ShowSlaves > [PageSlaves]
+	
+		#page_content
+			.Site.ContainerCss .Site.PageContentCss .Site.DocumentCss
+			||
+			.Page.CustomCss
+				[RenderBody]
+
+
+
+
+
+	1. _viewstart — все от корня по пути до страницы
+	2. view
+	3. _layout — последний установленный и далее переустановленные
+
+	Views/_ViewStart.cshtml
+	Views/Nodes/start.cshtml
+	Views/Nodes/_layoutRoot.cshtml
+	Views/Shared/Layouts/_Default.cshtml
+
+	_Default.cshtml
+		
+		@await RenderSectionAsync("HeadSection", false)
+		@await RenderSectionAsync("ScriptsSection", false)

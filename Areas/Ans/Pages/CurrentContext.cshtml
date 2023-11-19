@@ -1,0 +1,94 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@page
+@model Ans.Net8.Web.Models.SitePageModel
+@{
+	Current.Page.Title = "CurrentContext";
+}
+
+<div class="row row-cols-1 row-cols-md-2">
+	<div class="col">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CurrentContext))' />
+	</div>
+	<div class="col">
+
+		<h4>Context</h4>
+		<ul>
+			<li><a href="#Site">Site</a></li>
+			<li><a href="#Node">Node</a></li>
+			<li><a href="#Page">Page</a></li>
+		</ul>
+
+		<h4>Data</h4>
+		<ul>
+			<li><a href="#Host">Host</a></li>
+			<li><a href="#Request">Request</a></li>
+			<li><a href="#Sitemap">Sitemap</a></li>
+		</ul>
+
+		<h4>Module</h4>
+		<ul>
+			<li><a href="#Auth">Auth</a></li>
+			<li><a href="#Cache">Cache</a></li>
+			<li><a href="#Cookies">Cookies</a></li>
+			<li><a href="#Meta">Meta</a></li>
+			<li><a href="#Network">Network</a></li>
+			<li><a href="#QueryString">QueryString</a></li>
+			<li><a href="#WebApi">WebApi</a></li>
+		</ul>
+
+	</div>
+</div>
+
+<h2>Context</h2>
+<div class="row row-cols-1 row-cols-md-2">
+	<div class="col" id="Site">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(SiteContext))' />
+	</div>
+	<div class="col" id="Node">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(NodeContext))' />
+	</div>
+	<div class="col" id="Page">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(PageContext))' />
+	</div>
+</div>
+
+<h2>Data</h2>
+<div class="row row-cols-1 row-cols-md-2">
+	<div class="col" id="Host">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(HostData))' />
+	</div>
+	<div class="col" id="Request">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(RequestData))' />
+	</div>
+	<div class="col" id="Sitemap">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(SitemapData))' />
+	</div>
+</div>
+
+<h2>Module</h2>
+<div class="row row-cols-1 row-cols-md-2">
+	<div class="col" id="Auth">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(AuthModule))' />
+	</div>
+	<div class="col" id="Cache">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CacheModule))' />
+	</div>
+	<div class="col" id="Cookies">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CookiesModule))' />
+	</div>
+	<div class="col" id="Meta">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(MetaModule))' />
+	</div>
+	<div class="col" id="Network">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(NetworkModule))' />
+	</div>
+	<div class="col" id="QueryString">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(QueryStringModule))' />
+	</div>
+	<div class="col" id="WebApi">
+		<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(WebApiModule))' />
+	</div>
+</div>

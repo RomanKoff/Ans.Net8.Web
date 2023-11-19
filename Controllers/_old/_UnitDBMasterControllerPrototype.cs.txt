@@ -1,0 +1,110 @@
+﻿using System;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace Ans.Net8.Web.Controllers._old
+{
+
+    public interface IUnitDBMasterController<TEntity>
+        : IUnitDBController<TEntity>
+    {
+        [HttpGet]
+        ActionResult List(string order = null, bool descending = false);
+
+        [HttpGet]
+        ActionResult Create();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        ActionResult Create(TEntity model);
+    }
+
+
+
+    public abstract class _UnitDBMasterControllerPrototype<TEntity>
+        : __UnitDBControllerPrototype<TEntity>,
+        IUnitDBMasterController<TEntity>
+    {
+
+        public _UnitDBMasterControllerPrototype(
+            IUnitDBRepository repository)
+            : base(repository)
+        {
+        }
+
+
+        // actions
+
+
+        [HttpGet]
+        public virtual ActionResult List(
+            string order = null,
+            bool descending = false)
+        {
+            Init();
+            var model = new MasterListViewModel<TEntity>
+            {
+                Items = _EntityRepository.GetItems(order, descending),
+            };
+            SaveRouteValues(order, descending);
+            PrepModel_ForList(model);
+            if (!string.IsNullOrEmpty(Mod_ViewName_List))
+                return View(Mod_ViewName_List, model);
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public virtual ActionResult Create()
+        {
+            Init();
+            var model = _EntityRepository.GetNew();
+            if (model == null)
+                return HttpNotFound();
+            return _getCreateView(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult Create(
+            TEntity model)
+        {
+            Init();
+            ModelFix(model);
+            ModelEncode(model);
+            TestModel_ForCreate(model);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    PrepRedirectToList(model);
+                    BeforeCreate(model);
+                    _EntityRepository.Add(model);
+                    _CommonRepository.Save();
+                    AfterCreate(model);
+                    if (IsAdvanced)
+                        return RedirectToEdit(model);
+                    return RedirectToList();
+                }
+                catch (Exception ex)
+                {
+                    ParseException(ex);
+                }
+            }
+            return _getCreateView(model);
+        }
+
+
+        // services
+
+
+        public virtual void PrepModel_ForList(
+            MasterListViewModel<TEntity> model)
+        {
+            PrepView();
+        }
+
+    }
+
+}

@@ -1,0 +1,12 @@
+﻿using System.Collections.Generic;
+
+namespace AnsLibs5.MVC.UnitDB
+{
+
+	public class SlaveListViewModel<TEntity, TMasterEntity>
+	{
+		public TMasterEntity Master { get; set; }
+		public IEnumerable<TEntity> Items { get; set; }
+	}
+
+}

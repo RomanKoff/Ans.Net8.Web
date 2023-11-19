@@ -1,0 +1,10 @@
+@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@if (Current.Page.AllowTitle)
+{
+	var parents1 = (Current.Page.HideParentInTitle)
+		? null : Current.Page.ParentsTitle.Render("<span class=\"page-title-parent\">{0}.</span> ");
+	<h1 id="page_title" class="mt-3 p-0">@(parents1)@Current.Page.FullTitle.ToHtml()</h1>
+}

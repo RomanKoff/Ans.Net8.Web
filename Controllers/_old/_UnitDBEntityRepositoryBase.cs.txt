@@ -1,0 +1,189 @@
+﻿using AnsLibs5.Common;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Linq.Expressions;
+
+namespace AnsLibs5.MVC.UnitDB
+{
+
+	public interface IUnitDBEntityRepository<TEntity>
+	{
+		string EntityName { get; }
+		string EntityNamePluralize { get; }
+
+		IQueryable<TEntity> GetItemsAsQueryable(Expression<Func<TEntity, bool>> filter, string order, bool isDescending);
+
+		IEnumerable<TEntity> GetItems(string order, bool isDescending);
+		IEnumerable<TEntity> GetItems(int ptr, string order, bool isDescending);
+
+		TEntity GetNew();
+		TEntity GetNew(int ptr);
+
+		TEntity GetItem(int id);
+
+		void Add(TEntity entity);
+		void Update(TEntity entity);
+		void UpdateSelective(TEntity entity, params string[] properties);
+		void Remove(TEntity entity);
+		void Remove(int id);
+
+		string GetSqlIdentityInsertOn();
+		string GetSqlIdentityInsertOff();
+		void SqlClearTable();
+		void SqlIdentityInserts(string inserts);
+	}
+
+
+
+	public class _UnitDBEntityRepositoryBase<TEntity>
+		: IUnitDBEntityRepository<TEntity> where TEntity
+		: class
+	{
+
+		public DbContext DbContext { get; private set; }
+		public DbSet<TEntity> DbSet { get; private set; }
+		public string EntityName { get; private set; }
+		public string EntityNamePluralize { get; private set; }
+
+
+		public _UnitDBEntityRepositoryBase(
+			DbContext dbContext,
+			string entityName)
+		{
+			this.DbContext = dbContext;
+			this.DbSet = dbContext.Set<TEntity>();
+			this.EntityName = entityName;
+			this.EntityNamePluralize = entityName.GetPluralizeEn();
+		}
+
+
+		public virtual IQueryable<TEntity> GetItemsAsQueryable(
+			Expression<Func<TEntity, bool>> filter,
+			string order,
+			bool isDescending)
+		{
+			IQueryable<TEntity> query = DbSet;
+			if (filter != null)
+				query = query.Where(filter);
+			if (!string.IsNullOrEmpty(order))
+				query = (isDescending)
+					? query.OrderByDescending(order)
+					: query.OrderBy(order);
+			return query;
+		}
+
+
+		public virtual IEnumerable<TEntity> GetItems(
+			string order,
+			bool isDescending)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		public virtual IEnumerable<TEntity> GetItems(
+			int ptr,
+			string order,
+			bool isDescending)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		public virtual TEntity GetNew()
+		{
+			throw new NotImplementedException();
+		}
+
+
+		public virtual TEntity GetNew(
+			int ptr)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		public virtual TEntity GetItem(
+			int id)
+		{
+			var item = DbSet.Find(id);
+			return item;
+		}
+
+
+		public virtual void Add(
+			TEntity entity)
+		{
+			DbSet.Add(entity);
+		}
+
+
+		public virtual void Update(
+			TEntity entity)
+		{
+			DbSet.Attach(entity);
+			DbContext.Entry(entity).State = EntityState.Modified;
+		}
+
+
+		public virtual void UpdateSelective(
+			TEntity entity,
+			params string[] properties)
+		{
+			DbSet.Attach(entity);
+			foreach (var p1 in properties)
+				DbContext.Entry(entity).Property(p1).IsModified = true;
+		}
+
+
+		public virtual void Remove(
+			TEntity entity)
+		{
+			if (DbContext.Entry(entity).State == EntityState.Detached)
+				DbSet.Attach(entity);
+			DbSet.Remove(entity);
+		}
+
+
+		public virtual void Remove(
+			int id)
+		{
+			var entity = DbSet.Find(id);
+			Remove(entity);
+		}
+
+
+		public string GetSqlIdentityInsertOn()
+		{
+			return "SET IDENTITY_INSERT [" + EntityNamePluralize + "] ON;";
+		}
+
+
+		public string GetSqlIdentityInsertOff()
+		{
+			return "SET IDENTITY_INSERT [" + EntityNamePluralize + "] OFF;";
+		}
+
+
+		public void SqlClearTable()
+		{
+			DbContext.Database.ExecuteSqlCommand(
+				"DELETE FROM [" + EntityNamePluralize + "];");
+			DbContext.Database.ExecuteSqlCommand(
+				"DBCC CHECKIDENT('" + EntityNamePluralize + "', RESEED, 0);");
+			DbContext.SaveChanges();
+		}
+
+
+		public void SqlIdentityInserts(
+			string inserts)
+		{
+			DbContext.Database.ExecuteSqlCommand(
+				GetSqlIdentityInsertOn() + "\r" + inserts + "\r" + GetSqlIdentityInsertOff());
+		}
+
+	}
+
+}

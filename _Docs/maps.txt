@@ -1,0 +1,119 @@
+
+
+	NodesTarget
+		""			- Catalog
+		"/path"		- InternalPath
+		"name"		- Item
+		"url"		- ExternalLink
+
+	PageTarget
+		""			- Catalog
+		"/path"		- InternalPath
+		"name"		- Item
+		"url"		- ExternalLink
+
+
+	UseDefaultStartPage
+		if start && start.ishidden then catalog.islinked
+		
+
+
+	SitemapData
+
+		MapNodes GetMapNodes
+			_nodesProvider.GetMapNodes
+				new MapNodes
+					_getNodes					// загрузка и создание первичного дерева узлов
+							_parseTarget
+							_parseFace
+					_scanNodes					// обработка дерева и создание ссылок
+			
+		MapPages GetMapPages
+			_pagesProvider.GetMapPages
+				new MapPages
+					_getPages					// загрузка и создание первичного дерева страниц
+						new MapPagesItem
+							_parseTarget
+							_parseFace
+					_scanPages					// обработка дерева и создание ссылок
+					
+	
+
+
+
+
+	MapNodes - карта узлов сайта
+		//_map-nodes.xml
+		Current.Site.MapNodes		
+		
+
+	MapPages - карта страниц узла
+		//Views/Nodes/{node}/_map-pages.xml
+		Current.Node.MapPages		
+
+
+	MapActions - карта экшенов
+
+
+
+
+	Карта страниц узла
+
+		Каталог
+			есть start
+			нет start
+		Каталог с стартовой страницей по умолчанию
+			есть start
+			нет start
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	Current
+		Site
+			Breadcrumbs (Parents + this)
+		Node
+			Breadcrumbs (Parents + this)			
+		Page
+			Breadcrumbs (Parents + this)			
+		Breadcrumbs (Site.Breadcrumbs + Node.Breadcrumbs + Page.Breadcrumbs)
+
+	
+
+		Portal
+			string QueryPath { get; }
+			string ViewPath { get; }
+			bool IsStartPage { get; }
+
+			void InitPaths(string viewPath, string queryPath);
+			void NodeRelease();
+			void PageActive(INavItem item);
+
+
+
+		IMapNodesProvider, MapNodesProvider_Xml (//_map-nodes.xml)
+		IMapNodesProvider
+			.GetMap()
+			.Reload()
+		MapNodes - карта узлов сайта
+			NodeItem : INodeItem			
+
+		
+		MapPages - карта страниц узла
+			PageItem : IPageItem			
+
+
+		MapActions - навигация приложения
+			ActionItem : IActionItem
+			
+

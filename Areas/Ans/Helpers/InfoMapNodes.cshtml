@@ -1,0 +1,71 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+<h4 class="text-info">Current.Site.MapNodes</h4>
+
+@if (Current.Site.MapNodes != null)
+{
+	OutNodes(Current.Site.MapNodes.TopItems);
+}
+else
+{
+	<p>Нет элементов.</p>
+}
+@functions {
+
+	void OutNodes(IEnumerable<MapNodesItem> items)
+	{
+		if (items?.Any() ?? false)
+		{
+			<ul>
+				@foreach (var item1 in items)
+				{
+					<li>
+						@{
+							OutItem(item1);
+							OutNodes(item1.Slaves);
+						}
+					</li>
+				}
+			</ul>
+		}
+	}
+
+	void OutItem(MapNodesItem item)
+	{
+		var css1 = new CssBuilder();
+		css1.AppendIf(item.IsHidden, "opacity-50 text-decoration-line-through");
+		<div class="@css1 small">
+			@switch (item.Type)
+			{
+				case MapItemTypeEnum.Catalog:
+					<text>@GetTitle(item)</text>
+					break;
+				case MapItemTypeEnum.InternalPath:
+					<code>^</code>
+					<a href="@(item.Link.Href)">@GetTitle(item)</a>
+					break;
+				case MapItemTypeEnum.ExternalLink:
+					<code>@@</code>
+					<a target="_blank" href="@(item.Link.Href)">@GetTitle(item)</a>
+					break;
+				default:
+					<a href="@(item.Link.Href)">@GetTitle(item)</a>
+					break;
+			}
+			@* if (item.HasMasters) {
+	var s1 = item.Masters.MakeFromCollection(x => x.ShortTitle, null, null, ";");
+	<code title="@s1.ToHtml()">↑@item.Masters.Count()</code>
+	} *@
+			@* if (item.HasSlaves) { <code>↓@item.Slaves.Count()</code> } *@
+		</div>
+	}
+
+	HtmlString GetTitle(MapNodesItem item)
+	{
+		var s1 = item.HasShortTitle ? $"{item.ShortTitle} | {item.Title}" : $"{item.Title}";
+		return s1.ToHtml(true);
+	}
+
+}

@@ -1,0 +1,25 @@
+@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+
+<div class="row row-cols-1 row-cols-md-2 gy-5">
+
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(HostData), Current.Host)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(RequestData), Current.Request)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(SitemapData), Current.Sitemap)' /></div>
+
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CurrentContext), Current)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(SiteContext), Current.Site)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(NodeContext), Current.Node)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(PageContext), Current.Page)' /></div>
+
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(AuthModule), Current.Auth)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CacheModule), Current.Cache)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CookiesModule), Current.Cookies)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(MetaModule), Current.Meta)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(NetworkModule), Current.Network)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(QueryStringModule), Current.QueryString)' /></div>
+	<div class="col"><partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(WebApiModule), Current.WebApi)' /></div>
+
+</div>

@@ -1,0 +1,20 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@page
+@model Ans.Net8.Web.Models.SitePageModel
+@{
+	Current.Page.Title = "Help";
+}
+
+<p>
+	RemoteIpAddress: <code>@Current.Network.RemoteIpAddress</code>
+</p>
+
+<ul>
+	<li>@Current.RenderPageLink("CurrentContext", "Current")</li>
+	<li>@Current.RenderPageLink("AnsNet7Common", "Ans.Net8.Common classes")</li>
+	<li>@Current.RenderPageLink("AnsNet7Web", "Ans.Net8.Web classes")</li>
+</ul>
+

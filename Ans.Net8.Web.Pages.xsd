@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Ans_Net8_Web_Pages"
+		   attributeFormDefault="unqualified"
+		   elementFormDefault="qualified"
+		   targetNamespace="http://tempuri.org/Ans.Net8.Web.Pages.xsd"
+		   xmlns="http://tempuri.org/Ans.Net8.Web.Pages.xsd"
+		   xmlns:mstns="http://tempuri.org/Ans.Net8.Web.Pages.xsd"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="pages" type="ct_pages"/>
+
+	<!-- complex types -->
+
+	<xs:complexType name="ct_pages">
+		<xs:sequence>
+			<xs:element name="item" type="ct_item" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ct_item">
+		<xs:sequence>
+			<xs:element name="item" type="ct_item" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="target" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[ {catalog} | {page} | {internal_path} | {external_link} ]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="face" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[ {full_title} | {short_title|full_title} ]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="hidden" type="xs:boolean" default="false"/>
+		<xs:attribute name="tags" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[ tag1,tag2... ]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<!-- simple types -->
+
+	<xs:simpleType name="st_string_name">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+			<xs:pattern value="^([a-z_][0-9a-z_-]+)$"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

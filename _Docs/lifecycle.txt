@@ -1,0 +1,47 @@
+﻿	
+	DefaultController()
+	DefaultController.Index()
+		NodeRelease()
+	CurrentContext()
+	Views/_ViewStart.cshtml
+	Views/Default/_viewstart.cshtml
+		SetNav()
+			PageActive()
+	Views/Default/Index.cshtml
+	Views/Shared/_Layout.cshtml
+
+
+
+App:
+[ANS] SitemapProvider_Xml
+[ANS] SitemapProvider_Xml.Refresh()
+[ANS] Sitemap
+
+First:
+[ANS] CurrentContext
+[ANS] Sitemap.Init("/")
+[ANS] _NodesController_Base
+[ANS] _NodesController_Base.Index("start")
+[ANS] InitPaths("start", "")
+[ANS] NodeRelease()
+[ANS] Views/_ViewStart.cshtml
+[ANS] Views/Nodes/start.cshtml
+[ANS] Views/Nodes/_layoutRoot.cshtml
+[ANS] SetNodeNavigator()
+[ANS] Navigator
+[ANS] PageActive()
+[ANS] Views/Shared/Layouts/_Default.cshtml
+
+Page:
+[ANS] CurrentContext
+[ANS] _NodesController_Base
+[ANS] _NodesController_Base.Index("node222")
+[ANS] InitPaths("node222/start", "node222")
+[ANS] NodeRelease()
+[ANS] Views/_ViewStart.cshtml
+[ANS] Views/Nodes/node222/_viewstart.cshtml
+[ANS] SetNodeNavigator()
+[ANS] Navigator
+[ANS] PageActive()
+[ANS] Views/Nodes/node222/start.cshtml
+[ANS] Views/Nodes/node222/_layout.cshtml

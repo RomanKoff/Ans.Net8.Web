@@ -1,0 +1,84 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+<h4 class="text-info">Current.Node.MapPages</h4>
+
+@if (Current.Node.MapPages != null)
+{
+	OutItems(Current.Node.MapPages.TopItems);
+}
+else
+{
+	<p>Нет элементов.</p>
+}
+@functions {
+
+	void OutItems(IEnumerable<MapPagesItem> items)
+	{
+		if (items?.Any() ?? false)
+		{
+			<ul>
+				@foreach (var item1 in items)
+				{
+					<li>
+						@{
+							OutItem(item1);
+							OutItems(item1.Slaves);
+						}
+					</li>
+				}
+			</ul>
+		}
+	}
+
+	void OutItem(MapPagesItem item)
+	{
+		var css1 = new CssBuilder();
+		css1.AppendIf(item.IsHidden, "opacity-50 text-decoration-line-through");
+		css1.AppendIf(item.IsSubActive, "bg-light");
+		css1.AppendIf(item.Link.IsActive, "bg-warning");
+		<div class="@css1 small">
+			@*<code>[@item.Path]</code>*@
+			@switch (item.Type)
+			{
+				case MapItemTypeEnum.Catalog:
+					<text>@GetTitle(item)</text>
+					@if (item.UseCatalogStartPage)
+					{
+						<text> <code>+</code><a href="@item.Link.Href">@item.Link.Href</a></text>
+					}
+					break;
+				case MapItemTypeEnum.InternalPath:
+					<code>^</code>
+					<text>@GetTitle(item)</text>
+					<a href="@item.Link.Href">@item.Link.Href</a>
+					break;
+				case MapItemTypeEnum.ExternalLink:
+					<code>@@</code>
+					<text>@GetTitle(item)</text>
+					<a target="_blank" href="@item.Link.Href">@item.Link.Href</a>
+					break;
+				default:
+					<text>@GetTitle(item)</text>
+					<a href="@item.Link.Href">@item.Link.Href</a>
+					break;
+			}
+			@if (item.HasMasters)
+			{
+				<code>↑@item.Masters.Count()</code>
+			}
+			@if (item.HasSlaves)
+			{
+				<code>↓@item.Slaves.Count()</code>
+			}
+		</div>
+	}
+
+	HtmlString GetTitle(MapPagesItem item)
+	{
+		var s1 = item.HasShortTitle ? $"{item.Title} ({item.ShortTitle})" : $"{item.Title}";
+		return s1.ToHtml(true);
+	}
+
+}

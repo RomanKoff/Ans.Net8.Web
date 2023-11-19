@@ -1,0 +1,83 @@
+@if (await this.TrySectionAsync("PageBefore"))
+{
+}
+
+
+
+	#site_header (site-container)
+		#site_logo
+		#site_title
+		#site_navigator
+	
+	#node_header (node-container)
+		#node_logo
+		#node_title
+		#node_info
+		#node_navigator
+	
+	main (m-0, p-0)
+		#breadcrumb (page-container, hidden)
+		#page_title (page-container, hidden)
+		#page_content (predefined-class(??page-container+), predefined-style)
+
+	#node_footer (node-container)
+
+	#site_footer (site-container)
+
+
+	1. _ViewStart.cshtml +
+	2. View.cshtml
+	3. _Layout.cshtml +
+
+
+	Current.SiteContainerCss
+	Current.NodeContainerCss
+	Current.PageContainerCss
+	Current.PageContentPreCss
+	Current.PageContentPreStyle
+
+
+
+
+
+
+
+
+
+
+	Views/Shared/_Layout.cshtml - по умолчанию для приложения
+
+
+
+
+	<html lang="@Current.Culture.Name" class="h-100">
+		<head>
+			@await RenderSectionAsync("HeadSection", required: false)
+		</head>
+		<body class="d-flex flex-column h-100">
+			@await RenderSectionAsync("InitSection", required: false)
+			<header>
+				<div id="site_header">
+					SITE_LOGO
+					SITE_TITLE
+					SITE_QUICK
+				</div>
+				<div id="node_header">
+					NODE_LOGO
+					NODE_TITLE
+					NODE_INFO
+					NODE_NAVIGATION
+				</div>
+			</header>
+			<main role="main" class="" style="">
+				BREADCRUMB
+				PAGE_TITLE
+				PAGE_CONTENT				
+			</main>
+			<footer>
+				<div id="node_footer"></div>
+				<div id="site_footer"></div>
+			</footer>
+			@await RenderSectionAsync("Scripts", required: false)
+		</body>
+	</html>

@@ -1,0 +1,278 @@
+
+	Appmap (actions, from appmap.xml)
+	Sitemap (nodes, from sitemap.xml)
+	Nodemap (pages, from node viewstart)
+
+
+
+	AppmapItem
+		.ActionPathHalf
+		.?Params
+		.Title
+		.ShortTitle
+		.Link
+		.IsHidden
+		.Access
+		.Tags
+
+
+	https://arm.guap.ru
+		/cmol
+			/mol+
+			/docs
+			/monitor
+				/lazymols
+				/progress
+				/volumes
+				/summary
+			/reports
+				/places
+
+
+
+
+	NodemapItem
+		Catalog
+			.HasDefaultPage
+			.IsHidden
+			.Tags
+		Page
+			.IsHidden
+			.Tags
+		Link
+			.IsExternal
+			.Tags
+
+		new Catalog(name, face, params items[])
+		new Catalog(name, face, tags, params items[])
+		new CatalogWithStart(name, face, params items[])
+		new CatalogWithStart(name, face, tags, params items[])
+		new CatalogHidden(name, face, params items[])
+		new CatalogHidden(name, face, tags, params items[])
+		new Page(name, face, tags)
+		new PageHidden(name, face, tags)
+		new Link(target, title, tags)
+
+
+
+
+	AppNavigation
+		- navigation (menu)
+		- active action (browser title, page title, breadcrumb)
+		Branch
+			.Path
+			.Title
+			.ShortTitle
+			.Link
+			.IsAction
+			.IsHidden
+			.Access
+			.Tags
+
+
+	NodeNavigation
+		- navigation (menu)
+		- active page (browser title, page title, breadcrumb)
+		Catalog
+			.Slaves[]
+			.Name
+			.Title (navigator, page title)
+			.ShortTitle (browser title, *subpage title, breadcrumb)
+			.HasDefaultPage
+			.IsHidden
+			.Tags
+		Page
+			.Name
+			.Title (navigator, page title)
+			.ShortTitle (browser title, breadcrumb)
+			.IsHidden
+			.Tags
+		Link
+			.Title (navigator)
+			.Target			
+			.IsHidden
+			.Tags
+			>.IsExternal
+
+
+
+
+	Навигация приложения (дерево действий)
+	- устанавливается на уровне приложения в appmap.xml
+	- типы элементов:
+		- Catalog (раздел)
+			.Access - открытый, для всех участников, для участников групп
+			.Name
+			.Title - для названия страницы
+			.ShortTitle - для пути и заголовка браузера
+			.IsHidden - не отображать в навигации
+			.Tags
+		- Item (действие)
+			.Access - открытый, для всех участников, для участников групп
+			.Name
+			.Title - для названия страницы
+			.ShortTitle - для пути и заголовка браузера
+			.IsHidden - не отображать в навигации
+			.Tags
+		- Link (ссылка)
+			.Access - открытый, для всех участников, для участников групп
+			.Title - в карте сайта
+			.Href
+			.IsExternal
+			.Tags
+
+	Навигация сайта (дерево узлов)
+	- устанавливается на уровне приложения в sitemap.xml
+	- условия:
+		[Name] --> узел
+		[Slaves] --> группа
+		--> ссылка		
+	- типы элементов:
+		- Catalog (группа)
+			.Title - в карте сайта и в подчиненных
+			.ShortTitle - для пути и заголовка браузера
+			.IsHidden - не отображать в карте сайта, в подчиненных и в пути
+			.Tags
+		- Item (узел)
+			.Name
+			.Title - в карте сайта, в названии узла
+			.ShortTitle - в пути, в заголовке браузера
+			.IsHidden - не отображать в карте сайта
+			.Tags
+		- Link (ссылка)
+			.Title - в карте сайта
+			.Href
+			.IsExternal
+			.Tags
+	
+
+	Навигация узла (дерево страниц)
+	- устанавливается в узловом _viewstart.cshtml
+	- условия:
+		[Name]
+			[Slaves] --> каталог
+			--> страница
+		--> ссылка
+	- типы элементов:
+		- Catalog (каталог)
+			.Name
+			.Title
+			.ShortTitle - для пути и заголовка браузера
+			.IsHidden - не отображать в навигации, но отображать в пути как текст
+			.HasDefaultStartPage
+			.Tags
+		- Item (страница)
+			.Name
+			.Title - для названия страницы
+			.ShortTitle - для пути и заголовка браузера
+			.IsHidden - не отображать в навигации
+			.Tags
+		- Link (ссылка)
+			.Title
+			.Href
+			.IsExternal
+			.Tags
+
+
+
+
+
+
+
+
+
+
+	
+	/Default
+		/Start
+		/About
+	/Test1
+		/Default
+			/Index
+
+
+
+
+
+
+
+
+
+
+	CMOL
+
+	/Default
+		/Index - Главная
+		/Docs - Документы
+	/Monitor - Монитор руководителя
+		/Lazymols - Проблемные МОЛ
+		/Progress - Заполняемость по МОЛ
+		/Volumes - Количественные показатели МОЛ
+		/Summary - Общие показатели ГУАП
+	/Reports - Отчеты
+		/Places - Помещения
+		/Workers - Работники
+	/Moderator - Модератор
+		/Users - Пользователи
+		/Messages - Групповые сообщения
+		/Places - Помещения
+		/Workers - Работники
+	/Data - Реестры
+		/Mol - 
+		/Article - 
+		/Inv - Карточка имущества
+
+
+	
+	/mol[0-9]+ - Реестры (Data/Mol)
+		/article[0-9]+ - Реестры / Основные средства (Data/Article)
+	/inv[0-9]+ - Реестры / Основные средства / Карточка имущества (Data/Inv)
+
+
+
+
+
+
+
+
+	/						- стартовая
+	/about					- о системе
+	/nodes					- узлы
+		/view{id}			- узел
+	/admin					- панель управления
+		/					- стартовая панели управления
+		/nodes				- управление узлами
+			/				- список узлов
+			/add			- добавление узла
+			/view{id}		- просмотр узла
+			/edit{id}		- редактирование узла
+			/delete{id}		- уладение узла
+
+	Default.Index
+	Default.About
+	Nodes.Index
+	Nodes.View
+	Admin.Index
+	AdminNodes.List
+	AdminNodes.Add
+	AdminNodes.View
+	AdminNodes.Edit
+	AdminNodes.Delete
+
+
+	Default []
+		.Index []
+		.About [about]
+		Nodes [nodes]
+			.Index []
+			.View [/view{id:int}]
+	Admin [admin]
+		.Index []
+		AdminNodes [/nodes]
+			.List []
+			.Add [/add]
+			.View [/view{id:int}]
+			.Edit [/edit{id:int}]
+			.Delete [/delete{id:int}]
+
+

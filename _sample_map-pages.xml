@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages xmlns="http://tempuri.org/Ans.Net8.Web.Pages.xsd">
+
+	<item face="START"/>
+	<item target="page1" face="PAGE 1"/>
+
+	<item target="catalog1" face="CATALOG 1">
+		<item target="about" face="ABOUT"/>
+		<item target="colors" face="COLORS"/>
+		<item target="components" face="COMPONENTS"/>
+		<item target="/node222/page2"/>
+		<item target="https://guap.ru/"/>
+	</item>
+
+	<item target="catalog2" face="CATALOG 2">
+		<item />
+		<item target="info" face="INFO"/>
+		<item target="servererror" face="SERVER ERROR"/>
+
+		<item target="sub1" face="SUB 1">
+			<item face="START"/>
+			<item target="test1" face="TEST 1"/>
+			<item target="test2" face="TEST 2" hidden="true"/>
+			<item target="test3" face="TEST 3"/>
+		</item>
+
+	</item>
+
+	<item target="spec" face="SPEC" hidden="true">
+		<item target="page1" face="PAGE 1"/>
+		<item target="page2" face="PAGE 2"/>
+	</item>
+
+</pages>

@@ -1,0 +1,198 @@
+{
+
+  "AnsWeb": {
+    "Culture": "ru",
+    "DefaultTelCode": "7812",
+    "CorsProfile": "CORS_AllowAll",
+    "SystemAccessToken": "qazwsxedcqazwsxedc",
+    "DefaultCssContainer": "container",
+    "SystemLayout": "",
+    "UseDeveloperMode": true,
+    "UseSessions": true,
+    "SocialIcons": [
+      "https://vk.com/|gi-logo-vk",
+      "https://ok.ru/|gi-logo-ok",
+      "https://t.me/|gi-logo-telegram",
+      "https://rutube.ru/|gi-logo-youtube",
+      "https://dzen.ru/|gi-logo-dzen",
+      "https://www.youtube.com/|gi-logo-youtube"
+    ],
+    "Mimetypes": [
+      ".apk|application/vnd.android.package-archive"
+    ],
+    "Routes": [
+      "name|template|controller|action"
+    ],
+    "ExceptionHandler": {
+      "ErrorPath": "/Errors/ServerError",
+      "Error404Path": "/Errors/HttpErrors",
+      "ShowInfo": true,
+      "Layout": "",
+      "Picture400": "",
+      "Picture403": "",
+      "Picture404": "",
+      "Picture500": ""
+    },
+    "Subnets": {
+      "Admin": "0.0.0.0/0",
+      "Safe": "0.0.0.0/0",
+      "Unsafe": "0.0.0.0/0",
+      "Allow": "0.0.0.0/0",
+      "Deny": "0.0.0.0/0"
+    },
+    "MailService": {
+      "SmtpServer": "",
+      "SmtpPort": 0,
+      "SmtpUseSsl": false,
+      "SmtpUsername": "",
+      "SmtpPassword": "",
+      "DefaultFromAddress": "",
+      "DefaultFromTitle": "",
+      "DebugCc": ""
+    },
+    "Sso": {
+      "CookieName": "",
+      "RequireHttpsMetadata": true,
+      "Authority": "",
+      "ClientId": "",
+      "ClientSecret": "",
+      "AppClaimName": "",
+      "Users": [
+        {
+          "Username": "",
+          "Roles": [
+            ""
+          ]
+        }
+      ]
+    }
+  },
+
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug"
+    },
+    "NLog": {
+      "IncludeScopes": true,
+      "RemoveLoggerFactoryFilter": true
+    }
+  },
+
+  "NLog": {
+    /*
+     * https://github.com/NLog/NLog.Extensions.Logging/wiki/NLog-configuration-with-appsettings.json
+     */
+    "autoReload": true,
+    "throwConfigExceptions": true,
+    "internalLogLevel": "Info",
+    "internalLogFile": "C:/temp/internal-nlog.txt",
+    "extensions": [
+      {
+        "assembly": "NLog.Web.AspNetCore"
+      }
+    ],
+    "variables": {
+      "varApp": "Template.Ans.Net8.Empty.WebApp",
+      "varDirectory": "C:/inetpub/wwwroot/_LOGS/${varApp}/${date:format=yyyy-0MM}",
+      "varFile": "${varDirectory}/${level}_${date:format=yyyy-0MM-dd_HH}.log"
+    },
+    /*
+    "time": {
+      "type": "AccurateUTC"
+    },
+    */
+    "default-wrapper": {
+      "type": "AsyncWrapper",
+      "overflowAction": "Block"
+    },
+    "targets": {
+      "all-file": {
+        "type": "File",
+        "fileName": "${varFile}"
+        /*
+        "layout": {
+          "type": "JsonLayout",
+          "Attributes": [
+            {
+              "name": "timestamp",
+              "layout": "${date:format=o}"
+            },
+            {
+              "name": "level",
+              "layout": "${level}"
+            },
+            {
+              "name": "logger",
+              "layout": "${logger}"
+            },
+            {
+              "name": "message",
+              "layout": "${message:raw=true}"
+            },
+            {
+              "name": "properties",
+              "encode": false,
+              "layout": {
+                "type": "JsonLayout",
+                "includeallproperties": "true"
+              }
+            }
+          ]
+        }
+        */
+      },
+      "own-console": {
+        "type": "LimitingWrapper",
+        "interval": "00:00:01",
+        "messageLimit": 100,
+        "target": {
+          "type": "ColoredConsole",
+          "layout": "${longdate}|${event-properties:item=EventId_Id:whenEmpty=0}|${uppercase:${level}}|${logger}|${message} ${exception:format=tostring}|${callsite}",
+          "rowHighlightingRules": [
+            {
+              "condition": "level == LogLevel.Error",
+              "foregroundColor": "Red"
+            },
+            {
+              "condition": "level == LogLevel.Fatal",
+              "foregroundColor": "Red",
+              "backgroundColor": "White"
+            }
+          ],
+          "wordHighlightingRules": [
+            {
+              "regex": "on|off",
+              "foregroundColor": "DarkGreen"
+            },
+            {
+              "condition": "level == LogLevel.Debug",
+              "text": "[TEST]",
+              "foregroundColor": "Blue"
+            }
+          ]
+        }
+      }
+    },
+    "rules": [
+      {
+        "logger": "*",
+        "minLevel": "Warn",
+        "writeTo": "all-file"
+      }
+      /*
+      { "logger": "*", "minLevel": "Trace", "writeTo": "all-file" },
+      { "logger": "Microsoft.*", "maxLevel": "Info", "final": true },
+      {
+        "logger": "*",
+        "minLevel": "Debug",
+        "writeTo": "own-console",
+        "filterDefaultAction": "Log",
+        "filters": { "whenRepeated": { "layout": "${message}", "action": "Ignore" } }
+      }
+      */
+    ]
+  },
+
+  "AllowedHosts": "*"
+
+}

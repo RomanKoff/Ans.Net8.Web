@@ -1,0 +1,14 @@
+@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@model string
+@{
+	Current.Page.HideTitle = true;
+}
+@if (!string.IsNullOrEmpty(Model))
+{
+	<div class="mb-5 text-center">
+		<img class="img-fluid" style="max-height:25rem;" src="@Model" alt="@Model.ToHtml()" />
+	</div>
+}

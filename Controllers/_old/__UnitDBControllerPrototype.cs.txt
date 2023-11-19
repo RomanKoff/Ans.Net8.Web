@@ -1,0 +1,397 @@
+﻿using AnsLibs5.Common;
+using System;
+using System.Linq;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace Ans.Net8.Web.Controllers._old
+{
+
+    public interface IUnitDBController<TEntity>
+    {
+        [HttpGet]
+        ActionResult Details(int id);
+
+        [HttpGet]
+        ActionResult Edit(int id);
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        ActionResult Edit(TEntity model);
+
+        [HttpGet]
+        ActionResult Delete(int id);
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        ActionResult DeletePost(int id);
+    }
+
+
+
+    public abstract class __UnitDBControllerPrototype<TEntity>
+        : Controller,
+        IUnitDBController<TEntity>
+    {
+
+        protected IUnitDBRepository _CommonRepository { get; private set; }
+        protected IUnitDBEntityRepository<TEntity> _EntityRepository { get; set; }
+
+        public bool IsAdvanced { get; set; }
+        public string Mod_ViewName_List { get; set; }
+        public string Mod_ViewName_Create { get; set; }
+        public string Mod_ViewName_Edit { get; set; }
+        public string Mod_ViewName_Details { get; set; }
+        public string Mod_ViewName_Delete { get; set; }
+        public string ListControlName { get; set; }
+        public RouteValueDictionary ListRouteValues { get; set; }
+
+
+        public __UnitDBControllerPrototype(
+            IUnitDBRepository repository)
+        {
+            _CommonRepository = repository;
+            ListControlName = null;
+            ListRouteValues = new RouteValueDictionary();
+        }
+
+        protected override void Dispose(
+            bool disposing)
+        {
+            _CommonRepository.Dispose();
+            base.Dispose(disposing);
+        }
+
+
+        public int GetIdFromRouteData()
+        {
+            return Convert.ToInt32(RouteData.Values["id"]);
+        }
+
+
+        public TEntity GetEntityFromRouteData()
+        {
+            int id = GetIdFromRouteData();
+            var entity = _EntityRepository.GetItem(id);
+            return entity;
+        }
+
+
+        // actions
+
+
+        [HttpGet]
+        public virtual ActionResult Details(
+            int id)
+        {
+            Init();
+            var model = _EntityRepository.GetItem(id);
+            if (model == null)
+                return HttpNotFound();
+            PrepModel_ForDetails(model);
+            if (!string.IsNullOrEmpty(Mod_ViewName_Details))
+                return View(Mod_ViewName_Details, model);
+            return View(model);
+        }
+
+
+        [HttpGet]
+        public virtual ActionResult Edit(
+            int id)
+        {
+            Init();
+            var model = _EntityRepository.GetItem(id);
+            if (model == null || !AllowEdit(model))
+                return HttpNotFound();
+            return _getEditView(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public virtual ActionResult Edit(
+            TEntity model)
+        {
+            Init();
+            ModelFix(model);
+            ModelEncode(model);
+            TestModel_ForUpdate(model);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    PrepRedirectToList(model);
+                    BeforeUpdate(model);
+                    _EntityRepository.Update(model);
+                    _CommonRepository.Save();
+                    AfterUpdate(model);
+                    return RedirectToList();
+                }
+                catch (Exception ex)
+                {
+                    ParseException(ex);
+                }
+            }
+            return _getEditView(model);
+        }
+
+
+        [HttpGet]
+        public virtual ActionResult Delete(
+            int id)
+        {
+            Init();
+            var model = _EntityRepository.GetItem(id);
+            if (model == null || !AllowDelete(model))
+                return HttpNotFound();
+            return _getDeleteView(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public virtual ActionResult DeletePost(
+            int id)
+        {
+            Init();
+            var model = _EntityRepository.GetItem(id);
+            if (model == null)
+                return HttpNotFound();
+            TestModel_ForDelete(model);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    PrepRedirectToList(model);
+                    BeforeDelete(model);
+                    _EntityRepository.Remove(id);
+                    _CommonRepository.Save();
+                    AfterDelete();
+                    return RedirectToList();
+                }
+                catch (Exception ex)
+                {
+                    ParseException(ex);
+                }
+            }
+            return _getDeleteView(model);
+        }
+
+
+        // services
+
+
+        public virtual void Init()
+        {
+        }
+
+
+        public virtual void SaveRouteValues(
+            string order,
+            bool descending)
+        {
+            var r1 = new RouteValueDictionary();
+            if (!string.IsNullOrEmpty(order))
+                r1.Add("order", order);
+            if (descending)
+                r1.Add("descending", true);
+            TempData["ListRouteValues"] = r1;
+        }
+
+
+        public virtual bool AllowChange(
+            TEntity model)
+        {
+            return true;
+        }
+        public virtual bool AllowEdit(
+            TEntity model)
+        {
+            return AllowChange(model);
+        }
+        public virtual bool AllowDelete(
+            TEntity model)
+        {
+            return AllowChange(model);
+        }
+
+
+        public virtual void PrepView()
+        {
+        }
+        public virtual void PrepModel_ForCreate(
+            TEntity model)
+        {
+            PrepView();
+        }
+        public virtual void PrepModel_ForDetails(
+            TEntity model)
+        {
+            PrepView();
+        }
+        public virtual void PrepModel_ForEdit(
+            TEntity model)
+        {
+            PrepView();
+        }
+        public virtual void PrepModel_ForDelete(
+            TEntity model)
+        {
+            PrepView();
+        }
+
+
+        public virtual void ModelFix(
+            TEntity model)
+        {
+        }
+        public virtual void ModelEncode(
+            TEntity model)
+        {
+        }
+        public virtual void ModelDecode(
+            TEntity model)
+        {
+        }
+
+
+        public virtual void TestModel(
+            TEntity model)
+        {
+        }
+        public virtual void TestModel_ForCreate(
+            TEntity model)
+        {
+            TestModel(model);
+        }
+        public virtual void TestModel_ForUpdate(
+            TEntity model)
+        {
+            TestModel(model);
+        }
+        public virtual void TestModel_ForDelete(
+            TEntity model)
+        {
+            TestModel(model);
+        }
+
+
+        public virtual void BeforeChange(
+            TEntity model)
+        {
+        }
+        public virtual void BeforeCreateOrUpdate(
+            TEntity model)
+        {
+        }
+        public virtual void BeforeCreate(
+            TEntity model)
+        {
+            BeforeChange(model);
+            BeforeCreateOrUpdate(model);
+        }
+        public virtual void BeforeUpdate(
+            TEntity model)
+        {
+            BeforeChange(model);
+            BeforeCreateOrUpdate(model);
+        }
+        public virtual void BeforeDelete(
+            TEntity model)
+        {
+            BeforeChange(model);
+        }
+
+
+        public virtual void AfterChange(
+            TEntity model)
+        {
+        }
+        public virtual void AfterCreateOrUpdate(
+            TEntity model)
+        {
+        }
+        public virtual void AfterCreate(
+            TEntity model)
+        {
+            AfterChange(model);
+            AfterCreateOrUpdate(model);
+        }
+        public virtual void AfterUpdate(
+            TEntity model)
+        {
+            AfterChange(model);
+            AfterCreateOrUpdate(model);
+        }
+        public virtual void AfterDelete()
+        {
+        }
+
+
+        public virtual void PrepRedirectToList(
+            TEntity model)
+        {
+            if (TempData["ListRouteValues"] is RouteValueDictionary r1)
+                foreach (var item in r1.Where(x => x.Key != "ptr"))
+                    ListRouteValues.Add(item.Key, item.Value);
+        }
+
+
+        public virtual ActionResult RedirectToEdit(
+            TEntity model)
+        {
+            int id = ((IUnitDBEntity)model).ItemId;
+            return RedirectToAction(
+                "Edit", null, new RouteValueDictionary { { "id", id } });
+        }
+        public virtual ActionResult RedirectToList()
+        {
+            return RedirectToAction(
+                "List", ListControlName, ListRouteValues);
+        }
+
+
+        public virtual void ParseException(
+            Exception exception)
+        {
+            ModelState.AddModelError("", exception.GetExceptionMessage());
+        }
+
+
+        // privates
+
+
+        protected ActionResult _getCreateView(
+            TEntity model)
+        {
+            PrepModel_ForCreate(model);
+            ModelDecode(model);
+            if (!string.IsNullOrEmpty(Mod_ViewName_Create))
+                return View(Mod_ViewName_Create, model);
+            return View(model);
+        }
+
+        protected ActionResult _getEditView(
+            TEntity model)
+        {
+            PrepModel_ForEdit(model);
+            ModelDecode(model);
+            if (!string.IsNullOrEmpty(Mod_ViewName_Edit))
+                return View(Mod_ViewName_Edit, model);
+            return View(model);
+        }
+
+        protected ActionResult _getDeleteView(
+            TEntity model)
+        {
+            PrepModel_ForDelete(model);
+            if (!string.IsNullOrEmpty(Mod_ViewName_Delete))
+                return View(Mod_ViewName_Delete, model);
+            return View(model);
+        }
+
+    }
+
+}

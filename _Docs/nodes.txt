@@ -1,0 +1,46 @@
+
+	Query lifecycle
+
+		ViewEngineResult engine1;
+		if (string.IsNullOrEmpty(path))
+		{
+			// _main start page
+			CurrentContext.InitPaths("_main/start", null);
+		}
+		else
+		{
+			string queryPath1 = path.TrimEnd('/');
+			engine1 = ViewRender.GetViewEngineResult($"Nodes/{queryPath1}");
+			if (engine1.View != null)
+			{
+				// node page
+				CurrentContext.InitPaths(queryPath1, null);
+			}
+			else
+			{
+				string nodeStartPage1 = $"{queryPath1}/start";
+				engine1 = ViewRender.GetViewEngineResult($"Nodes/{nodeStartPage1}");
+				if (engine1.View != null)
+				{
+					// node start page
+					CurrentContext.InitPaths(nodeStartPage1, queryPath1);
+				}
+				else
+				{
+					string rootPage1 = $"_main/{queryPath1}";
+					engine1 = ViewRender.GetViewEngineResult($"Nodes/{rootPage1}");
+					if (engine1.View != null)
+					{
+						// _main page
+						CurrentContext.InitPaths(rootPage1, queryPath1);
+					}
+					else
+					{
+						return NotFound();
+					}
+				}
+			}
+		}
+		CurrentContext.NodeRelease();
+		CurrentRelease();
+		return View($"~/Views/Nodes/{CurrentContext.ViewPath}.cshtml");

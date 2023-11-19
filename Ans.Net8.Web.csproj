@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+
+		<Version>1.0.0</Version>
+		<VersionPrefix>$(Version)</VersionPrefix>
+		<Description>rev. 1</Description>
+		<Authors>Roman Koff</Authors>
+		<Copyright>$(Authors)</Copyright>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ans.Net8.Common\Ans.Net8.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Resources\Errors.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Errors.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Forms.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Forms.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\Messages.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Messages.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\Errors.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Errors.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Forms.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Forms.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\Messages.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>Messages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Ans.Net8.Web.Actions.xsd">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Ans.Net8.Web.Nodes.xsd">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Ans.Net8.Web.Pages.xsd">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="_sample_appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="_sample_map-nodes.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="_sample_map-pages.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="_update_ans.net8.web.cmd">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+</Project>

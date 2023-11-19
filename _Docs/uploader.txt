@@ -1,0 +1,22 @@
+
+	private readonly IUploaderService _uploader;
+
+	public DefaultController(
+		IUploaderService uploader)
+	{
+		_uploader = uploader;
+		_uploader.BasePath = "C:/temp/upload";
+	}
+
+	[DisableRequestSizeLimit]
+	[RequestFormLimits(
+		MultipartBodyLengthLimit = 104_857_600,
+		ValueLengthLimit = 104_857_600)]
+	[Route("uploader")]
+	[HttpPost]
+	public IActionResult Uploader(
+		string name,
+		int? chunk)
+	{
+		return _uploader.Upload(Request.Form.Files[0], "", name, chunk ?? 0);
+	}

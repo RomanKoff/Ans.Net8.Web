@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<nodes xmlns="http://tempuri.org/Ans.Net8.Web.Nodes.xsd">
+
+	<item target="node1" face="Node 1"/>
+	<item face="Section 1">
+		<item target="node2" face="Node 2">
+			<item target="node21" face="Node 2.1"/>
+			<item target="node22" face="Node 2.2">
+				<item face="Section 2">
+					<item target="node221" face="Node 2.2.1|Subnode 2.2.1"/>
+					<item target="node222" face="Node 2.2.2|Subnode 2.2.2"/>
+					<item hidden="true" target="node223" face="Node 2.2.3|Subnode 2.2.3"/>
+				</item>
+			</item>
+			<item target="node23" face="Node 2.3"/>
+			<item face="Group 2.4">
+				<item target="node241" face="Node 2.4.1"/>
+				<item target="https://site1.com" face="Site 1"/>
+				<item target="/node222/page1" face="Internal 1"/>
+			</item>
+			<item hidden="true" face="Group 27">
+				<item target="node271" face="Node 2.7.1"/>
+				<item target="node272" face="Node 2.7.2"/>
+				<item target="/node273" face="Link to node 2.7.3"/>
+			</item>
+		</item>
+	</item>
+	<item target="node3" face="Node 3"/>
+
+</nodes>
