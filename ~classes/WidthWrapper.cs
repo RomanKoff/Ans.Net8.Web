@@ -4,71 +4,41 @@ using System.Text;
 namespace Ans.Net8.Web
 {
 
-    public class WidthWrapper
-    {
+	public class WidthWrapper(
+		string html,
+		WidthsEnum width,
+		string cssClass)
+	{
 
-        /* ctor */
-
-
-        public WidthWrapper(
-            string html,
-            WidthsEnum width,
-            string cssClass)
-        {
-            Html = html;
-            Width = width;
-            CssClass = cssClass;
-        }
+		public string Html { get; } = html;
+		public WidthsEnum Width { get; } = width;
+		public string CssClass { get; } = cssClass;
 
 
-        /* properties */
+		public override string ToString()
+		{
+			var sb1 = new StringBuilder();
+			sb1.Append(Width switch
+			{
+				WidthsEnum.Full => "w-100",
+				WidthsEnum.ExtraLarge => "w-40rem",
+				WidthsEnum.Large => "w-30rem",
+				WidthsEnum.Medium => "w-20rem",
+				WidthsEnum.Small => "w-15rem",
+				WidthsEnum.ExtraSmall => "w-10rem",
+				_ => "w-6rem"
+			});
+			if (!string.IsNullOrEmpty(CssClass))
+			{
+				if (sb1.Length > 0)
+					sb1.Append(' ');
+				sb1.Append(CssClass);
+			}
+			return (sb1.Length == 0)
+				? Html
+				: $"<div class='{sb1}'>{Html}</div>";
+		}
 
-
-        public string Html { get; set; }
-        public WidthsEnum Width { get; set; }
-        public string CssClass { get; set; }
-
-
-        /* functions */
-
-
-        public override string ToString()
-        {
-            var sb1 = new StringBuilder();
-            switch (Width)
-            {
-                case WidthsEnum.Full:
-                    sb1.Append("w-100");
-                    break;
-                case WidthsEnum.ExtraLarge:
-                    sb1.Append("w-40rem");
-                    break;
-                case WidthsEnum.Large:
-                    sb1.Append("w-30rem");
-                    break;
-                case WidthsEnum.Medium:
-                    sb1.Append("w-20rem");
-                    break;
-                case WidthsEnum.Small:
-                    sb1.Append("w-15rem");
-                    break;
-                case WidthsEnum.ExtraSmall:
-                    sb1.Append("w-10rem");
-                    break;
-                default:
-                    sb1.Append("w-6rem");
-                    break;
-            }
-            if (!string.IsNullOrEmpty(CssClass))
-            {
-                if (sb1.Length > 0)
-                    sb1.Append(' ');
-                sb1.Append(CssClass);
-            }
-            return (sb1.Length == 0)
-                ? Html : $"<div class='{sb1}'>{Html}</div>";
-        }
-
-    }
+	}
 
 }

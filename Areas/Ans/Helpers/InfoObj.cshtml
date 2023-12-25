@@ -1,0 +1,19 @@
+@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@model object
+@{
+	var info = new InfoBuilder(Model.GetType(), Model);
+	List<InfoProperty> props = new();
+	props.AddRange(info.Properties);
+	props.AddRange(info.ReadonlyProperties);
+}
+
+<div class="small py-3">
+	<b>@info.InfoType.GetCSharpTypeName():</b>
+	@foreach (var item1 in props.OrderBy(x => x.Name))
+	{
+		<span class="mx-1">@(item1.Name)&nbsp;@item1.Value.ToHtml("<code class=\"bg-warning\">{0}</code>")</span>
+	}
+</div>

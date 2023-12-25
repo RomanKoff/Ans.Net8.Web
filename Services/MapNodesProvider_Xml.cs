@@ -1,6 +1,5 @@
 ﻿using Ans.Net8.Common;
 using Microsoft.AspNetCore.Hosting;
-using System.Diagnostics;
 using System.Xml.Serialization;
 
 namespace Ans.Net8.Web.Services
@@ -15,61 +14,47 @@ namespace Ans.Net8.Web.Services
 
 	public interface IMapNodesProvider
 	{
-		MapNodes GetMapNodes(string hostVirtualPath);
+		MapNodes GetMap(string hostVirtualPath);
 		void Reset();
 	}
 
 
 
-	public class MapNodesProvider_Xml
-		: IMapNodesProvider
+	public class MapNodesProvider_Xml(
+		IWebHostEnvironment env)
+		: _SingletonProvider_Proto<MapNodes>,
+		IMapNodesProvider
 	{
 
-		private readonly IWebHostEnvironment _env;
-		private MapNodes _map;
-		private bool _missed;
+		private readonly IWebHostEnvironment _env = env;
+		private string _hostVirtualPath;
 
 
-		/* ctor */
-
-
-		public MapNodesProvider_Xml(
-			IWebHostEnvironment env)
+		public override bool TestMissed(
+			string key)
 		{
-			_env = env;
+			return !File.Exists(_getFilename());
 		}
+
+
+		public override MapNodes GetItem(
+			string key)
+		{
+			var data1 = SuppXml.GetObjectFromXmlFile<MapNodesXmlRoot>(
+				_getFilename(), "http://tempuri.org/Ans.Net8.Web.Nodes.xsd");
+			return new MapNodes(_getBranch(data1.Elements), _hostVirtualPath);
+		}
+
 
 
 		/* functions */
 
 
-		public MapNodes GetMapNodes(
+		public MapNodes GetMap(
 			string hostVirtualPath)
 		{
-			if (_map != null)
-				return _map;
-			if (_missed)
-				return null;
-			var file1 = Path.Combine(
-				_env.ContentRootPath, "Views/Nodes", "_map-nodes.xml");
-			if (!File.Exists(file1))
-			{
-				_missed = true;
-				Debug.WriteLine("[Ans.Net8.Web] MapNodesProvider_Xml.GetMap() : MISSED");
-				return null;
-			}
-			try
-			{
-				var data1 = SuppXml.GetObjectFromXmlFile<MapNodesXmlRoot>(
-					file1, "http://tempuri.org/Ans.Net8.Web.Nodes.xsd");
-				_map = new MapNodes(_getBranch(data1.Elements), hostVirtualPath);
-				Debug.WriteLine("[Ans.Net8.Web] MapNodesProvider_Xml.GetMap() : LOADED");
-			}
-			catch (Exception)
-			{
-				throw new Exception("[Ans.Net8.Web] MapNodes compile error.");
-			}
-			return _map;
+			_hostVirtualPath = hostVirtualPath;
+			return base.Get("");
 		}
 
 
@@ -78,23 +63,27 @@ namespace Ans.Net8.Web.Services
 
 		public void Reset()
 		{
-			_map = null;
-			_missed = false;
+			base.Remove("");
 		}
 
 
 		/* privates */
 
 
-		private IEnumerable<MapNodesItem> _getBranch(
+		private string _getFilename()
+			=> Path.Combine(_env.ContentRootPath, "Views/Nodes", "_map-nodes.xml");
+
+
+		private static IEnumerable<MapNodesItem> _getBranch(
 			IEnumerable<MapNodesItemXmlElement> elements)
 		{
-			if (elements == null || !elements.Any())
+			if (!(elements?.Count() > 0))
 				return null;
 			var items1 = new List<MapNodesItem>();
 			foreach (var element1 in elements)
 			{
 				var item1 = new MapNodesItem(
+					element1.Id,
 					element1.Target,
 					element1.Face,
 					element1.IsHidden,
@@ -102,7 +91,7 @@ namespace Ans.Net8.Web.Services
 				items1.Add(item1);
 				item1.Slaves = _getBranch(element1.Elements);
 			}
-			return items1;
+			return items1.AsEnumerable();
 		}
 
 	}
@@ -125,6 +114,9 @@ namespace Ans.Net8.Web.Services
 	{
 		[XmlElement("item")]
 		public List<MapNodesItemXmlElement> Elements { get; set; }
+
+		[XmlAttribute("id")]
+		public string Id { get; set; }
 
 		[XmlAttribute("target")]
 		public string Target { get; set; }

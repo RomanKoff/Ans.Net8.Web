@@ -28,6 +28,16 @@ namespace Ans.Net8.Web
 
 		public static HtmlString GetPassedHtml(
 			this DateTimeHelper helper,
+			DateOnly date,
+			bool useYesterdayTodayTomorrow = true)
+		{
+			return helper.GetPassedHtml(
+				date.GetDateTime(), false, useYesterdayTodayTomorrow);
+		}
+
+
+		public static HtmlString GetPassedHtml(
+			this DateTimeHelper helper,
 			DateTime? datetime,
 			bool addTime,
 			bool useYesterdayTodayTomorrow = true)
@@ -38,15 +48,13 @@ namespace Ans.Net8.Web
 		}
 
 
-		public static HtmlString GetSpanHtml(
+		public static HtmlString GetPassedHtml(
 			this DateTimeHelper helper,
-			DateTime date1,
-			DateTime? date2,
-			bool showCurrentYear = false)
+			DateOnly? date,
+			bool useYesterdayTodayTomorrow = true)
 		{
-			return helper.GetSpan(
-				date1, date2, showCurrentYear)
-					.ToHtml();
+			return helper.GetPassedHtml(
+				date?.GetDateTime(), false, useYesterdayTodayTomorrow);
 		}
 
 	}

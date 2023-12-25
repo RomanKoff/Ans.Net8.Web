@@ -3,7 +3,13 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Ans.Net8.Web.TagHelpers
 {
-	
+
+	/*
+	 * 
+	 */
+
+
+
 	public class FormInTextTagHelper
 		: TagHelper
 	{
@@ -22,9 +28,9 @@ namespace Ans.Net8.Web.TagHelpers
 			var isRequired1 = For.Metadata.IsRequired;
 			var maxLength1 = For.Metadata.GetMaxLengthAttribute()?.Length ?? 0;
 			var regex1 = For.Metadata.GetRegularExpressionAttribute()?.Pattern;
-			var range1 = For.Metadata.GetRangeAttribute();
-			var min1 = range1?.Minimum.ToString();
-			var max1 = range1?.Maximum.ToString();
+			//var range1 = For.Metadata.GetRangeAttribute();
+			//var min1 = range1?.Minimum.ToString();
+			//var max1 = range1?.Maximum.ToString();
 			var desc1 = For.Metadata.Description;
 			var s1 = @$"{name1}:{type1} ({maxLength1}, {isRequired1}, '{regex1}', '{desc1}')";
 			output.Content.AppendHtml(s1);

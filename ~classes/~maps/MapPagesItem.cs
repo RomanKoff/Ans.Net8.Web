@@ -13,42 +13,43 @@
 			string face,
 			bool isHidden,
 			string tags)
-			: base(face ?? target, isHidden, tags)
 		{
+			_parseFace(face);
+			_parseTarget(target);
+			IsHidden = isHidden;
+			Tags = tags?.Split(',', ';');
 			if (string.IsNullOrEmpty(target) && string.IsNullOrEmpty(face))
 				IsHidden = true;
-			_parseTarget(target);
 		}
-
-
-		/* properties */
-
-
-		public bool IsSubActive { get; set; }
 
 
 		/* readonly properties */
 
 
+		public MapPagesItemType Type { get; private set; }
+		public LinkBuilder Link { get; private set; }
+		public string Name { get; private set; }
+		public string Target { get; private set; }
 		public bool UseCatalogStartPage { get; private set; }
 
+		public string Title { get; private set; }
 
-		public string Path
-		{
-			get
-			{
-				if (_path != null)
-					return _path;
-				string master1 = $"{Masters?.Last().Path}";
-				var f1 = !string.IsNullOrEmpty(master1);
-				var f2 = !string.IsNullOrEmpty(Name);
-				_path = f1 && f2
-					? $"{master1}/{Name}" : f1
-						? master1 : Name;
-				return _path;
-			}
-		}
-		private string _path;
+		public string ShortTitle
+			=> _shortTitle ?? Title;
+		private string _shortTitle;
+
+		public bool HasShortTitle
+			=> _shortTitle != null;
+
+		public bool IsHidden { get; }
+		public string[] Tags { get; }
+
+
+		/* properties */
+
+
+		public string Path { get; set; }
+		public bool IsSubActive { get; set; }
 
 
 		/* methods */
@@ -60,21 +61,22 @@
 		{
 			Link = new LinkBuilder { InnerHtml = ShortTitle };
 			if (HasSlaves)
-				Type = MapItemTypeEnum.Catalog;
+				Type = MapPagesItemType.Catalog;
 			switch (Type)
 			{
-				case MapItemTypeEnum.Catalog:
+				case MapPagesItemType.Catalog:
 					UseCatalogStartPage = Slaves?.Any(x => string.IsNullOrEmpty(x.Name)) ?? false;
 					if (UseCatalogStartPage)
 						Link.Href = $"{hostNodePath}{Path}";
 					else
 						Link.IsDisabled = true;
 					break;
-				case MapItemTypeEnum.Item:
+				case MapPagesItemType.Page:
 					Link.Href = string.IsNullOrEmpty(Path) && hostNodePath != hostVirtualPath
-						? hostNodePath[..^1] : $"{hostNodePath}{Path}";
+						? hostNodePath[..^1]
+						: $"{hostNodePath}{Path}";
 					break;
-				case MapItemTypeEnum.InternalPath:
+				case MapPagesItemType.InternalPath:
 					Link.Href = $"{hostVirtualPath}{Target}";
 					break;
 				default:
@@ -93,7 +95,44 @@
 		}
 
 
+		/* functions */
+
+
+		public LinkBuilder GetNavLink()
+		{
+			return (HasSlaves)
+				? new LinkBuilder
+				{
+					CssClass = Link.CssClass,
+					Href = Link.Href,
+					Id = Link.Id,
+					InnerHtml = Link.InnerHtml,
+					IsActive = Link.IsActive,
+					IsExternal = Link.IsExternal,
+					IsDisabled = false
+				}
+				: Link;
+		}
+
+
 		/* privates */
+
+
+		private void _parseFace(
+			string face)
+		{
+			if (!string.IsNullOrEmpty(face))
+			{
+				int i1 = face.IndexOf('|');
+				if (i1 == -1)
+					Title = face;
+				else
+				{
+					_shortTitle = face[..i1];
+					Title = string.Format(face[(i1 + 1)..], _shortTitle);
+				}
+			}
+		}
 
 
 		private void _parseTarget(
@@ -101,27 +140,38 @@
 		{
 			if (string.IsNullOrEmpty(target))
 			{
-				Type = MapItemTypeEnum.Item;
+				Type = MapPagesItemType.Page;
 			}
 			else if (target[0] == '/')
 			{
-				Type = MapItemTypeEnum.InternalPath;
+				Type = MapPagesItemType.InternalPath;
 				Name = "#InternalPath#";
 				Target = target[1..];
 			}
 			else if (Common._Consts.G_REGEX_NAME().IsMatch(target))
 			{
-				Type = MapItemTypeEnum.Item; // предположение
+				Type = MapPagesItemType.Page; // предположение
 				Name = target;
 			}
 			else
 			{
-				Type = MapItemTypeEnum.ExternalLink;
+				Type = MapPagesItemType.ExternalLink;
 				Name = "#ExternalLink#";
 				Target = target;
 			}
+			Title ??= target;
 		}
 
+	}
+
+
+
+	public enum MapPagesItemType
+	{
+		Catalog,
+		Page,
+		InternalPath,
+		ExternalLink
 	}
 
 }

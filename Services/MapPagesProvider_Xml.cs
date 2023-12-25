@@ -1,6 +1,5 @@
 ﻿using Ans.Net8.Common;
 using Microsoft.AspNetCore.Hosting;
-using System.Diagnostics;
 using System.Xml.Serialization;
 
 namespace Ans.Net8.Web.Services
@@ -15,85 +14,82 @@ namespace Ans.Net8.Web.Services
 
 	public interface IMapPagesProvider
 	{
-		MapPages GetMapPages(string node, string hostVirtualPath);
+		MapPages GetMap(string node, string hostVirtualPath);
 		void Reset(string node);
 	}
 
 
 
-	public class MapPagesProvider_Xml
-		: IMapPagesProvider
+	public class MapPagesProvider_Xml(
+		IWebHostEnvironment env)
+		: _SingletonProvider_Proto<MapPages>,
+		IMapPagesProvider
 	{
 
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _env = env;
 		private string _hostVirtualPath;
-		private readonly Dictionary<string, MapPages> _maps = new();
 
 
-		/* ctor */
-
-
-		public MapPagesProvider_Xml(
-			IWebHostEnvironment env)
+		public override bool TestMissed(
+			string key)
 		{
-			_env = env;
+			return !File.Exists(_getFilename(key));
+		}
+
+
+		public override MapPages GetItem(
+			string key)
+		{
+			var data1 = SuppXml.GetObjectFromXmlFile<MapPagesXmlRoot>(
+				_getFilename(key), "http://tempuri.org/Ans.Net8.Web.Pages.xsd");
+			return new MapPages(_getBranch(data1.Elements), _fixMainNode(key), _hostVirtualPath);
 		}
 
 
 		/* functions */
 
 
-		public MapPages GetMapPages(
+		public MapPages GetMap(
 			string node,
 			string hostVirtualPath)
 		{
-			var node1 = string.IsNullOrEmpty(node) ? "_main" : node;
-			if (_maps.TryGetValue(node1, out MapPages map1))
-				return map1;
 			_hostVirtualPath = hostVirtualPath;
-			var file1 = Path.Combine(
-				_env.ContentRootPath, "Views/Nodes", node1, "_map-pages.xml");
-			if (!File.Exists(file1))
-			{
-				_maps.Add(node1, null);
-				Debug.WriteLine($"[Ans.Net8.Web] MapPagesProvider_Xml.GetMap(\"{node1}\") : MISSED");
-				return null;
-			}
-			MapPages _map1;
-			try
-			{
-				var data1 = SuppXml.GetObjectFromXmlFile<MapPagesXmlRoot>(
-					file1, "http://tempuri.org/Ans.Net8.Web.Pages.xsd");
-				_map1 = new MapPages(_getBranch(data1.Elements), node, _hostVirtualPath);
-				Debug.WriteLine($"[Ans.Net8.Web] MapPagesProvider_Xml.GetMap(\"{node1}\") : LOADED");
-			}
-			catch (Exception)
-			{
-				throw new Exception("[Ans.Net8.Web] MapPages compile error.");
-			}
-			_maps.Add(node1, _map1);
-			return _map1;
+			return base.Get(node);
 		}
 
 
-		/* properties */
+		/* methods */
 
 
 		public void Reset(
 			string node)
 		{
-			var node1 = string.IsNullOrEmpty(node) ? "_main" : node;
-			_ = _maps.Remove(node1);
+			base.Remove(node);
 		}
 
 
 		/* privates */
 
 
-		private IEnumerable<MapPagesItem> _getBranch(
+		private static string _fixMainNode(
+			string node)
+			=> node == "_main" ? "" : node;
+
+
+		private string _getFilename(
+			string node)
+		{
+			var path1 = Path.Combine(_env.ContentRootPath, "Views/Nodes");
+			return node != null
+				? $"{path1}/{node}/_map-pages.xml"
+				: $"{path1}/_map-pages.xml";
+		}
+
+
+		private static IEnumerable<MapPagesItem> _getBranch(
 			IEnumerable<MapPagesItemXmlElement> elements)
 		{
-			if (elements == null || !elements.Any())
+			if (!(elements?.Count() > 0))
 				return null;
 			var items1 = new List<MapPagesItem>();
 			foreach (var element1 in elements)
@@ -106,7 +102,7 @@ namespace Ans.Net8.Web.Services
 				items1.Add(item1);
 				item1.Slaves = _getBranch(element1.Elements);
 			}
-			return items1;
+			return items1.AsEnumerable();
 		}
 
 	}

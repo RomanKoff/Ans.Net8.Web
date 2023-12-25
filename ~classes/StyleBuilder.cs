@@ -4,7 +4,7 @@
 	public class StyleBuilder
 	{
 
-		private readonly Dictionary<string, string> _style = new();
+		private readonly Dictionary<string, string> _style = [];
 		private string _join;
 
 
@@ -30,7 +30,8 @@
 
 		public override string ToString()
 		{
-			return _join ??= string.Join("", _style.Select(x => $"{x.Key}:{x.Value};"));
+			return _join ??= string.Join(
+				"", _style.Select(x => $"{x.Key}:{x.Value};"));
 		}
 
 

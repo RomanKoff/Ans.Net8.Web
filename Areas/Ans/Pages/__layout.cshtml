@@ -4,7 +4,14 @@
 *@
 @{
 	Layout = Current.SystemLayout;
-
-	Current.Node.AddParent("/ans", "Ans.Net8.Web");
 }
+
 @RenderBody()
+
+@section Scripts {
+
+	<link href="https://src.guap.ru/libs/prism.js-1.29.0/dist/plug.min.css" rel="stylesheet" crossorigin="anonymous" />
+	<script src="https://src.guap.ru/libs/prism.js-1.29.0/dist/plug.min.js" crossorigin="anonymous"></script>
+
+	@await RenderSectionAsync("Scripts", false)
+}

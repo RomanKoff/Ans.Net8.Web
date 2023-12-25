@@ -8,13 +8,9 @@ namespace Ans.Net8.Web
 		IHtmlHelper helper)
 		: _Wrapper_Base
 	{
-
-		/* readonly properties */
-
-		public IHtmlHelper Helper { get; private set; } = helper;
-		public ViewContext ViewContext { get; private set; } = helper.ViewContext;
-		public ModelStateDictionary ModelState { get; private set; } = helper.ViewData.ModelState;
-
+		public IHtmlHelper Helper { get; } = helper;
+		public ViewContext ViewContext { get; } = helper.ViewContext;
+		public ModelStateDictionary ModelState { get; } = helper.ViewData.ModelState;
 	}
 
 }

@@ -9,6 +9,9 @@ namespace Ans.Net8.Web
 	public class QueryStringHelper
 	{
 
+		private static readonly string[] second = ["descending"];
+
+
 		/* ctors */
 
 
@@ -17,15 +20,13 @@ namespace Ans.Net8.Web
 			params string[] ignoreParams)
 		{
 			var ignores1 = ignoreParams
-				.Concat(new string[] { "descending" })
+				.Concat(second)
 				.ToArray();
-			Params = new Dictionary<string, StringValues>();
+			Params = [];
 			if (queryParams != null)
 				foreach (var key1 in queryParams.Keys)
-				{
 					if (!ignores1.Any(x => x == key1))
 						Params.Add(key1, queryParams[key1]);
-				}
 		}
 
 

@@ -1,0 +1,78 @@
+@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@model InfoBuilder
+
+<h4 class="text-info mt-4 mb-2">@Model.InfoType.GetCSharpTypeName()</h4>
+
+@if (Model.Ctors?.Count() > 0)
+{
+	<div class="small">
+		<b>Constructors:</b>
+		<ul class="list-unstyled mt-0 mb-2">
+			@foreach (var item1 in Model.Ctors)
+			{
+				<li class="my-1 lh-sm">@(Model.InfoType.GetCSharpTypeName())(@GetParams(item1.Parameters))</li>
+			}
+		</ul>
+	</div>
+}
+@if (Model.Properties?.Count() > 0)
+{
+	<div class="small">
+		<b>Properties:</b>
+		<ul class="list-unstyled mt-0 mb-2">
+			@foreach (var item1 in Model.Properties)
+			{
+				<li class="my-1 lh-sm">@item1.Name @item1.Value.ToHtml("= <code>{0}</code>") <small class='opacity-50'>:&nbsp;@item1.Type</small></li>
+			}
+		</ul>
+	</div>
+}
+@if (Model.ReadonlyProperties?.Count() > 0)
+{
+	<div class="small">
+		<b>Readonly properties:</b>
+		<ul class="list-unstyled mt-0 mb-2">
+			@foreach (var item1 in Model.ReadonlyProperties)
+			{
+				<li class="my-1 lh-sm">@item1.Name @item1.Value.ToHtml("= <code>{0}</code>") <small class='opacity-50'>:&nbsp;@item1.Type</small></li>
+			}
+		</ul>
+	</div>
+}
+@if (Model.Functions?.Count() > 0)
+{
+	<div class="small">
+		<b>Functions:</b>
+		<ul class="list-unstyled mt-0 mb-2">
+			@foreach (var item1 in Model.Functions)
+			{
+				<li class="my-1 lh-sm">@item1.Name<small class='opacity-50'>@item1.Generics</small>(@GetParams(item1.Parameters)) <small class='opacity-50'>:&nbsp;@item1.Return</small></li>
+			}
+		</ul>
+	</div>
+}
+@if (Model.Methods?.Count() > 0)
+{
+	<div class="small">
+		<b>Methods:</b>
+		<ul class="list-unstyled mt-0 mb-2">
+			@foreach (var item1 in Model.Methods)
+			{
+				<li class="my-1 lh-sm">@item1.Name<small class='opacity-50'>@item1.Generics</small>(@GetParams(item1.Parameters))</li>
+			}
+		</ul>
+	</div>
+}
+
+@functions {
+	HtmlString GetParams(string pars)
+	{
+		if (string.IsNullOrEmpty(pars))
+			return HtmlString.Empty;
+		var s1 = "<br/><span class='opacity-50'>&nbsp;&nbsp;";
+		return $"{s1}{pars.Replace(", ", $"</span>,{s1}")}</span>".ToHtml();
+	}
+}

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ans.Net8.Web
 {
 
-    public static class SuppSSO
+	public static class SuppSSO
     {
 
         /*

@@ -1,64 +1,57 @@
 ﻿namespace Ans.Net8.Web
 {
 
-	public class MapActions
-		: _Tree_Base<MapActionsItem>
+	public class MapActions(
+		IEnumerable<MapActionsItem> source,
+		string hostVirtualPath)
+		: _Tree_Base<MapActionsItem>(source)
 	{
 
-		private readonly string _hostVirtualPath;
+		private readonly string _hostVirtualPath = hostVirtualPath;
 
 
-		/* ctor */
+		/* overrides methods */
 
 
-		public MapActions(
-			IEnumerable<MapActionsItem> actions,
-			string hostVirtualPath)
+		public override void PrepareItemBefore(
+			MapActionsItem item)
 		{
-			_hostVirtualPath = hostVirtualPath;
-			_ = _prepTree(actions, null);
+			var pathParent1 = item.Masters?.Last().Path;
+			var hasPath1 = !string.IsNullOrEmpty(pathParent1);
+			var hasPageName1 = !string.IsNullOrEmpty(item.Name);
+			item.Path = hasPath1 && hasPageName1
+				? $"{pathParent1}/{item.Name}" : hasPath1
+					? pathParent1 : item.Name;
+			item.InitLink(_hostVirtualPath);
 		}
 
 
 		/* functions */
 
 
-		public MapActionsItem GetAction(
-			string name)
+		public MapActionsItem GetPage(
+			string path)
 		{
-			if (string.IsNullOrEmpty(name))
-				return null;
-			return _allItems.FirstOrDefault(
-				x => x.Name == name);
-		}
-
-
-		/* privates */
-
-
-		private IEnumerable<MapActionsItem> _prepTree(
-			IEnumerable<MapActionsItem> items,
-			MapActionsItem master)
-		{
-			if (!items?.Any() ?? true)
-				return null;
-			var items1 = new List<MapActionsItem>();
-			foreach (var item1 in items)
+			//if (string.IsNullOrEmpty(path))
+			//	return null;
+			foreach (var item1 in AllItems)
 			{
-				_allItems.Add(item1);
-				if (master != null)
-				{
-					var a1 = new List<MapActionsItem>();
-					if (master.HasMasters)
-						a1.AddRange(master.Masters);
-					a1.Add(master);
-					item1.Masters = a1;
-				}
-				item1.InitLink(_hostVirtualPath);
-				item1.Slaves = _prepTree(item1.Slaves, item1);
-				items1.Add(item1);
+				item1.Link.IsActive = false;
+				item1.IsSubActive = false;
 			}
-			return items1;
+			var items1 = AllItems.Where(x => x.Path == path);
+			var count1 = items1.Count();
+			if (count1 == 0)
+				return null;
+			var page1 = count1 == 1
+				? items1.First()
+				: items1.LastOrDefault(x => !x.IsHidden); // для заглушек разделов
+			if (page1 != null)
+			{
+				page1.Link.IsActive = true;
+				page1.MakeSupActive();
+			}
+			return page1;
 		}
 
 	}

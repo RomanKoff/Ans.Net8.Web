@@ -28,27 +28,16 @@ namespace Ans.Net8.Web.Services
 
 
 
-	public class ViewRenderService_Ans
+	public class ViewRenderService_Ans(
+		IRazorViewEngine razorViewEngine,
+		ITempDataProvider tempDataProvider,
+		IServiceProvider serviceProvider)
 		: IViewRenderService
 	{
 
-		private readonly IRazorViewEngine _razorViewEngine;
-		private readonly ITempDataProvider _tempDataProvider;
-		private readonly IServiceProvider _serviceProvider;
-
-
-		/* ctor */
-
-
-		public ViewRenderService_Ans(
-			IRazorViewEngine razorViewEngine,
-			ITempDataProvider tempDataProvider,
-			IServiceProvider serviceProvider)
-		{
-			_razorViewEngine = razorViewEngine;
-			_tempDataProvider = tempDataProvider;
-			_serviceProvider = serviceProvider;
-		}
+		private readonly IRazorViewEngine _razorViewEngine = razorViewEngine;
+		private readonly ITempDataProvider _tempDataProvider = tempDataProvider;
+		private readonly IServiceProvider _serviceProvider = serviceProvider;
 
 
 		/* functions */

@@ -15,24 +15,15 @@ namespace Ans.Net8.Web.Crud
 
 
 
-	public class _CrudMasterController_Base<TMasterEntity>
-		: _CrudController_Base<TMasterEntity>,
+	public class _CrudMasterController_Base<TMasterEntity>(
+		ICrudMasterRepository<TMasterEntity> repository)
+		: _CrudController_Base<TMasterEntity>(repository),
 		ICrudMasterController<TMasterEntity>
 		where TMasterEntity : class, IMasterEntity
 	{
 
 		private ICrudMasterRepository<TMasterEntity> _masterRepository
 			=> _repository as ICrudMasterRepository<TMasterEntity>;
-
-
-		/* ctor */
-
-
-		public _CrudMasterController_Base(
-			ICrudMasterRepository<TMasterEntity> repository)
-			: base(repository)
-		{
-		}
 
 
 		/* actions */

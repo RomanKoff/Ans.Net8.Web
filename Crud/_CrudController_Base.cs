@@ -18,25 +18,14 @@ namespace Ans.Net8.Web.Crud
 
 
 
-	public class _CrudController_Base<TEntity>
+	public class _CrudController_Base<TEntity>(
+		ICrudRepository<TEntity> repository)
 		: Controller,
 		ICrudController<TEntity>
 		where TEntity : class
 	{
 
-		internal readonly ICrudRepository<TEntity> _repository;
-
-
-		/* ctor */
-
-
-		public _CrudController_Base(
-			ICrudRepository<TEntity> repository)
-		{
-			_repository = repository;
-			ListControlName = null;
-			ListRouteValues = new RouteValueDictionary();
-		}
+		internal readonly ICrudRepository<TEntity> _repository = repository;
 
 
 		/* properties */
@@ -48,8 +37,8 @@ namespace Ans.Net8.Web.Crud
 		public string CustomEditViewName { get; set; }
 		public string CustomDetailsViewName { get; set; }
 		public string CustomDeleteViewName { get; set; }
-		public string ListControlName { get; set; }
-		public RouteValueDictionary ListRouteValues { get; set; }
+		public string ListControlName { get; set; } = null;
+		public RouteValueDictionary ListRouteValues { get; set; } = [];
 
 
 		/* actions */

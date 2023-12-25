@@ -9,13 +9,9 @@ namespace Ans.Net8.Web
 	{
 		public static LibOptions GetLibOptions(
 			this IConfiguration configuration)
-		{
-			var res1 = configuration
-				.GetSection(LibOptions.Name)
-					.Get<LibOptions>();
-			return res1 ?? throw new Exception(
-				$"There is no or empty [{LibOptions.Name}] section in appsettings.json");
-		}
+			=> configuration.GetSection(LibOptions.Name).Get<LibOptions>()
+				?? throw new Exception(
+					$"There is no or empty [{LibOptions.Name}] section in appsettings.json");
 	}
 
 
@@ -28,6 +24,7 @@ namespace Ans.Net8.Web
 
 
 		/* properties */
+
 
 		public string Culture { get; set; }
 		public string CorsProfile { get; set; }
@@ -79,11 +76,13 @@ namespace Ans.Net8.Web
 
 	public class SubnetsOptions
 	{
+
 		public string Admin { get; set; }
 		public string Safe { get; set; }
 		public string Unsafe { get; set; }
 		public string Allow { get; set; }
 		public string Deny { get; set; }
+
 
 		public IpSubnetsList GetAdminSubnets()
 		{
@@ -92,12 +91,14 @@ namespace Ans.Net8.Web
 		}
 		private IpSubnetsList _adminSubnets;
 
+
 		public IpSubnetsList GetSafeSubnets()
 		{
 			return (string.IsNullOrEmpty(Safe))
 				? null : _safeSubnets ??= new IpSubnetsList(Safe);
 		}
 		private IpSubnetsList _safeSubnets;
+
 
 		public IpSubnetsList GetUnsafeSubnets()
 		{
@@ -106,6 +107,7 @@ namespace Ans.Net8.Web
 		}
 		private IpSubnetsList _unsafeSubnets;
 
+
 		public IpSubnetsList GetAllowSubnets()
 		{
 			return (string.IsNullOrEmpty(Allow))
@@ -113,12 +115,14 @@ namespace Ans.Net8.Web
 		}
 		private IpSubnetsList _allowSubnets;
 
+
 		public IpSubnetsList GetDenySubnets()
 		{
 			return (string.IsNullOrEmpty(Deny))
 				? null : _denySubnets ??= new IpSubnetsList(Deny);
 		}
 		private IpSubnetsList _denySubnets;
+
 	}
 
 

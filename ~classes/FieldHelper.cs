@@ -38,9 +38,6 @@
 			ViewContext.Writer.WriteLine("</div>");
 		}
 
-
-		/* functions */
-
 	}
 
 }

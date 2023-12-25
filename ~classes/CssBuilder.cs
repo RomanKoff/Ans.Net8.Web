@@ -1,130 +1,130 @@
 ﻿namespace Ans.Net8.Web
 {
 
-    public class CssBuilder
-    {
+	public class CssBuilder
+	{
 
-        private readonly List<string> _classes = new();
-        private string _join;
-
-
-        /* ctors */
+		private readonly List<string> _classes = [];
+		private string _join;
 
 
-        public CssBuilder()
-        {
-        }
+		/* ctors */
 
 
-        public CssBuilder(
-            params string[] cssClasses)
-            : this()
-        {
-            foreach (var s1 in cssClasses)
-                Append(s1);
-        }
+		public CssBuilder()
+		{
+		}
 
 
-        /* functions */
+		public CssBuilder(
+			params string[] cssClasses)
+			: this()
+		{
+			foreach (var s1 in cssClasses)
+				Append(s1);
+		}
 
 
-        public override string ToString()
-        {
-            if (_join != null)
-                return _join;
-            var s1 = string.Join(" ", _classes);
-            return _join ??= (string.IsNullOrEmpty(s1)) ? null : s1;
-        }
+		/* functions */
 
 
-        public string GetJoin()
-        {
-            _join = null;
-            return ToString();
-        }
+		public override string ToString()
+		{
+			if (_join != null)
+				return _join;
+			var s1 = string.Join(" ", _classes);
+			return _join ??= (string.IsNullOrEmpty(s1)) ? null : s1;
+		}
 
 
-        public int IndexOf(
-            string cssClass)
-        {
-            return _classes.IndexOf(cssClass);
-        }
+		public string GetJoin()
+		{
+			_join = null;
+			return ToString();
+		}
 
 
-        public bool IsExists(
-            string cssClass)
-        {
-            return IndexOf(cssClass) > 0;
-        }
+		public int IndexOf(
+			string cssClass)
+		{
+			return _classes.IndexOf(cssClass);
+		}
 
 
-        /* methods */
+		public bool IsExists(
+			string cssClass)
+		{
+			return IndexOf(cssClass) > 0;
+		}
 
 
-        public void Append(
-            string cssClass)
-        {
-            if (!string.IsNullOrEmpty(cssClass)
-                && !IsExists(cssClass))
-                foreach (var s1 in cssClass.Split(" ",
-                    StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
-                    _classes.Add(s1);
-        }
+		/* methods */
 
 
-        public void AppendIf(
-            bool check,
-            string cssClass)
-        {
-            if (check)
-                Append(cssClass);
-        }
+		public void Append(
+			string cssClass)
+		{
+			if (!string.IsNullOrEmpty(cssClass)
+				&& !IsExists(cssClass))
+				foreach (var s1 in cssClass.Split(" ",
+					StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+					_classes.Add(s1);
+		}
 
 
-        public void AppendTemplate(
-            string template,
-            params object[] args)
-        {
-            Append(string.Format(template, args));
-        }
+		public void AppendIf(
+			bool check,
+			string cssClass)
+		{
+			if (check)
+				Append(cssClass);
+		}
 
 
-        public void Switch(
-            string cssClass)
-        {
-            if (string.IsNullOrEmpty(cssClass))
-                return;
-            var i1 = IndexOf(cssClass);
-            if (i1 > 0)
-                _classes.RemoveAt(i1);
-            else
-                _classes.Add(cssClass);
-        }
+		public void AppendTemplate(
+			string template,
+			params object[] args)
+		{
+			Append(string.Format(template, args));
+		}
 
 
-        public void Replace(
-            string oldCssClass,
-            string newCssClass)
-        {
-            Remove(oldCssClass);
-            Append(newCssClass);
-        }
+		public void Switch(
+			string cssClass)
+		{
+			if (string.IsNullOrEmpty(cssClass))
+				return;
+			var i1 = IndexOf(cssClass);
+			if (i1 > 0)
+				_classes.RemoveAt(i1);
+			else
+				_classes.Add(cssClass);
+		}
 
 
-        public void Remove(
-            string cssClass)
-        {
-            var i1 = IndexOf(cssClass);
-            if (i1 > 0)
-                _classes.RemoveAt(i1);
-        }
+		public void Replace(
+			string oldCssClass,
+			string newCssClass)
+		{
+			Remove(oldCssClass);
+			Append(newCssClass);
+		}
 
 
-        public void Clear()
-        {
-            _classes.Clear();
-        }
+		public void Remove(
+			string cssClass)
+		{
+			var i1 = IndexOf(cssClass);
+			if (i1 > 0)
+				_classes.RemoveAt(i1);
+		}
 
-    }
+
+		public void Clear()
+		{
+			_classes.Clear();
+		}
+
+	}
 
 }

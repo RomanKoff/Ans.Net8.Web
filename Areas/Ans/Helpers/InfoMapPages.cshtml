@@ -2,21 +2,30 @@
 	Component of the Ans.Net8.Web library.
 	Not intended for editing and runtime compilation!!
 *@
-<h4 class="text-info">Current.Node.MapPages</h4>
+@model string
+@{
+	var node1 = string.IsNullOrEmpty(Model)
+	? Current.Node.Name
+	: Model;
+}
+<h4 class="text-info">Current.Maps.GetNodes("@(node1)")</h4>
 
-@if (Current.Node.MapPages != null)
+@if (Current.Maps.GetPages(node1) != null)
 {
-	OutItems(Current.Node.MapPages.TopItems);
+	OutItems(Current.Maps.GetPages(node1).TopItems);
 }
 else
 {
-	<p>Нет элементов.</p>
+	<p>Empty.</p>
 }
+
+
+
 @functions {
 
 	void OutItems(IEnumerable<MapPagesItem> items)
 	{
-		if (items?.Any() ?? false)
+		if (items?.Count() > 0)
 		{
 			<ul>
 				@foreach (var item1 in items)
@@ -34,51 +43,68 @@ else
 
 	void OutItem(MapPagesItem item)
 	{
-		var css1 = new CssBuilder();
+		var css1 = new CssBuilder("small");
 		css1.AppendIf(item.IsHidden, "opacity-50 text-decoration-line-through");
 		css1.AppendIf(item.IsSubActive, "bg-light");
 		css1.AppendIf(item.Link.IsActive, "bg-warning");
-		<div class="@css1 small">
-			@*<code>[@item.Path]</code>*@
+		<div class="@css1">
 			@switch (item.Type)
 			{
-				case MapItemTypeEnum.Catalog:
-					<text>@GetTitle(item)</text>
-					@if (item.UseCatalogStartPage)
-					{
-						<text> <code>+</code><a href="@item.Link.Href">@item.Link.Href</a></text>
-					}
+				case MapPagesItemType.Catalog:
+					<text>
+						@if (item.UseCatalogStartPage)
+						{
+							<b style="color:green;">Catalog:</b>
+							<a href="@(item.Link.Href)">@GetTitle(item)</a>
+						}
+						else
+						{
+							<code>@(item.Path)</code>
+							@GetTitle(item)
+						}
+						@GetProps(item)
+					</text>
 					break;
-				case MapItemTypeEnum.InternalPath:
-					<code>^</code>
-					<text>@GetTitle(item)</text>
-					<a href="@item.Link.Href">@item.Link.Href</a>
+				case MapPagesItemType.InternalPath:
+					<text>
+						<b style="color:blue;">Link:</b>
+						<a href="@(item.Link.Href)">@GetTitle(item)</a>
+						@GetProps(item)
+					</text>
 					break;
-				case MapItemTypeEnum.ExternalLink:
-					<code>@@</code>
-					<text>@GetTitle(item)</text>
-					<a target="_blank" href="@item.Link.Href">@item.Link.Href</a>
+				case MapPagesItemType.ExternalLink:
+					<text>
+						<b style="color:red;">Url:</b>
+						<a target="_blank" href="@(item.Link.Href)">@GetTitle(item)</a>
+						@GetProps(item)
+					</text>
 					break;
 				default:
-					<text>@GetTitle(item)</text>
-					<a href="@item.Link.Href">@item.Link.Href</a>
+					<text>
+						<a href="@(item.Link.Href)">@GetTitle(item)</a>
+						@GetProps(item)
+					</text>
 					break;
-			}
-			@if (item.HasMasters)
-			{
-				<code>↑@item.Masters.Count()</code>
-			}
-			@if (item.HasSlaves)
-			{
-				<code>↓@item.Slaves.Count()</code>
 			}
 		</div>
 	}
 
 	HtmlString GetTitle(MapPagesItem item)
 	{
-		var s1 = item.HasShortTitle ? $"{item.Title} ({item.ShortTitle})" : $"{item.Title}";
+		var s1 = item.HasShortTitle
+		? $"{item.Title} ({item.ShortTitle})"
+		: $"{item.Title}";
 		return s1.ToHtml(true);
+	}
+
+	HtmlString GetProps(MapPagesItem item)
+	{
+		var sb1 = new StringBuilder();
+		if (item.HasMasters)
+			sb1.Append($"&nbsp;↑{item.Masters.Count()}");
+		if (item.HasSlaves)
+			sb1.Append($"&nbsp;↓{item.Slaves.Count()}");
+		return sb1.ToString().ToHtml("<code>{0}</code>");
 	}
 
 }

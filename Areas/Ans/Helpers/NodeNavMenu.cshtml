@@ -1,0 +1,42 @@
+﻿@*
+	Component of the Ans.Net7.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@if (ViewData["node_navigator_off"] == null && (Current.Node.MapPages?.TopItems?.Count() > 0))
+{
+
+	<style>
+		.nav-menu1 > .nav-item > .nav-link {
+			margin: 0 1.5rem 0 0;
+			padding: .6rem 0 .2rem;
+			border-bottom: solid .2rem transparent;
+			color: var(--bs-gray-700);
+		}
+
+			.nav-menu1 > .nav-item > .nav-link:focus,
+			.nav-menu1 > .nav-item > .nav-link:hover {
+				color: var(--bs-link-hover-color);
+				border-bottom-color: var(--bs-link-hover-color);
+			}
+
+			.nav-menu1 > .nav-item > .nav-link.active {
+				color: var(--bs-primary);
+				border-bottom-color: var(--bs-primary);
+				cursor: default;
+			}
+
+				.nav-menu1 > .nav-item > .nav-link.active:focus,
+				.nav-menu1 > .nav-item > .nav-link.active:hover {
+					color: var(--bs-primary);
+					border-bottom-color: var(--bs-primary);
+				}
+	</style>
+
+	<div id="node_nav" class="border-bottom">
+		<node-container>
+			<ul class="nav nav-menu1">
+				<partial name="Helpers/Ans/NodeNavItems0" />
+			</ul>
+		</node-container>
+	</div>
+}

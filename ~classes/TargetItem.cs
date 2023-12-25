@@ -4,10 +4,6 @@
 	public class TargetItem
 	{
 
-		/* ctor */
-
-		// TODO: Disabled
-
 		public TargetItem(
 			string target,
 			string innerHtml,
@@ -28,9 +24,6 @@
 				Link.IsExternal = true;
 			}
 		}
-
-
-		/* readonly properties */
 
 
 		public LinkBuilder Link { get; private set; }

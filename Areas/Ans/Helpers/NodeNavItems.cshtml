@@ -1,0 +1,35 @@
+﻿@*
+	Component of the Ans.Net7.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@foreach (var item1 in Current.Node.MapPages.TopItems)
+{
+	var link1 = item1.GetNavLink();
+	var tag1 = link1.GetTag();
+	tag1.AddCssClass("nav-link");
+	tag1.AddCssClass(item1.IsSubActive, "active");
+	@if (item1.HasSlaves)
+	{
+		tag1.AddCssClass("dropdown-toggle");
+		tag1.MergeAttribute("data-bs-toggle", "dropdown");
+		tag1.MergeAttribute("href", "/");
+		tag1.MergeAttribute("role", "button");
+		tag1.MergeAttribute("aria-expanded", "false");
+		<li class="nav-item dropdown">
+			@tag1
+			<nav class="dropdown-menu">
+				@foreach (var item2 in item1.Slaves)
+				{
+					var link2 = item2.Link.GetTag();
+					link2.AddCssClass("dropdown-item");
+					link2.AddCssClass(item2.IsSubActive, "active");
+					@link2
+				}
+			</nav>
+		</li>
+	}
+	else
+	{
+		<li class="nav-item">@tag1</li>
+	}
+}

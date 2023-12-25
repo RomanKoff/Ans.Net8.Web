@@ -21,6 +21,7 @@
 		<xs:sequence>
 			<xs:element name="item" type="ct_item" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
+		<xs:attribute name="id" type="st_string_name"/>
 		<xs:attribute name="target" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>
@@ -43,6 +44,7 @@
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="rem" type="xs:string"/>
 	</xs:complexType>
 
 	<!-- simple types -->

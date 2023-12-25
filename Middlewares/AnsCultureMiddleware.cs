@@ -6,36 +6,32 @@ using System.Globalization;
 namespace Ans.Net8.Web.Middlewares
 {
 
-    public class AnsCultureMiddleware
-    {
-        private readonly ILogger<AnsCultureMiddleware> _logger;
-        private readonly RequestDelegate _next;
-        private readonly string _culture;
+	public class AnsCultureMiddleware(
+		ILogger<AnsCultureMiddleware> logger,
+		IConfiguration configuration,
+		RequestDelegate next)
+	{
 
-        public AnsCultureMiddleware(
-            ILogger<AnsCultureMiddleware> logger,
-            IConfiguration configuration,
-            RequestDelegate next)
-        {
-            _logger = logger;
-            _culture = configuration.GetLibOptions().Culture;
-            _next = next;
-        }
+		private readonly ILogger<AnsCultureMiddleware> _logger = logger;
+		private readonly RequestDelegate _next = next;
+		private readonly string _culture = configuration.GetLibOptions().Culture;
 
-        public async Task Invoke(
-            HttpContext context)
-        {
-            if (!string.IsNullOrEmpty(_culture))
-            {
-                try
-                {
-                    CultureInfo.CurrentCulture = new CultureInfo(_culture);
-                    CultureInfo.CurrentUICulture = new CultureInfo(_culture);
-                }
-                catch (CultureNotFoundException) { }
-            }
-            await _next.Invoke(context);
-        }
-    }
+
+		public async Task Invoke(
+			HttpContext context)
+		{
+			if (!string.IsNullOrEmpty(_culture))
+			{
+				try
+				{
+					CultureInfo.CurrentCulture = new CultureInfo(_culture);
+					CultureInfo.CurrentUICulture = new CultureInfo(_culture);
+				}
+				catch (CultureNotFoundException) { }
+			}
+			await _next.Invoke(context);
+		}
+
+	}
 
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Ans.Net8.Common;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ans.Net8.Web
@@ -8,8 +10,30 @@ namespace Ans.Net8.Web
 	{
 
 		/*
+		 * void AddAttributeIfPresent(this TagHelperOutput output, string name, params string[] values);
 		 * 
+		 * MaxLengthAttribute GetMaxLengthAttribute(this ModelMetadata data);
+		 * RegularExpressionAttribute GetRegularExpressionAttribute(this ModelMetadata data);
+		 * RangeAttribute GetRangeAttribute(this ModelMetadata data);
+		 * RequiredAttribute GetRequiredAttribute(this ModelMetadata data)
          */
+
+
+		/* methods */
+
+
+		public static void AddAttributeIfPresent(
+			this TagHelperOutput output,
+			string name,
+			params string[] values)
+		{
+			var s1 = SuppString.Join(" ", values);
+			if (!string.IsNullOrEmpty(s1))
+				output.Attributes.Add(name, s1);
+		}
+
+
+		/* functions */
 
 
 		public static MaxLengthAttribute GetMaxLengthAttribute(

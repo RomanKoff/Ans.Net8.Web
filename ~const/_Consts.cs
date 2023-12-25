@@ -8,27 +8,23 @@ namespace Ans.Net8.Web
 
 		public const string FORM_RESOURCES_KEY = "Ans_Form_Resources";
 
+		public static readonly CacheProfile CACHE_PROFILE_D60 = new()
+		{
+			Duration = 60,
+			Location = ResponseCacheLocation.Any,
+			NoStore = false,
+			//VaryByHeader = "User-Agent",
+			VaryByQueryKeys = ["*"]
+		};
 
-		public static readonly CacheProfile CACHE_PROFILE_D60
-			= new()
-			{
-				Duration = 60,
-				Location = ResponseCacheLocation.Any,
-				NoStore = false,
-				//VaryByHeader = "User-Agent",
-				VaryByQueryKeys = new[] { "*" }
-			};
-
-		public static readonly CacheProfile CACHE_PROFILE_D30
-			= new()
-			{
-				Duration = 30,
-				Location = ResponseCacheLocation.Any,
-				NoStore = false,
-				//VaryByHeader = "User-Agent",
-				VaryByQueryKeys = new[] { "*" }
-			};
-
+		public static readonly CacheProfile CACHE_PROFILE_D30 = new()
+		{
+			Duration = 30,
+			Location = ResponseCacheLocation.Any,
+			NoStore = false,
+			//VaryByHeader = "User-Agent",
+			VaryByQueryKeys = ["*"]
+		};
 
 		public const string CORS_POLICY_ALLOW_ALL = "CORS_ALLOW_ALL";
 

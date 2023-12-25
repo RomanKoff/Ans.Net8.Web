@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using Ans.Net8.Common;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Ans.Net8.Web.TagHelpers
 {
@@ -7,119 +8,110 @@ namespace Ans.Net8.Web.TagHelpers
 	 * <site-container>content</site-container>
 	 * <node-container>content</node-container>
 	 * <page-container>content</page-container>
-	 * <page-container-off>content</page-container-off>
+	 * <page-container-gap>content</page-container-gap>
 	 */
 
 
-	public class SiteContainerTagHelper
-		: _ContainerTagHelper_Proto
-	{
-		public SiteContainerTagHelper(
-			ICurrentContext current)
-			: base(current)
-		{
-		}
 
-		internal override string _Class1
-			=> string.Join(" ",
-				_current.Site.ContainerCss,
-				Class);
+	public class SiteContainerTagHelper(
+		ICurrentContext current)
+		: _ContainerTagHelper_Proto(current)
+	{
+		public override void Process(
+			TagHelperContext context,
+			TagHelperOutput output)
+		{
+			output.TagMode = TagMode.StartTagAndEndTag;
+			output.TagName = "div";
+			output.AddAttributeIfPresent("class", _current.Site.ContainerCss, Class);
+			output.AddAttributeIfPresent("style", Style);
+			output.Content.AppendHtml(output.GetChildContentAsync().Result.GetContent());
+
+		}
 	}
 
 
 
-	public class NodeContainerTagHelper
-		: _ContainerTagHelper_Proto
+	public class NodeContainerTagHelper(
+		ICurrentContext current)
+		: _ContainerTagHelper_Proto(current)
 	{
-		public NodeContainerTagHelper(
-			ICurrentContext current)
-			: base(current)
+		public override void Process(
+			TagHelperContext context,
+			TagHelperOutput output)
 		{
+			output.TagMode = TagMode.StartTagAndEndTag;
+			output.TagName = "div";
+			output.AddAttributeIfPresent("class", _current.Node.ContainerCss, Class);
+			output.AddAttributeIfPresent("style", Style);
+			output.Content.AppendHtml(output.GetChildContentAsync().Result.GetContent());
 		}
-
-		internal override string _Class1
-			=> string.Join(" ",
-				_current.Node.ContainerCss,
-				Class);
 	}
 
 
 
-	public class PageContainerTagHelper
-		: _ContainerTagHelper_Proto
+	public class PageContainerTagHelper(
+		ICurrentContext current)
+		: _ContainerTagHelper_Proto(current)
 	{
-		public PageContainerTagHelper(
-			ICurrentContext current)
-			: base(current)
+		public override void Process(
+			TagHelperContext context,
+			TagHelperOutput output)
 		{
+			output.TagMode = TagMode.StartTagAndEndTag;
+			output.TagName = "div";
+			output.AddAttributeIfPresent("class", _current.Page.CalcCss, Class);
+			output.AddAttributeIfPresent("style", Style);
+			output.Content.AppendHtml(output.GetChildContentAsync().Result.GetContent());
 		}
+	}
 
-		internal override string _Class1
-			=> string.Join(" ",
-				_current.Page.ContainerCss,
-				_current.Page.AddonCss,
-				Class);
+
+
+	public class PageContainerGapTagHelper(
+		ICurrentContext current)
+		: PageContainerTagHelper(current)
+	{
+		public bool Stop { get; set; }
+
+		public override void Process(
+			TagHelperContext context,
+			TagHelperOutput output)
+		{
+			output.TagMode = TagMode.StartTagAndEndTag;
+			output.TagName = null;
+			output.Content.AppendHtml("</div>");
+			output.Content.AppendHtml(output.GetChildContentAsync().Result.GetContent());
+			if (Stop)
+			{
+				output.Content.AppendHtml("<div>");
+			}
+			else
+			{
+				output.Content.AppendHtml("<div");
+				var class1 = SuppString.Join(null, null, " ", _current.Page.CalcCss, Class);
+				if (!string.IsNullOrEmpty(class1))
+					output.Content.AppendHtml($" class=\"{class1}\"");
+				if (!string.IsNullOrEmpty(Style))
+					output.Content.AppendHtml($" style=\"{Style}\"");
+				output.Content.AppendHtml(">");
+			}
+		}
 	}
 
 
 
 	public class PageContainerOffTagHelper
-		: PageContainerTagHelper
-	{
-		public PageContainerOffTagHelper(
-			ICurrentContext current)
-			: base(current)
-		{
-		}
-
-		public override void Process(
-			TagHelperContext context,
-			TagHelperOutput output)
-		{
-			output.TagMode = TagMode.StartTagAndEndTag;
-			output.TagName = null;
-			output.Content.AppendHtml("</div>");
-			output.Content.AppendHtml(output.GetChildContentAsync().Result.GetContent());
-			_AppendDiv(output);
-		}
-	}
-
-
-
-	public abstract class _ContainerTagHelper_Proto
 		: TagHelper
 	{
-		internal readonly ICurrentContext _current;
-		internal abstract string _Class1 { get; }
-
-		public _ContainerTagHelper_Proto(
-			ICurrentContext current)
-		{
-			_current = current;
-		}
-
-		public string Class { get; set; }
-		public string Style { get; set; }
-
-		internal void _AppendDiv(TagHelperOutput output)
-		{
-			output.Content.AppendHtml($"<div");
-			if (!string.IsNullOrEmpty(_Class1))
-				output.Content.AppendHtml($" class=\"{_Class1}\"");
-			if (!string.IsNullOrEmpty(Style))
-				output.Content.AppendHtml($" style=\"{Style}\"");
-			output.Content.AppendHtml($">");
-		}
-
 		public override void Process(
 			TagHelperContext context,
 			TagHelperOutput output)
 		{
 			output.TagMode = TagMode.StartTagAndEndTag;
-			output.TagName = null;
-			_AppendDiv(output);
-			output.Content.AppendHtml(output.GetChildContentAsync().Result.GetContent());
-			output.Content.AppendHtml("</div>");
+			output.TagName = "div";
+			output.Attributes.Add("style", "color:red;");
+			output.Content.AppendHtml("### OBSOLETE TAG. Use the &lt;page-container-gap /> tag ###");
 		}
 	}
 
@@ -128,18 +120,27 @@ namespace Ans.Net8.Web.TagHelpers
 	public class AnsContainerOutsideTagHelper
 		: TagHelper
 	{
-		public AnsContainerOutsideTagHelper()
-		{
-		}
-
 		public override void Process(
 			TagHelperContext context,
 			TagHelperOutput output)
 		{
 			output.TagMode = TagMode.StartTagAndEndTag;
-			output.TagName = null;
-			output.Content.AppendHtml("### ILLEGAL CONTENT ###");
+			output.TagName = "div";
+			output.Attributes.Add("style", "color:red;");
+			output.Content.AppendHtml("### OBSOLETE TAG. Use the &lt;page-container-gap /> tag ###");
 		}
+	}
+
+
+
+	public abstract class _ContainerTagHelper_Proto(
+		ICurrentContext current)
+		: TagHelper
+	{
+		internal readonly ICurrentContext _current = current;
+
+		public string Class { get; set; }
+		public string Style { get; set; }
 	}
 
 }

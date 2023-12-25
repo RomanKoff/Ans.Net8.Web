@@ -1,6 +1,5 @@
 ﻿using Ans.Net8.Common.Crud;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Ans.Net8.Web.Crud
 {
@@ -16,24 +15,15 @@ namespace Ans.Net8.Web.Crud
 
 
 
-	public class _CrudSlaveController_Base<TSlaveEntity>
-		: _CrudController_Base<TSlaveEntity>,
+	public class _CrudSlaveController_Base<TSlaveEntity>(
+		ICrudSlaveRepository<TSlaveEntity> repository)
+		: _CrudController_Base<TSlaveEntity>(repository),
 		ICrudSlaveController<TSlaveEntity>
 		where TSlaveEntity : class, ISlaveEntity
 	{
 
 		private ICrudSlaveRepository<TSlaveEntity> _slaveRepository
 			=> _repository as ICrudSlaveRepository<TSlaveEntity>;
-
-
-		/* ctor */
-
-
-		public _CrudSlaveController_Base(
-			ICrudSlaveRepository<TSlaveEntity> repository)
-			: base(repository)
-		{
-		}
 
 
 		/* actions */

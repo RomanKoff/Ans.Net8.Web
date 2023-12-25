@@ -1,0 +1,27 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@page
+@model Ans.Net8.Web.Models.SitePageModel
+@{
+	Current.Page.Title = "Classes";
+}
+
+<div class="row row-cols-1 row-cols-md-2">
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(DateTimeHelper))' />
+	</div>
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(EnumHelper))' />
+	</div>
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(NumeratorHelper))' />
+	</div>
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(PaginationHelper))' />
+	</div>
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(StringParser))' />
+	</div>
+</div>

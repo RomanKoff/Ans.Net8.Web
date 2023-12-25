@@ -1,6 +1,4 @@
-﻿using Ans.Net8.Common;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Linq.Expressions;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Ans.Net8.Web
 {
@@ -47,7 +45,7 @@ namespace Ans.Net8.Web
 			var a1 = new List<string>();
 			foreach (var item1 in aa1)
 				a1.AddRange(item1.Select(x => x.ErrorMessage));
-			return a1.ToArray();
+			return [.. a1];
 		}
 
 	}

@@ -1,5 +1,4 @@
-﻿using Ans.Net8.Common;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace Ans.Net8.Web.Attributes
 {

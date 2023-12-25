@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Diagnostics;
 using System.Globalization;
@@ -50,7 +49,6 @@ namespace Ans.Net8.Web
 
 			builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			builder.Services.AddSingleton<IAnsCacheMap, AnsCacheMap>();
-			builder.Services.AddSingleton<IMapActionsProvider, MapActionsProvider_Xml>();
 			builder.Services.AddSingleton<IMapNodesProvider, MapNodesProvider_Xml>();
 			builder.Services.AddSingleton<IMapPagesProvider, MapPagesProvider_Xml>();
 			builder.Services.AddScoped<IViewRenderService, ViewRenderService_Ans>();
@@ -124,7 +122,7 @@ namespace Ans.Net8.Web
 			if (!app.Environment.IsDevelopment())
 				app.UseHsts();
 			app.UseHttpsRedirection();
-			if (_options.Mimetypes?.Any() ?? false)
+			if (_options.Mimetypes?.Length > 0)
 			{
 				var provider1 = new FileExtensionContentTypeProvider();
 				foreach (var item1 in _options.Mimetypes)
@@ -150,7 +148,7 @@ namespace Ans.Net8.Web
 				app.UseAuthorization();
 			app.MapControllers();
 			app.MapRazorPages();
-			if (_options.Routes?.Any() ?? false)
+			if (_options.Routes?.Length > 0)
 				app.AddRoutes(_options.Routes);
 			app.UseMiddleware<AnsCultureMiddleware>();
 		}
@@ -250,7 +248,7 @@ namespace Ans.Net8.Web
 		{
 			if (!string.IsNullOrEmpty(_options.Sso.AppClaimName))
 			{
-				builder.Services.AddAuthorization(o =>
+				_ = builder.Services.AddAuthorization(o =>
 				{
 					o.AddPolicy(_Consts.AUTH_POLICY_APP, x => x.RequireClaim(
 						_options.Sso.AppClaimName));

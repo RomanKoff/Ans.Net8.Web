@@ -13,7 +13,10 @@ namespace Ans.Net8.Web
          * bool GetBool(this ViewDataDictionary data, string name);
          * DateTime? GetDateTime(this ViewDataDictionary data, string name);
          * DateTime GetDateTime(this ViewDataDictionary data, string name, DateTime defaultValue);
-         * 
+         * DateOnly? GetDateOnly(this ViewDataDictionary data, string name);
+         * DateOnly GetDateOnly(this ViewDataDictionary data, string name, DateOnly defaultValue);
+         * TimeOnly? GetTimeOnly(this ViewDataDictionary data, string name);
+         * TimeOnly GetTimeOnly(this ViewDataDictionary data, string name, TimeOnly defaultValue);
          */
 
 
@@ -65,6 +68,40 @@ namespace Ans.Net8.Web
 			DateTime defaultValue)
 		{
 			return data.GetDateTime(name) ?? defaultValue;
+		}
+
+
+		public static DateOnly? GetDateOnly(
+			this ViewDataDictionary data,
+			string name)
+		{
+			return (DateOnly?)data.Eval(name);
+		}
+
+
+		public static DateOnly GetDateOnly(
+			this ViewDataDictionary data,
+			string name,
+			DateOnly defaultValue)
+		{
+			return data.GetDateOnly(name) ?? defaultValue;
+		}
+
+
+		public static TimeOnly? GetTimeOnly(
+			this ViewDataDictionary data,
+			string name)
+		{
+			return (TimeOnly?)data.Eval(name);
+		}
+
+
+		public static TimeOnly GetTimeOnly(
+			this ViewDataDictionary data,
+			string name,
+			TimeOnly defaultValue)
+		{
+			return data.GetTimeOnly(name) ?? defaultValue;
 		}
 
 	}

@@ -36,7 +36,7 @@ namespace Ans.Net8.Web
 			params string[] roles)
 		{
 			var identity1 = new ClaimsIdentity();
-			if (roles != null && roles.Any())
+			if (roles?.Length != 0)
 				foreach (var role in roles)
 					identity1.AddRole(principal, role);
 			principal.AddIdentity(identity1);

@@ -13,23 +13,23 @@ namespace Ans.Net8.Web.TagHelpers
 
 
 
-	public partial class AnsLinkTagHelper
+	public partial class AnsLinkTagHelper(
+		IConfiguration configuration)
 		: TagHelper
 	{
+
 		[GeneratedRegex("[^0-9]+")]
 		private static partial Regex _regexNumbs();
 
-		private readonly LibOptions _options;
+		private readonly LibOptions _options = configuration.GetLibOptions();
 		private string _content;
 
-		public AnsLinkTagHelper(
-			IConfiguration configuration)
-		{
-			_options = configuration.GetLibOptions();
-		}
 
+		public string Class { get; set; }
+		public string Style { get; set; }
 		public string Email { get; set; }
 		public string Tel { get; set; }
+
 
 		public string Code
 		{
@@ -37,6 +37,7 @@ namespace Ans.Net8.Web.TagHelpers
 			set => _code = value;
 		}
 		private string _code;
+
 
 		public override void Process(
 			TagHelperContext context,
@@ -51,12 +52,13 @@ namespace Ans.Net8.Web.TagHelpers
 			}
 			if (!string.IsNullOrEmpty(Tel))
 			{
-				_outTel(output, Tel);
+				_outTelephone(output, Tel);
 				return;
 			}
-			output.TagName = "em";
-			output.Content.Append("{ERROR LINK FORMAT}");
+			output.TagName = null;
+			//output.Content.Append("{ERROR LINK FORMAT}");
 		}
+
 
 		private static string _filter(
 			string number)
@@ -64,19 +66,22 @@ namespace Ans.Net8.Web.TagHelpers
 			return _regexNumbs().Replace(number, "");
 		}
 
+
 		private void _outEmail(
 			TagHelperOutput output,
 			string email)
 		{
-			var a1 = email.Split(new char[] { '@' });
+			var a1 = email.Split('@');
 			if (a1.Length == 2)
 			{
 				output.TagName = "a";
 				string user = a1[0];
 				string host = a1[1];
 				string s1 = $"{user}@{host}";
+				output.AddAttributeIfPresent("class", "link-email text-nowrap", Class);
+				output.AddAttributeIfPresent("style", Style);
 				output.Attributes.Add("href", $"mailto:{s1}");
-				output.Attributes.Add("class", "link-email text-nowrap");
+				output.Attributes.Add("itemprop", "email");
 				if (string.IsNullOrEmpty(_content))
 					output.Content.AppendHtml(s1);
 				else
@@ -88,31 +93,36 @@ namespace Ans.Net8.Web.TagHelpers
 			return;
 		}
 
-		private void _outTel(
+
+		private void _outTelephone(
 			TagHelperOutput output,
-			string tel)
+			string telephone)
 		{
 			// 3122107         -> +7-812-312-21-07             // местный
 			// +79817321620    -> +7-981-732-16-20             // федеральный
 			// +78137551204    -> +7-813-755-12-04             // настраиваемый
-			// 3122107w1234    -> +7-812-312-21-07 доп. 1234   // с подкодом            
-			var num1 = tel[0] == '+' ? tel : $"{Code}{tel}";
+			// 3122107,1234    -> +7-812-312-21-07 доп. 1234   // с подкодом            
+			var num1 = telephone[0] == '+' ? telephone : $"{Code}{telephone}";
 			var a1 = num1.Split(','); //.Split('w');
 			var num2 = _filter(a1[0]);
-			var num_href = new StringBuilder($"+{num2}");
-			var num_cont = new StringBuilder($"+{SuppFormat.ToPhone(num2)}");
+			var num_href = $"+{num2}";
+			var num_cont = $"+{SuppFormat.ToTelephone(num2)}";
 			if (a1.Length == 2)
 			{
-				num_href.Append($",{a1[1]}"); //.Append($"w{a1[1]}");
-				num_cont.Append($" *{a1[1]}");
+				num_href = $"{num_href},{a1[1]}";
+				num_cont = string.Format(
+					Resources.TagHelpers.Template_PhoneAddon,
+					num_cont, a1[1]);
 			}
 			output.TagName = "a";
-			output.Attributes.Add("class", "link-tel text-nowrap");
-			output.Attributes.Add("itemprop", "telephone");
+			output.AddAttributeIfPresent("class", "link-telephone text-nowrap", Class);
+			output.AddAttributeIfPresent("style", Style);
 			output.Attributes.Add("href", $"tel:{num_href}".ToHtml());
+			output.Attributes.Add("itemprop", "telephone");
 			output.Content.AppendHtml($"{num_cont}{_content}");
 			return;
 		}
+
 	}
 
 }

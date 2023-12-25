@@ -19,8 +19,8 @@
 				Текущий узел: <code>@(node1)</code>
 			</p>
 			<p>
-				<a class="btn btn-sm btn-primary" target="_blank" href="~/ans/system/mapnodes-reset?token=@Current.Options.SystemAccessToken"><i class="bi-arrow-clockwise"></i> узлы</a>
-				<a class="btn btn-sm btn-primary" target="_blank" href="~/ans/system/mappages-reset?node=@(node1)&token=@Current.Options.SystemAccessToken"><i class="bi-arrow-clockwise"></i> страницы</a>
+				<a class="btn btn-sm btn-primary" target="_blank" href="~/ans/system/mapnodesreset?token=@Current.Options.SystemAccessToken"><i class="bi-arrow-clockwise"></i> узлы</a>
+				<a class="btn btn-sm btn-primary" target="_blank" href="~/ans/system/mappagesreset?node=@(node1)&token=@Current.Options.SystemAccessToken"><i class="bi-arrow-clockwise"></i> страницы</a>
 			</p>
 			<p class="form-check form-switch">
 				<input id="sw_ShowEditLinks" class="form-check-input" type="checkbox" role="switch" />
@@ -32,7 +32,14 @@
 				<a target="_blank" href="~/ans">Ans.Net8.Web Help</a>
 			</p>
 			<p class="small">
-				<info-ansnet7web />
+				@Ans.Net8.Common.LibInfo.GetName()
+				@Ans.Net8.Common.LibInfo.GetVersion()
+				(@Ans.Net8.Common.LibInfo.GetDescription())
+			</p>
+			<p class="small">
+				@Ans.Net8.Web.LibInfo.GetName()
+				@Ans.Net8.Web.LibInfo.GetVersion()
+				(@Ans.Net8.Web.LibInfo.GetDescription())
 			</p>
 		</div>
 	</div>
@@ -65,25 +72,25 @@
 
 			<div class="row row-cols-1 row-cols-md-2">
 				<div class="col" id="Site">
-					<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CurrentContext), Current)' />
+					<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(CurrentContext), Current)' />
 				</div>
 				<div class="col" id="Site">
-					<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(SiteContext), Current.Site)' />
+					<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(SiteProfile), Current.Site)' />
 				</div>
 				<div class="col" id="Node">
-					<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(NodeContext), Current.Node)' />
+					<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(NodeProfile), Current.Node)' />
 				</div>
 				<div class="col" id="Page">
-					<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(PageContext), Current.Page)' />
+					<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(PageProfile), Current.Page)' />
 				</div>
 				<div class="col" id="Host">
-					<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(HostData), Current.Host)' />
+					<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(HostData), Current.Host)' />
 				</div>
 				<div class="col" id="Request">
-					<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(RequestData), Current.Request)' />
+					<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(RequestData), Current.Request)' />
 				</div>
-				<div class="col" id="Sitemap">
-					<partial name="~/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(SitemapData), Current.Sitemap)' />
+				<div class="col" id="Maps">
+					<partial name="/Areas/Ans/Helpers/ViewInfo.cshtml" model='new InfoBuilder(typeof(MapsData), Current.Maps)' />
 				</div>
 			</div>
 

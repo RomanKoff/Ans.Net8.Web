@@ -1,30 +1,23 @@
 ﻿namespace Ans.Net8.Web
 {
 
-	public class MapNodes
-		: _Tree_Base<MapNodesItem>
+	public class MapNodes(
+		IEnumerable<MapNodesItem> source,
+		string hostVirtualPath)
+		: _Tree_Base<MapNodesItem>(source)
 	{
 
-		private readonly string _hostVirtualPath;
+		private readonly string _hostVirtualPath = hostVirtualPath;
 
 
-		/* ctor */
+		/* overrides methods */
 
 
-		public MapNodes(
-			IEnumerable<MapNodesItem> nodes,
-			string hostVirtualPath)
+		public override void PrepareItemBefore(
+			MapNodesItem item)
 		{
-			_hostVirtualPath = hostVirtualPath;
-			_ = _prepTree(nodes, null);
-			FirstItem = _allItems!.FirstOrDefault();
+			item.InitLink(_hostVirtualPath);
 		}
-
-
-		/* readonly properties */
-
-
-		public MapNodesItem FirstItem { get; private set; }
 
 
 		/* functions */
@@ -35,37 +28,8 @@
 		{
 			if (string.IsNullOrEmpty(name))
 				return null;
-			return _allItems.FirstOrDefault(
+			return AllItems.FirstOrDefault(
 				x => x.Name == name);
-		}
-
-
-		/* privates */
-
-
-		private IEnumerable<MapNodesItem> _prepTree(
-			IEnumerable<MapNodesItem> items,
-			MapNodesItem master)
-		{
-			if (!items?.Any() ?? true)
-				return null;
-			var items1 = new List<MapNodesItem>();
-			foreach (var item1 in items)
-			{
-				_allItems.Add(item1);
-				if (master != null)
-				{
-					var a1 = new List<MapNodesItem>();
-					if (master.HasMasters)
-						a1.AddRange(master.Masters);
-					a1.Add(master);
-					item1.Masters = a1;
-				}
-				item1.InitLink(_hostVirtualPath);
-				item1.Slaves = _prepTree(item1.Slaves, item1);
-				items1.Add(item1);
-			}
-			return items1;
 		}
 
 	}

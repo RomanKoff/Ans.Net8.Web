@@ -1,0 +1,89 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@page
+@model Ans.Net8.Web.Models.SitePageModel
+@{
+	Current.Page.Title = "TagHelpers";
+}
+
+<h2 class="anchor" id="container">&lt;*-container /></h2>
+
+<p class="prism-code-sample-html">
+	&lt;site-container>content&lt;/site-container>
+</p>
+<p>Контейнер контента сайта (применяется предопределенный css-класс <code>Current.Site.ContainerCss</code>).</p>
+
+<p class="prism-code-sample-html">
+	&lt;node-container>content&lt;/node-container>
+</p>
+<p>Контейнер контента узла (применяется предопределенный css-класс <code>Current.Node.ContainerCss</code>).</p>
+
+<p class="prism-code-sample-html">
+	&lt;page-container>content&lt;/page-container>
+</p>
+<p>Контейнер контента страницы (применяется предопределенный css-класс <code>Current.Page.AddonCss</code>).</p>
+
+<p class="prism-code-sample-html">
+	&lt;page-container-off>content&lt;/page-container-off>
+</p>
+<p>Прерыватель контейнера контента страницы (закрывается текущий контейнер и после рендеринга <code>content</code> открывается новый контейнер контента страницы).</p>
+
+
+
+<h2 class="anchor" id="link">&lt;ans-link /></h2>
+<p class="prism-code-sample-html">
+	&lt;ans-link email="" tel=""[ code=""]>content&lt;/ans-link>
+</p>
+<ul>
+	<li><code>email</code> — адрес электронной почты</li>
+	<li><code>tel</code> — номер телефона (городской без кода или федеральный)</li>
+	<li><code>code</code> — переопределение кода страны и региона для городского номера</li>
+	<li><code>content</code> — переопределение текста ссылки</li>
+</ul>
+<p>Пример для адреса электронной почты:</p>
+<p class="prism-code-sample-html">
+	&lt;ans-link email="info@guap.ru"/>
+	&lt;ans-link email="priem@guap.ru">Приемная комиссия&lt;/ans-link>
+</p>
+<p>Результат рендеринга:</p>
+<p class="prism-code-sample-html">
+	&lt;a class="link-email text-nowrap" href="mailto:info@guap.ru" itemprop="email">
+	info@guap.ru&lt;/a>
+	&lt;a class="link-email text-nowrap" href="mailto:priem@guap.ru" itemprop="email">Приемная комиссия&lt;/a>
+</p>
+<p>Пример для номера телефона:</p>
+<p class="small">Если не указан код страны и города, то используется код «@(Current.Options.DefaultTelCode)».</p>
+<p class="prism-code-sample-html">
+	&lt;ans-link tel="4947057" />
+	&lt;ans-link tel="+78124947057" />
+	&lt;ans-link tel="+19195498288" />
+	&lt;ans-link code="+781375" tel="52-159" />
+</p>
+<p>Результат рендеринга:</p>
+<p class="prism-code-sample-html">
+	&lt;a class="link-telephone text-nowrap" href="tel:+78124947057" itemprop="telephone">+7-812-494-70-57&lt;/a>
+	&lt;a class="link-telephone text-nowrap" href="tel:+78124947057" itemprop="telephone">+7-812-494-70-57&lt;/a>
+	&lt;a class="link-telephone text-nowrap" href="tel:+19195498288" itemprop="telephone">+1-919-549-82-88&lt;/a>
+	&lt;a class="link-telephone text-nowrap" href="tel:+78137552159" itemprop="telephone">+7-813-755-21-59&lt;/a>
+</p>
+
+
+
+<h2 class="anchor" id="info">&lt;info-display /></h2>
+<p class="prism-code-sample-html">
+	&lt;info-display />
+</p>
+<p>Информация о текущем media-режиме окна браузера.</p>
+
+
+
+<h2 class="anchor" id="sample">&lt;sample-* /></h2>
+<p class="prism-code-sample-html">
+	&lt;sample-ru />
+	&lt;sample-ru-small />
+	&lt;sample-ru-smaller />
+</p>
+<p>Самплеры текста на русском языке для режима разработки.</p>
+

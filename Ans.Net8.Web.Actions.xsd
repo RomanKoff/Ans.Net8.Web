@@ -7,52 +7,67 @@
 		   xmlns:mstns="http://tempuri.org/Ans.Net8.Web.Actions.xsd"
 		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-	<xs:element name="actions" type="ct_actions"/>
+	<xs:element name="appscheme" type="ct_appscheme"/>
 
 	<!-- complex types -->
 
-	<xs:complexType name="ct_actions">
+	<xs:complexType name="ct_appscheme">
+		<xs:sequence>
+			<xs:element name="section" type="ct_section" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ct_section">
 		<xs:sequence>
 			<xs:element name="item" type="ct_item" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
+		<xs:attribute name="name" type="st_name"/>
+		<xs:attribute name="path" type="st_path"/>
+		<xs:attribute name="title" type="xs:string"/>
 	</xs:complexType>
 
 	<xs:complexType name="ct_item">
 		<xs:sequence>
 			<xs:element name="item" type="ct_item" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
-		<xs:attribute name="target" type="xs:string">
+		<xs:attribute name="path" type="st_path"/>
+		<xs:attribute name="url" type="xs:string"/>
+		<xs:attribute name="face" type="st_face"/>
+		<xs:attribute name="policies" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>
-					<![CDATA[ {catalog} | {page} | {internal_path} | {external_link} ]]>
+					<![CDATA[ APP,APP_ADMINS,APP_MODERATORS,APP_EDITORS,APP_READERS,APP_USERS... ]]>
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="face" type="xs:string">
+		<xs:attribute name="roles" type="xs:string"/>
+		<xs:attribute name="start" type="xs:boolean" default="false"/>
+		<xs:attribute name="hidden" type="xs:boolean" default="false"/>
+	</xs:complexType>
+
+	<!-- simple types -->
+
+	<xs:simpleType name="st_name">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+			<xs:pattern value="^([a-z_][0-9a-z_]+)$"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="st_path">
+		<xs:restriction base="xs:string">
+			<xs:maxLength value="50"/>
+			<xs:pattern value="^([/0-9a-z_-]+)$"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="st_face">
+		<xs:restriction base="xs:string">
 			<xs:annotation>
 				<xs:documentation>
 					<![CDATA[ {full_title} | {short_title|full_title} ]]>
 				</xs:documentation>
 			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="policy" type="xs:string"/>
-		<xs:attribute name="roles" type="xs:string"/>
-		<xs:attribute name="hidden" type="xs:boolean" default="false"/>
-		<xs:attribute name="tags" type="xs:string">
-			<xs:annotation>
-				<xs:documentation>
-					<![CDATA[ tag1,tag2... ]]>
-				</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:complexType>
-
-	<!-- simple types -->
-
-	<xs:simpleType name="st_string_name">
-		<xs:restriction base="xs:string">
-			<xs:maxLength value="50"/>
-			<xs:pattern value="^([a-z_][0-9a-z_-]+)$"/>
 		</xs:restriction>
 	</xs:simpleType>
 

@@ -3,25 +3,30 @@
 namespace Ans.Net8.Web
 {
 
-	public class MapPages
-		: _Tree_Base<MapPagesItem>
+	public class MapPages(
+		IEnumerable<MapPagesItem> source,
+		string node,
+		string hostVirtualPath)
+		: _Tree_Base<MapPagesItem>(source)
 	{
 
-		private readonly string _hostNodePath;
-		private readonly string _hostVirtualPath;
+		private readonly string _hostVirtualPath = hostVirtualPath;
+		private readonly string _hostNodePath = $"{hostVirtualPath}{node.Make("{0}/")}";
 
 
-		/* ctor */
+		/* overrides methods */
 
 
-		public MapPages(
-			IEnumerable<MapPagesItem> pages,
-			string node,
-			string hostVirtualPath)
+		public override void PrepareItemBefore(
+			MapPagesItem item)
 		{
-			_hostNodePath = $"{hostVirtualPath}{node.Make("{0}/")}";
-			_hostVirtualPath = hostVirtualPath;
-			_ = _prepTree(pages, null);
+			var pathParent1 = item.Masters?.Last().Path;
+			var hasPath1 = !string.IsNullOrEmpty(pathParent1);
+			var hasPageName1 = !string.IsNullOrEmpty(item.Name);
+			item.Path = hasPath1 && hasPageName1
+				? $"{pathParent1}/{item.Name}" : hasPath1
+					? pathParent1 : item.Name;
+			item.InitLink(_hostNodePath, _hostVirtualPath);
 		}
 
 
@@ -31,52 +36,26 @@ namespace Ans.Net8.Web
 		public MapPagesItem GetPage(
 			string path)
 		{
-			foreach (var item1 in _allItems)
+			//if (string.IsNullOrEmpty(path))
+			//	return null;
+			foreach (var item1 in AllItems)
 			{
 				item1.Link.IsActive = false;
 				item1.IsSubActive = false;
 			}
-			var pages1 = _allItems.Where(x => x.Path == path);
-			if (!pages1.Any())
+			var items1 = AllItems.Where(x => x.Path == path);
+			var count1 = items1.Count();
+			if (count1 == 0)
 				return null;
-			var page1 = (pages1.Count() == 1)
-				? pages1.First()
-				: pages1.LastOrDefault(x => !x.IsHidden);
+			var page1 = count1 == 1
+				? items1.First()
+				: items1.LastOrDefault(x => !x.IsHidden); // для заглушек разделов
 			if (page1 != null)
 			{
 				page1.Link.IsActive = true;
 				page1.MakeSupActive();
 			}
 			return page1;
-		}
-
-
-		/* privates */
-
-
-		private IEnumerable<MapPagesItem> _prepTree(
-			IEnumerable<MapPagesItem> items,
-			MapPagesItem master)
-		{
-			if (!items?.Any() ?? true)
-				return null;
-			var items1 = new List<MapPagesItem>();
-			foreach (var item1 in items)
-			{
-				_allItems.Add(item1);
-				if (master != null)
-				{
-					var a1 = new List<MapPagesItem>();
-					if (master.HasMasters)
-						a1.AddRange(master.Masters);
-					a1.Add(master);
-					item1.Masters = a1;
-				}
-				item1.InitLink(_hostNodePath, _hostVirtualPath);
-				item1.Slaves = _prepTree(item1.Slaves, item1);
-				items1.Add(item1);
-			}
-			return items1;
 		}
 
 	}

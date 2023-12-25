@@ -3,16 +3,11 @@
 namespace Ans.Net8.Web.Models
 {
 
-	public class SitePageModel
+	public class SitePageModel(
+		ICurrentContext current)
 		: PageModel
 	{
-		internal readonly ICurrentContext _Current;
-
-		public SitePageModel(
-			ICurrentContext current)
-		{
-			_Current = current;
-		}
+		internal readonly ICurrentContext _Current = current;
 	}
 
 }

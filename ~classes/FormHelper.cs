@@ -1,23 +1,13 @@
 ﻿using Ans.Net8.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Ans.Net8.Web
 {
 
-	public class FormHelper
-		: _HtmlWrapper_Base
+	public class FormHelper(
+		IHtmlHelper helper)
+		: _HtmlWrapper_Base(helper)
 	{
-
-		/* ctor */
-
-
-		public FormHelper(
-			IHtmlHelper helper)
-			: base(helper)
-		{
-		}
-
 
 		/* functions */
 
@@ -25,7 +15,7 @@ namespace Ans.Net8.Web
 		public string GetModelErrors()
 		{
 			var errors1 = ModelState.GetModelErrors();
-			if (!errors1?.Any() ?? true)
+			if (!(errors1?.Length > 0))
 				return null;
 			return errors1.MakeFromCollection(
 				x => x, "<div class=\"alert alert-danger\">{0}</div>", "<p>{0}</p>", null);
@@ -36,7 +26,7 @@ namespace Ans.Net8.Web
 			string name)
 		{
 			var errors1 = ModelState.GetFieldErrors(name);
-			if (!errors1?.Any() ?? true)
+			if (!(errors1?.Length > 0))
 				return null;
 			return errors1.MakeFromCollection(
 				x => x, null, "<p class=\"text-danger\">{0}</p>", null);

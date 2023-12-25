@@ -12,6 +12,7 @@
 		<Description>rev. 1</Description>
 		<Authors>Roman Koff</Authors>
 		<Copyright>$(Authors)</Copyright>
+		<NeutralLanguage>ru</NeutralLanguage>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -38,10 +39,15 @@
 			<AutoGen>True</AutoGen>
 			<DependentUpon>Forms.resx</DependentUpon>
 		</Compile>
-		<Compile Update="Resources\Messages.Designer.cs">
+		<Compile Update="Resources\TagHelpers.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
-			<DependentUpon>Messages.resx</DependentUpon>
+			<DependentUpon>TagHelpers.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Resources\UI.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>UI.resx</DependentUpon>
 		</Compile>
 	</ItemGroup>
 
@@ -54,9 +60,13 @@
 			<Generator>PublicResXFileCodeGenerator</Generator>
 			<LastGenOutput>Forms.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Messages.resx">
+		<EmbeddedResource Update="Resources\TagHelpers.resx">
 			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Messages.Designer.cs</LastGenOutput>
+			<LastGenOutput>TagHelpers.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\UI.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>UI.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
 	</ItemGroup>
 
@@ -70,16 +80,16 @@
 		<None Update="Ans.Net8.Web.Pages.xsd">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="_sample_appsettings.json">
+		<None Update="_sample_ans.net8.web_appsettings.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="_sample_map-nodes.xml">
+		<None Update="_sample_Ans.Net8.Web_map-nodes.xml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="_sample_map-pages.xml">
+		<None Update="_sample_Ans.Net8.Web_map-pages.xml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<None Update="_update_ans.net8.web.cmd">
+		<None Update="_update_Ans.Net8.Web.cmd">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>

@@ -4,11 +4,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Reflection.Emit;
 using System.Resources;
 
 namespace Ans.Net8.Web.TagHelpers
 {
+
+	/*
+	 * 
+	 */
+
+
 
 	public class AnsFromResourcesTagHelper
 		: TagHelper
@@ -69,7 +74,7 @@ namespace Ans.Net8.Web.TagHelpers
 
 			// validations			
 			var errors1 = ViewContext.ViewData.ModelState.GetFieldErrors(name1);
-			if (errors1?.Any() ?? false)
+			if (errors1?.Length > 0)
 				foreach (var item1 in errors1)
 					output.Content.AppendHtmlLine(@$"<div class=""field-errors text-danger lh-sm ps-1 pt-2"">{item1}</div>");
 
@@ -137,17 +142,12 @@ namespace Ans.Net8.Web.TagHelpers
 
 
 	[HtmlTargetElement("span", Attributes = ValidationForAttributeName)]
-	public class _ValidationMessageTagHelper0
+	public class _ValidationMessageTagHelper0(
+		IHtmlGenerator generator)
 		: TagHelper
 	{
 		private const string DataValidationForAttributeName = "data-valmsg-for";
 		private const string ValidationForAttributeName = "asp-validation-for";
-
-		public _ValidationMessageTagHelper0(
-			IHtmlGenerator generator)
-		{
-			Generator = generator;
-		}
 
 		public override int Order
 			=> -1000;
@@ -156,7 +156,7 @@ namespace Ans.Net8.Web.TagHelpers
 		[ViewContext]
 		public ViewContext ViewContext { get; set; }
 
-		protected IHtmlGenerator Generator { get; }
+		protected IHtmlGenerator Generator { get; } = generator;
 
 		[HtmlAttributeName(ValidationForAttributeName)]
 		public ModelExpression For { get; set; }

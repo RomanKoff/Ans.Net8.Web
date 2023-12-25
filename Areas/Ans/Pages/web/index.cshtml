@@ -1,0 +1,17 @@
+﻿@*
+	Component of the Ans.Net8.Web library.
+	Not intended for editing and runtime compilation!!
+*@
+@page
+@model Ans.Net8.Web.Models.SitePageModel
+@{
+	Current.Page.HideInBreadcrumbs = true;
+	Current.Page.Title = "Ans.Net8.Web";
+}
+
+<ul>
+	<li>@Current.Page.SlaveLink("current", "CurrentContext")</li>
+	<li>@Current.Page.SlaveLink("classes", "Classes")</li>
+	<li>@Current.Page.SlaveLink("taghelpers", "TagHelpers")</li>
+</ul>
+

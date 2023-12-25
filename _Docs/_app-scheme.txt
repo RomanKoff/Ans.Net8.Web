@@ -1,0 +1,23 @@
+
+	App scheme
+
+	AppScheme
+
+		IEnumerable<AppAction> GetSection(string name)
+		AppAction GetAction(string path)
+
+
+		AppSection
+		.Name
+		.Face (Title, ShortTitle)
+		.Path		
+
+			AppAction
+			.Face (Title, ShortTitle)
+			.Path
+			.Url
+			.Policies
+			.Roles
+			.IsStart
+			.IsHidden	
+			

@@ -42,8 +42,7 @@ namespace Ans.Net8.Web
 		{
 			return new HtmlString(
 				SuppString.Join(
-					templateResult, templateItem, itemsSeparator,
-					data));
+					templateResult, templateItem, itemsSeparator, data));
 		}
 
 
@@ -55,8 +54,7 @@ namespace Ans.Net8.Web
 			string dataSeparator)
 		{
 			return Join(
-				templateResult, templateItem, itemsSeparator,
-				data.Split(dataSeparator));
+				templateResult, templateItem, itemsSeparator, data.Split(dataSeparator));
 		}
 
 
@@ -68,6 +66,7 @@ namespace Ans.Net8.Web
 
 		public static HtmlString SampleSmallerRu()
 			=> SuppText.SampleSmallerRu().ToHtml(true);
+
 	}
 
 }
