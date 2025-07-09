@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://tempuri.org/Ans.Net8.Web.MapNodes.xsd"
+	   xsi:schemaLocation="http://tempuri.org/Ans.Net8.Web.MapNodes.xsd https://src.guap.ru/schemes/Ans.Net8.Web.MapNodes.xsd">
+
+	<item target="node1" face="Узел 1">
+		<item target="node11" face="Узел 1.1"/>
+	</item>
+
+	<item hidden="true" face="Разработка">
+		<item target="dev" face="Справка|Узел разработки"/>
+	</item>
+
+</nodes>

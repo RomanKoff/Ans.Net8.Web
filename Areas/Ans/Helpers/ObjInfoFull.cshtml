@@ -1,0 +1,78 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model object
+@{
+	if (Model == null)
+		return;
+
+	var info1 = new ObjInfoBuilder(Model.GetType(), Model);
+	var name1 = info1.InfoType.GetCSharpTypeName();
+}
+
+<h4 id="@name1">@name1</h4>
+
+@if (info1.Ctors?.Count() > 0)
+{
+	<b>Constructors:</b>
+	<ul class="list-unstyled">
+		@foreach (var item1 in info1.Ctors)
+		{
+			<li>@(name1)(@GetParams(item1.Parameters))</li>
+		}
+	</ul>
+}
+@if (info1.ReadWriteProperties?.Count() > 0)
+{
+	<b>Properties:</b>
+	<ul class="list-unstyled">
+		@foreach (var item1 in info1.ReadWriteProperties)
+		{
+			<li>@item1.Name @item1.Value.ToHtml("= <code>{0}</code>") <span class='opacity-50'>:&nbsp;@item1.TypeName</span></li>
+		}
+	</ul>
+}
+@if (info1.ReadOnlyProperties?.Count() > 0)
+{
+	<b>Readonly properties:</b>
+	<ul class="list-unstyled">
+		@foreach (var item1 in info1.ReadOnlyProperties)
+		{
+			<li>@item1.Name @item1.Value.ToHtml("= <code>{0}</code>") <span class='opacity-50'>:&nbsp;@item1.TypeName</span></li>
+		}
+	</ul>
+}
+@if (info1.Functions?.Count() > 0)
+{
+	<b>Functions:</b>
+	<ul class="list-unstyled">
+		@foreach (var item1 in info1.Functions)
+		{
+			<li>@item1.Name<span class='opacity-50'>@item1.Generics</span>(@GetParams(item1.Parameters)) <span class='opacity-50'>:&nbsp;@item1.Return</span></li>
+		}
+	</ul>
+}
+@if (info1.Methods?.Count() > 0)
+{
+	<b>Methods:</b>
+	<ul class="list-unstyled">
+		@foreach (var item1 in info1.Methods)
+		{
+			<li>@item1.Name<span class='opacity-50'>@item1.Generics</span>(@GetParams(item1.Parameters))</li>
+		}
+	</ul>
+}
+
+@functions {
+
+	HtmlString GetParams(IEnumerable<string> pars)
+	{
+		if (!(pars?.Count() > 0))
+			return HtmlString.Empty;
+		return pars
+			.Select(x => x.Replace("<", "&lt;"))
+			.MakeFromCollection("<br/>{0}", "<span class=\"opacity-50\">&nbsp;&nbsp;{0}</span>", ", ").ToHtml();
+	}
+
+}

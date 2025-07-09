@@ -1,0 +1,24 @@
+https://stackoverflow.com/questions/10498135/last-modified-header-in-mvc
+
+public class YourController : Controller
+{
+    public ActionResult MyPage(string id)
+    {
+        var entity = _db.Get(id);
+        var headerValue = Request.Headers["If-Modified-Since"];
+        if (headerValue != null)
+        {
+            var modifiedSince = DateTime.Parse(headerValue).ToLocalTime();
+            if (modifiedSince >= entity.UpdatedAt)
+            {
+                return new HttpStatusCodeResult(304, "Page has not been modified");
+            }
+        }
+
+        // page has been changed.
+        // generate a view ...
+
+        // .. and set last modified in the date format specified in the HTTP rfc.
+        Response.AddHeader("Last-Modified", entity.UpdatedAt.ToUniversalTime().ToString("R"));
+    }
+}

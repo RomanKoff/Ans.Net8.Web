@@ -1,0 +1,20 @@
+@*
+Компонент библиотеки Ans.Net8.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model Type
+@{
+	if (Model == null)
+		return;
+
+	var info1 = new ObjInfoBuilder(Model);
+	var name1 = info1.InfoType.GetCSharpTypeName();
+	var id1 = $"c_{name1}";
+}
+
+<div class="my-3">
+	<a data-bs-toggle="collapse" href="#@id1" role="button" aria-expanded="false" aria-controls="@id1">@name1</a>
+	<div id="@id1" class="collapse border rounded bg-light p-2">
+		@Html.Partial("ObjInfoClass.cshtml", Model)
+	</div>
+</div>

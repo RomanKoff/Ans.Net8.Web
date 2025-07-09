@@ -1,0 +1,119 @@
+﻿using Ans.Net8.Common;
+using Microsoft.AspNetCore.Html;
+
+namespace Ans.Net8.Web
+{
+
+	public class PageProfile(
+		CurrentContext current)
+		: _CurrentProfile_Proto(current)
+	{
+
+		/* properties */
+
+
+		public MapPagesItem PageItem { get; set; }
+		public string TitleAddon { get; set; }
+		public string CustomTitle { get; set; }
+		public string CustomBrowserTitle { get; set; }
+		public string AddonClasses { get; set; }
+		public bool UseDesingerMode { get; set; }
+		//public bool ShowParentInTitle { get; set; } --> ViewData["parents_in_title_on"]
+		public bool HideInBreadcrumbs { get; set; }
+		public bool HideBreadcrumbs { get; set; }
+		public bool HideTitle { get; set; }
+
+
+		public override string FullTitle
+		{
+			get => CustomTitle ?? _fullTitle ?? Title;
+			set => _fullTitle = value;
+		}
+
+
+		private string _mainClasses;
+		public string MainClasses
+		{
+			get => _mainClasses ?? _current.Node.DefaultMainClasses;
+			set => _mainClasses = value;
+		}
+
+
+		private string _mainStyles;
+		public string MainStyles
+		{
+			get => _mainStyles ?? _current.Node.DefaultMainStyles;
+			set => _mainStyles = value;
+		}
+
+
+		
+
+
+		/* readonly properties */
+
+
+		private string _parentsTitle;
+		public string ParentsTitle
+			=> _parentsTitle ??= _current.Page.Breadcrumbs
+				.SkipLast(1)
+				.MakeFromCollection(x => x.InnerHtml, null, null, ". ");
+
+
+		public string ComplexTitle
+			=> string.IsNullOrEmpty(ParentsTitle)
+				? FullTitle : $"{ParentsTitle}. {FullTitle}";
+
+
+		private string _summaryClasses;
+		public string SummaryClasses
+			=> _summaryClasses ??= string.Join(" ", ContainerClasses, AddonClasses);
+
+
+		public bool AllowTitle
+			=> !HideTitle && !string.IsNullOrEmpty(FullTitle);
+
+
+		/* functions */
+
+
+		public HtmlString SlaveLink(
+			string name,
+			string title)
+		{
+			var link1 = new LinkBuilder(
+				$"{_current.Request.Url}/{name}", title);
+			return link1.GetTag().ToHtml();
+		}
+
+
+		public HtmlString SlaveLink(
+			string name)
+		{
+			return SlaveLink(name, name);
+		}
+
+
+		public override LinkBuilder GetItemLink()
+		{
+			return (PageItem != null)
+				? PageItem.Link
+				: (HideInBreadcrumbs || Title == null)
+					? null : new LinkBuilder { InnerHtml = Title, IsDisabled = true };
+		}
+
+
+		/* internals */
+
+
+		internal string _getPageUrl(
+			string pagePath,
+			bool useAbsoluteUrl)
+		{
+			var s1 = _current.Site._getAbsoluteUrl(useAbsoluteUrl);
+			return $"{s1}{pagePath}";
+		}
+
+	}
+
+}

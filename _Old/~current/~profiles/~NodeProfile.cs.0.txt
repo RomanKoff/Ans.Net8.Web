@@ -1,0 +1,81 @@
+﻿using Ans.Net8.Common;
+
+namespace Ans.Net8.Web
+{
+
+	public class NodeProfile(
+		CurrentContext current)
+		: _CurrentProfile_Proto(current)
+	{
+
+		/* properties */
+
+
+		public string Name { get; set; }
+		public string HeaderClasses { get; set; }
+		public string HeaderStyles { get; set; }
+		public string FooterClasses { get; set; }
+		public string FooterStyles { get; set; }
+
+
+		private string _defaultMainClasses;
+		public string DefaultMainClasses
+		{
+			get => _defaultMainClasses ?? _current.Site.DefaultMainClasses;
+			set => _defaultMainClasses = value;
+		}
+
+
+		private string _defaultMainStyles;
+		public string DefaultMainStyles
+		{
+			get => _defaultMainStyles ?? _current.Site.DefaultMainStyles;
+			set => _defaultMainStyles = value;
+		}
+
+
+		public InfoHelper Info { get; set; } = new(current);
+		public MapNodesItem NodeItem { get; set; }
+
+
+		/* functions */
+
+
+		public override LinkBuilder GetItemLink()
+		{
+			return (NodeItem != null)
+				? NodeItem.Link
+				: (Title == null)
+					? null
+					: new LinkBuilder { InnerHtml = Title, IsDisabled = true };
+		}
+
+		/* methods */
+
+
+		public void InsertMasterNode(
+			string title,
+			string name)
+		{
+			InsertParent(new LinkBuilder
+			{
+				InnerHtml = title,
+				Href = $"{_current.Host.VirtualPath}{name}"
+			});
+		}
+
+
+		/* internals */
+
+
+		internal string _getPageUrl(
+			string pagePath,
+			bool useAbsoluteUrl)
+		{
+			var s1 = _current.Site._getAbsoluteUrl(useAbsoluteUrl);
+			return $"{s1}{Name.Make("{0}/")}{pagePath}";
+		}
+
+	}
+
+}

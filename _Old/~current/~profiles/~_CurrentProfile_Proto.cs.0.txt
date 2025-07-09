@@ -1,0 +1,76 @@
+﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Ans.Net8.Web
+{
+
+	public abstract class _CurrentProfile_Proto(
+		CurrentContext current)
+	{
+
+
+		/* abstracts */
+
+
+		public abstract LinkBuilder GetItemLink();
+
+
+		/* readonly properties */
+
+		
+		private IEnumerable<LinkBuilder> _breadcrumbs;
+		public IEnumerable<LinkBuilder> Breadcrumbs
+		{
+			get
+			{
+				if (_breadcrumbs != null)
+					return _breadcrumbs;
+				var items1 = new List<LinkBuilder>();
+				if (_parents?.Count > 0)
+					items1.AddRange(_parents);
+				var item1 = GetItemLink();
+				if (item1 != null && !string.IsNullOrEmpty(item1.InnerHtml))
+					items1.Add(item1);
+				_breadcrumbs = items1.AsEnumerable();
+				return _breadcrumbs;
+			}
+		}
+
+
+		public bool HasBreadcrumbs
+			=> Breadcrumbs.Any();
+
+
+		/* methods */
+
+
+		public void RemoveParentLast()
+		{
+			if (_parents?.Count > 0)
+				_parents.Remove(_parents.Last());
+		}
+
+
+		/* internals */
+
+
+		internal string _getAbsoluteResUrl(
+			bool useAbsoluteUrl)
+		{
+			return (useAbsoluteUrl && !_current.Site.HasResUrl)
+				? _current.Host.BaseUrl : ResUrl;
+		}
+
+
+		internal string _getResUrl(
+			string filepath,
+			bool useAbsoluteUrl)
+		{
+			var s1 = (useAbsoluteUrl && !_current.Site.HasResUrl)
+				? _current.Host.BaseUrl : ResUrl;
+			return $"{s1}/{ResUrl}/{filepath}";
+		}
+
+	}
+
+}

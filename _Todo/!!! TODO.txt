@@ -1,0 +1,19 @@
+
+	Numeric fix spaces
+
+
+	1. Func For All Types
+	2. Props For All Types
+
+
+
+
+	Html Edit
+		BeforeSave
+			Add <div class="table-responsive" /> for all tables
+			Add <table class="table table-sm" /> for all tables
+			Add <img class="img-fluid border rounded" /> for all images
+
+
+	- Parent and childs for nodes and pages
+	- IsStart for pages and nodes

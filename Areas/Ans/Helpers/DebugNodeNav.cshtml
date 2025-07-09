@@ -1,0 +1,37 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@if (Current.Node.MapPages != null)
+{
+	<ul class="nav nav-underline">
+		@{
+			OutItems(Current.Node.MapPages.TopItems);
+		}
+	</ul>
+}
+
+@functions {
+
+	void OutItems(IEnumerable<IMapItem> items)
+	{
+		foreach (var item1 in items.Where(x => !x.IsHidden))
+		{
+			if (item1.HasSlaves)
+			{
+				<li class="nav-item dropdown">
+					@Html.Partial("/Areas/Bs53/Dropdowns.cshtml", item1)
+				</li>
+			}
+			else
+			{
+				var tag1 = item1.Link.GetTag();
+				tag1.AddCssClass("nav-link");
+				if (item1.Link.IsSubActive)
+					tag1.AddCssClass("active");
+				<li class="nav-item">@tag1</li>
+			}
+		}
+	}
+
+}

@@ -1,0 +1,42 @@
+﻿using Ans.Net8.Common;
+
+namespace Ans.Net8.Web
+{
+
+	public class MapNodes0(
+		IEnumerable<MapNodesItem0> source,
+		string hostVirtualPath)
+		: _Map_Base0<MapNodesItem0>(source)
+	{
+
+		private readonly string _hostVirtualPath = hostVirtualPath;
+
+
+		/* methods */
+
+
+		public override void PrepareItemBefore(
+			MapNodesItem0 item)
+		{
+			item.InitLink(_hostVirtualPath);
+			base.PrepareItemBefore(item);
+		}
+
+
+		/* functions */
+
+
+		public MapNodesItem0 GetNode(
+			string name)
+		{
+			if (string.IsNullOrEmpty(name))
+				return null;
+			if (name == "_main")
+				return FirstItem;
+			return AllItems.FirstOrDefault(
+				x => x.Name == name);
+		}
+
+	}
+
+}

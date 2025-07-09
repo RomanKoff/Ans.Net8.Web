@@ -1,0 +1,9 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model string
+@if (!string.IsNullOrEmpty(Model))
+{
+	<img class="img-fluid" style="max-height:25rem;" src="@Model" alt="@Model.ToHtml()" />
+}

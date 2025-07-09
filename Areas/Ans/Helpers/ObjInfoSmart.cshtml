@@ -1,0 +1,20 @@
+@*
+Компонент библиотеки Ans.Net8.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model object
+@{
+	if (Model == null)
+		return;
+
+	var info1 = new ObjInfoBuilder(Model.GetType(), Model);
+	List<ObjInfoProperty> props1 = new();
+	props1.AddRange(info1.ReadWriteProperties);
+	props1.AddRange(info1.ReadOnlyProperties);
+}
+
+<b>@info1.InfoType.GetCSharpTypeName():</b>
+@foreach (var item1 in props1.OrderBy(x => x.Name))
+{
+	<span>@(item1.Name)&nbsp;@item1.Value.ToHtml("<code>{0}</code>")</span>
+}

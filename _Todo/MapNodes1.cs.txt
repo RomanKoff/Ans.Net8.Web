@@ -1,0 +1,95 @@
+﻿namespace Ans.Net8.Web.Services
+{
+
+	public class MapNodeItem
+		: _MapItem_Base
+	{
+
+		/* ctor */
+
+
+		public MapNodeItem(
+			string target,
+			string face,
+			bool isHidden,
+			string props,
+			string tags)
+			: base(target, face, isHidden, props, tags)
+		{
+		}
+
+
+		/* methods */
+
+
+		public void InitLink(
+			string hostVirtualPath)
+		{
+			Link = new LinkBuilder { InnerHtml = ShortTitle };
+			switch (Type)
+			{
+				case MapItemTypeEnum.Group:
+					Link.IsDisabled = true;
+					break;
+				case MapItemTypeEnum.Item:
+					Link.Href = $"{hostVirtualPath}{Name}";
+					break;
+				case MapItemTypeEnum.InternalPath:
+					Link.Href = $"{hostVirtualPath}{Target}";
+					break;
+				default:
+					Link.Href = Target;
+					Link.IsExternal = true;
+					break;
+			}
+		}
+
+	}
+
+
+
+	public class MapNodes
+	{
+
+		/* ctor */
+
+
+		public MapNodes(
+			IEnumerable<MapNodeItem> items,
+			string hostVirtualPath)
+		{
+			TopItems = items;
+			_scan(items);
+		}
+
+
+		/* properties */
+
+
+		public IEnumerable<MapNodeItem> TopItems { get; }
+
+		private readonly List<MapNodeItem> _allItems = [];
+		public IEnumerable<MapNodeItem> AllItems
+			=> _allItems.AsEnumerable();
+
+
+		
+
+
+		/* privates */
+
+
+		private void _scan(
+			IEnumerable<MapNodeItem> items)
+		{
+			if (items?.Count() > 0)
+				foreach (var item1 in items)
+				{
+					_allItems.Add(item1);
+					_scan(item1.Childs);
+				}
+		}
+
+	}
+
+}

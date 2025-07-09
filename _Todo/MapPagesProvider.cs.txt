@@ -1,0 +1,141 @@
+﻿using Ans.Net8.Common;
+using Microsoft.AspNetCore.Hosting;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace Ans.Net8.Web.Services
+{
+
+	/*
+	 *	Add_AnsWeb
+	 *		builder.Services.AddSingleton<IMapPagesProvider, MapPagesProvider_Xml>();
+	 */
+
+
+
+	public interface IMapPagesProvider
+	{
+		MapPages0 GetMapPages(string node, string hostVirtualPath);
+		bool Reset(string node);
+	}
+
+
+
+	/*
+	 *	MapPagesProvider_Xml
+	 */
+
+
+
+	public class MapPagesProvider_Xml(
+		IWebHostEnvironment env)
+		: IMapPagesProvider
+	{
+
+		private readonly IWebHostEnvironment _env = env;
+		private readonly Dictionary<string, MapPages0> _maps = [];
+
+
+		/* functions */
+
+
+		public MapPages0 GetMapPages(
+			string node,
+			string hostVirtualPath)
+		{
+			var node1 = string.IsNullOrEmpty(node) ? "_main" : node;
+			if (_maps.TryGetValue(node1, out MapPages0 map1))
+				return map1;
+			var file1 = Path.Combine(
+				_env.ContentRootPath, "Views/Nodes", node1, "_map-pages.xml");
+			if (!File.Exists(file1))
+			{
+				_maps.Add(node1, null);
+				Debug.WriteLine($"[Ans.Net8.Web] MapPagesProvider_Xml.GetMap(\"{node1}\") : MISSED");
+				return null;
+			}
+			MapPages0 _map1;
+			try
+			{
+				var data1 = SuppXml.GetObjectFromXmlFile<MapPagesXmlRoot>(
+					file1, Common._Consts.ENCODING_UTF8, "http://tempuri.org/Ans.Net8.Web.Pages.xsd");
+				_map1 = new MapPages0(_getBranch(data1.Items), node, hostVirtualPath);
+				Debug.WriteLine($"[Ans.Net8.Web] MapPagesProvider_Xml.GetMap(\"{node1}\") : LOADED");
+			}
+			catch (Exception)
+			{
+				throw new Exception("[Ans.Net8.Web] MapPages compile error.");
+			}
+			_maps.Add(node1, _map1);
+			return _map1;
+		}
+
+
+		public bool Reset(
+			string node)
+		{
+			var node1 = string.IsNullOrEmpty(node) ? "_main" : node;
+			return _maps.Remove(node1);
+		}
+
+
+		/* privates */
+
+
+		private static IEnumerable<MapPagesItem0> _getBranch(
+			IEnumerable<MapPagesItemXmlElement> elements)
+		{
+			if (elements == null || !elements.Any())
+				return null;
+			var items1 = new List<MapPagesItem0>();
+			foreach (var element1 in elements)
+			{
+				var item1 = new MapPagesItem0(
+					element1.Target,
+					element1.Face,
+					element1.IsHidden,
+					element1.Tags);
+				items1.Add(item1);
+				item1.Childs = _getBranch(element1.Items);
+			}
+			return items1.AsEnumerable();
+		}
+
+	}
+
+
+
+	/// <summary>
+	/// http://tempuri.org/Ans.Net8.Web.Pages.xsd
+	/// </summary>
+	[XmlRoot("pages")]
+	public class MapPagesXmlRoot
+	{
+		[XmlElement("item")]
+		public List<MapPagesItemXmlElement> Items { get; set; }
+	}
+
+
+
+	public class MapPagesItemXmlElement
+	{
+		[XmlElement("item")]
+		public List<MapPagesItemXmlElement> Items { get; set; }
+
+		[XmlAttribute("target")]
+		public string Target { get; set; }
+
+		[XmlAttribute("face")]
+		public string Face { get; set; }
+
+		[XmlAttribute("hidden")]
+		public bool IsHidden { get; set; }
+
+		[XmlAttribute("tags")]
+		public string Tags { get; set; }
+
+		[XmlAttribute("rem")]
+		public string Remark { get; set; }
+	}
+
+}

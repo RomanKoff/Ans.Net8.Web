@@ -1,0 +1,107 @@
+﻿namespace Ans.Net8.Web.Services
+{
+
+	public class MapPageItem
+		: _MapItem_Base
+	{
+
+		/* ctor */
+
+
+		public MapPageItem(
+			string target,
+			string face,
+			bool isHidden,
+			string props,
+			string tags)
+			: base(target, face, isHidden, props, tags)
+		{
+			if (string.IsNullOrEmpty(target) && string.IsNullOrEmpty(face))
+				IsHidden = true;
+		}
+
+
+		/* readonly properties */
+
+
+		public bool UseCatalogStartPage { get; private set; }
+
+
+		/* properties */
+
+
+		public string Path { get; set; }
+		public bool IsSubActive { get; set; }
+
+
+		/* methods */
+
+
+		public void MakeSupActive()
+		{
+			if (HasParents)
+				foreach (var item1 in Parents)
+					item1.IsSubActive = true;
+		}
+
+	}
+
+
+
+	public class MapPages
+	{
+
+		/* ctor */
+
+
+		public MapPages(
+			IEnumerable<MapPageItem> items,
+			string hostVirtualPath)
+		{
+			TopItems = items;
+			_scan(items);
+		}
+
+
+		/* properties */
+
+
+		public IEnumerable<_MapItem_Base> TopItems { get; }
+
+		private readonly List<_MapItem_Base> _allItems = [];
+		public IEnumerable<_MapItem_Base> AllItems
+			=> _allItems.AsEnumerable();
+
+
+		/* functions */
+
+
+		public _MapItem_Base GetItem(
+			string name)
+		{
+			if (string.IsNullOrEmpty(name))
+				return null;
+			if (name == "_main")
+				return AllItems.First();
+			return AllItems.FirstOrDefault(
+				x => x.Name == name);
+		}
+
+
+		/* privates */
+
+
+		private void _scan(
+			IEnumerable<_MapItem_Base> items)
+		{
+			if (items?.Count() > 0)
+				foreach (var item1 in items)
+				{
+					_allItems.Add(item1);
+					_scan(item1.Childs);
+				}
+		}
+
+	}
+
+}

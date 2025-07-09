@@ -1,0 +1,87 @@
+﻿namespace Ans.Net8.Web
+{
+
+	public class SiteProfile(
+		CurrentContext current)
+		: _CurrentProfile_Proto(current)
+	{
+
+		/* properties */
+
+
+		private string _homeUrl;
+		public string HomeUrl
+		{
+			get => _homeUrl ?? $"{_current.Host.VirtualPath}";
+			set => _homeUrl = $"{value?.TrimEnd('/')}/";
+		}
+
+
+		public string DefaultMainClasses { get; set; }
+		public string DefaultMainStyles { get; set; }
+
+
+		/* readonly properties */
+
+
+		public bool HasHomeUrl
+			=> _homeUrl != null;
+
+
+		public bool HasResUrl
+			=> _resUrl != null;
+
+
+		/* methods */
+
+
+		public void InsertMasterSite(
+			string title,
+			string url,
+			bool isExternal)
+		{
+			InsertParent(new LinkBuilder
+			{
+				InnerHtml = title,
+				Href = url,
+				IsExternal = isExternal
+			});
+		}
+
+
+		/* functions */
+
+
+		public override LinkBuilder GetItemLink()
+		{
+			return (Title == null)
+				? null : new LinkBuilder
+				{
+					InnerHtml = Title,
+					Href = HomeUrl
+				};
+		}
+
+
+		/* internals */
+
+
+		internal string _getAbsoluteUrl(
+			bool useAbsoluteUrl)
+		{
+			return useAbsoluteUrl && !HasHomeUrl
+				? _current.Host.ApplicationUrl : HomeUrl;
+		}
+
+
+		internal string _getPageUrl(
+			string pagePath,
+			bool useAbsoluteUrl)
+		{
+			var s1 = _current.Site._getAbsoluteUrl(useAbsoluteUrl);
+			return $"{s1}{pagePath}";
+		}
+
+	}
+
+}

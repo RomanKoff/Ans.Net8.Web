@@ -1,0 +1,15 @@
+
+	Site.ParentsLinks
+	Node.ParentsLinks
+	Page.ParentsLinks
+
+	BrowserTitle
+		Page.ShortTitle. Page.ParentsTitles - Node.ShortTitle - Site.ShortTitle
+
+	Breadcrumbs
+
+	PageTitle
+
+	PageSlaves
+
+

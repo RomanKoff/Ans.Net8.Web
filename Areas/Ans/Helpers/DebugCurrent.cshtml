@@ -1,0 +1,71 @@
+@*
+Компонент библиотеки Ans.Net8.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+
+<div class="row my-5">
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Site' />
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Site.MapNodes' />
+	</div>
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Node' />
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Node.MapPages' />
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Node.NodeItem' />
+	</div>
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Page' />
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Page.PageItem' />
+	</div>
+</div>
+
+<div class="row my-5">
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current' />
+	</div>
+	<div class="col">
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Host' />
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Request' />
+		<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Meta' />
+	</div>
+</div>
+
+<div class="row my-5">
+	<div class="col">
+		<p>
+			GetUrl(null)
+			= <code>"@Current.GetUrl(null)"</code><br />
+			GetUrl("/page1")
+			= <code>"@Current.GetUrl("/page1")"</code><br />
+			GetUrl("site:page2")
+			= <code>"@Current.GetUrl("site:page2")"</code><br />
+			GetUrl("node:page3")
+			= <code>"@Current.GetUrl("node:page3")"</code><br />
+			GetUrl("page:page4")
+			= <code>"@Current.GetUrl("page:page4")"</code><br />
+			GetUrl("https://site.com/page1")
+			= <code>"@Current.GetUrl("https://site.com/page1")"</code><br />
+		</p>
+		<p>
+			GetResUrl(null)
+			= <code>"@Current.GetResUrl(null)"</code><br />
+			GetResUrl("/file1.png")
+			= <code>"@Current.GetResUrl("/file1.png")"</code><br />
+			GetResUrl("site:file2.pdf")
+			= <code>"@Current.GetResUrl("site:file2.pdf")"</code><br />
+			GetResUrl("node:file3.pdf")
+			= <code>"@Current.GetResUrl("node:file3.pdf")"</code><br />
+			GetResUrl("page:file4.json")
+			= <code>"@Current.GetResUrl("page:file4.json")"</code><br />
+		</p>
+	</div>
+</div>
+
+@* <div class="row my-5">
+		<div class="col">
+			<partial name="/Areas/Ans/Helpers/DebugMapNodes.cshtml" />
+		</div>
+		<div class="col">
+			<partial name="/Areas/Ans/Helpers/DebugMapPages.cshtml" />
+		</div>
+	</div> *@

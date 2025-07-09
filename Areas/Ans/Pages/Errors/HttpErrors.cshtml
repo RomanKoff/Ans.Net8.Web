@@ -1,0 +1,20 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@page
+@model Ans.Net8.Web.Areas.Ans.Pages.Errors.HttpErrorsModel
+@{
+	switch (Model.HttpCode)
+	{
+		case 403:
+			<partial name="_http403" />
+			break;
+		case 404:
+			<partial name="_http404" />
+			break;
+		default:
+			<partial name="_http400" />
+			break;
+	}
+}

@@ -1,0 +1,142 @@
+﻿using Ans.Net8.Common;
+using Microsoft.AspNetCore.Hosting;
+using System.Diagnostics;
+using System.Xml.Serialization;
+
+namespace Ans.Net8.Web.Services
+{
+
+	/*
+	 *	Add_AnsWeb
+	 *		builder.Services.AddSingleton<IMapNodesProvider, MapNodesProvider_Xml>();
+	 */
+
+
+
+	public interface IMapNodesProvider
+	{
+		MapNodes0 GetMapNodes(string hostVirtualPath);
+		void Reset();
+	}
+
+
+
+	/*
+	 *	MapNodesProvider_Xml
+	 */
+
+
+
+	public class MapNodesProvider_Xml(
+		IWebHostEnvironment env)
+		: IMapNodesProvider
+	{
+
+		private readonly IWebHostEnvironment _env = env;
+		private MapNodes0 _map;
+		private bool _missed;
+
+
+		/* functions */
+
+
+		public MapNodes0 GetMapNodes(
+			string hostVirtualPath)
+		{
+			if (_map != null)
+				return _map;
+			if (_missed)
+				return null;
+			var file1 = Path.Combine(
+				_env.ContentRootPath, "Views/Nodes", "_map-nodes.xml");
+			if (!File.Exists(file1))
+			{
+				_missed = true;
+				Debug.WriteLine("[Ans.Net8.Web] MapNodesProvider_Xml.GetMap() : MISSED");
+				return null;
+			}
+			try
+			{
+				var data1 = SuppXml.GetObjectFromXmlFile<MapNodesXmlRoot>(
+					file1, Common._Consts.ENCODING_UTF8, "http://tempuri.org/Ans.Net8.Web.Nodes.xsd");
+				_map = new MapNodes0(_getBranch(data1.Items), hostVirtualPath);
+				Debug.WriteLine("[Ans.Net8.Web] MapNodesProvider_Xml.GetMap() : LOADED");
+			}
+			catch (Exception)
+			{
+				throw new Exception("[Ans.Net8.Web] MapNodes compile error.");
+			}
+			return _map;
+		}
+
+
+		/* methods */
+
+
+		public void Reset()
+		{
+			_map = null;
+			_missed = false;
+		}
+
+
+		/* privates */
+
+
+		private static IEnumerable<MapNodesItem0> _getBranch(
+			IEnumerable<MapNodesItemXmlElement> elements)
+		{
+			if (elements == null || !elements.Any())
+				return null;
+			var items1 = new List<MapNodesItem0>();
+			foreach (var element1 in elements)
+			{
+				var item1 = new MapNodesItem0(
+					element1.Target,
+					element1.Face,
+					element1.IsHidden,
+					element1.Tags);
+				items1.Add(item1);
+				item1.Childs = _getBranch(element1.Items);
+			}
+			return items1.AsEnumerable();
+		}
+
+	}
+
+
+
+	/// <summary>
+	/// http://tempuri.org/Ans.Net8.Web.Nodes.xsd
+	/// </summary>
+	[XmlRoot("nodes")]
+	public class MapNodesXmlRoot
+	{
+		[XmlElement("item")]
+		public List<MapNodesItemXmlElement> Items { get; set; }
+	}
+
+
+
+	public class MapNodesItemXmlElement
+	{
+		[XmlElement("item")]
+		public List<MapNodesItemXmlElement> Items { get; set; }
+
+		[XmlAttribute("target")]
+		public string Target { get; set; }
+
+		[XmlAttribute("face")]
+		public string Face { get; set; }
+
+		[XmlAttribute("hidden")]
+		public bool IsHidden { get; set; }
+
+		[XmlAttribute("tags")]
+		public string Tags { get; set; }
+
+		[XmlAttribute("rem")]
+		public string Remark { get; set; }
+	}
+
+}

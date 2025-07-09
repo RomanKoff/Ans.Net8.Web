@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Ans_Net8_Web_MapNodes"
+		   attributeFormDefault="unqualified"
+		   elementFormDefault="qualified"
+		   targetNamespace="http://tempuri.org/Ans.Net8.Web.MapNodes.xsd"
+		   xmlns="http://tempuri.org/Ans.Net8.Web.MapNodes.xsd"
+		   xmlns:mstns="http://tempuri.org/Ans.Net8.Web.MapNodes.xsd"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="nodes" type="ct_nodes"/>
+
+	<!-- complex types -->
+
+	<xs:complexType name="ct_nodes">
+		<xs:sequence>
+			<!-- first node always '_main' -->
+			<xs:element name="item" type="ct_item" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="ct_item">
+		<xs:sequence>
+			<xs:element name="item" type="ct_item" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="target" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					null -> Group
+					|| ("" || G_REGEX_NAME) -> Node
+					|| "/*" -> InternalPath
+					|| ExternalUrl
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="face" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>
+					"full_title"
+					|| "short_title|full_title_template"
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="hidden" type="xs:boolean" default="false"/>
+		<xs:attribute name="tags" type="xs:string"/>
+		<xs:attribute name="props" type="xs:string"/>
+		<xs:attribute name="rem" type="xs:string"/>
+	</xs:complexType>
+
+</xs:schema>

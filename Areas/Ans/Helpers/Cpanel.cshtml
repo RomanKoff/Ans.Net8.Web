@@ -1,0 +1,77 @@
+﻿@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@if (Current.Network.IsAdmin)
+{
+	var token1 = Current.Options.SystemToken;
+	var node1 = Current.Node.NodeItem?.Target ?? "_main";
+
+	<style>
+		.ans-cpanel {
+			padding: .3rem;
+			border: dotted .2rem #cc9;
+			background-color: #ffc;
+			font-size: .9rem
+		}
+	</style>
+
+	<div class="ans-cpanel d-flex flex-wrap gap-3">
+		<div>
+			<b>CPanel</b>
+		</div>
+		<div>
+			IP: @Current.Network.RemoteIpAddress
+		</div>
+		<div class="d-flex gap-2">
+			<a class="" href="#" onclick="resetNodes(event);" role="button">Reset nodes</a>
+			<a class="" href="#" onclick="resetPages(event);" role="button">Reset pages (@node1)</a>
+		</div>
+		<div class="d-flex gap-2">
+			<a class="" target="_blank" href="~/ans/help">Ans help</a>
+		</div>
+	</div>
+
+	<script>
+
+        async function callApi(api, title) {
+            let response1 = await fetch(api);
+            let s1 = `${title} : `;
+            switch (response1.status) {
+                case 200:
+                    let success1 = await response1.json();
+                    s1 += 'Success';
+                    console.log(s1);
+                    //alert(s1);
+                    location.reload();
+                    break;
+                case 404:
+                    s1 += 'Not Found';
+                    console.log(s1);
+                    //alert(s1);
+                    break;
+                default:
+                    let error1 = await response1.json();
+                    s1 += `API Error: ${error1.message}`;
+                    console.log(s1);
+                    alert(s1);
+            }
+        }
+
+        async function resetNodes(e) {
+            e.preventDefault();
+            callApi(
+                `@(Current.Host.ApplicationUrl)/api/system/reset-nodes?token=@(token1)`,
+                'resetNodes()');
+        }
+
+        async function resetPages(e) {
+            e.preventDefault();
+            callApi(
+                `@(Current.Host.ApplicationUrl)/api/system/reset-pages?token=@(token1)&node=@(node1)`,
+                `resetPages('@(node1)')`);
+        }
+
+	</script>
+
+}

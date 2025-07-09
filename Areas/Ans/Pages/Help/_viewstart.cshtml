@@ -1,0 +1,26 @@
+﻿@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@{
+	Layout = "_layout.cshtml";
+
+	Current.Node.AddParent(null, "Ans");
+	Current.Node.AddParent("site:ans/help", "Help");
+
+	Current.Node.SetPages("ans/help",
+
+		new MapPagesItem("common", "Ans.Net8.Common",
+			new MapPagesItem(null, "Index"),
+			new MapPagesItem("classes", "Classes"),
+			new MapPagesItem("exts", "Extensions"),
+			new MapPagesItem("supps", "Supports")),
+
+		new MapPagesItem("web", "Ans.Net8.Web",
+			new MapPagesItem(null, "Index"),
+			new MapPagesItem("models", "Models"),
+			new MapPagesItem("classes", "Classes"),
+			new MapPagesItem("exts", "Extensions"),
+			new MapPagesItem("supps", "Supports"))
+	);
+}

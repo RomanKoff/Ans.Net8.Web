@@ -1,0 +1,10 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model Ans.Net8.Web.Areas.Ans.Pages.Errors.HttpErrorsModel
+@{
+	Current.Page.Title = Ans.Net8.Web.Resources.Errors.Text_PageNotFound;
+	Current.Page.AddParent(null, Ans.Net8.Web.Resources.Errors.Text_Error);
+}
+<partial name="_picture" model="Current.Options.Errors?.Picture404" />

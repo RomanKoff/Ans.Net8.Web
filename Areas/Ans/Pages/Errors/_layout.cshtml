@@ -1,0 +1,36 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@{
+	Layout = Current.ErrorsLayout;
+}
+
+<div class="my-5 d-flex flex-wrap gap-5">
+	@RenderBody()
+
+	<div>
+		@if (Model.HasOriginalPath)
+		{
+			<p>
+				@Ans.Net8.Web.Resources.Errors.Text_AddressOfTheRequestedResource.ToHtml():<br />
+				<code>@Model.OriginalPath</code>
+			</p>
+		}
+		@if (Model.ShowInfo && Model.HasExceptionMessage)
+		{
+			<p>
+				@Ans.Net8.Web.Resources.Errors.Text_TheTextOfTheErrorMessage.ToHtml():<br />
+				<code>@Model.ExceptionMessage</code>
+			</p>
+		}
+		@if (Model.HasRefererUri)
+		{
+			<p>
+				<a class="btn btn-primary" href="@Model.RefererUri">
+					@Ans.Net8.Web.Resources.Errors.Text_GoBack.ToHtml()
+				</a>
+			</p>
+		}
+	</div>
+</div>

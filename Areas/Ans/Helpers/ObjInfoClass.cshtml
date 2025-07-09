@@ -1,0 +1,114 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model Type
+@{
+	if (Model == null)
+		return;
+
+	var info1 = new ObjInfoBuilder(Model);
+	var name1 = info1.InfoType.GetCSharpTypeName();
+}
+
+<h4 id="@name1">@name1</h4>
+
+@if (info1.Ctors?.Count() > 0)
+{
+	<div class="my-3 lh-sm">
+		<div class="my-1 fw-bold text-primary">Constructors:</div>
+		@foreach (var item1 in info1.Ctors)
+		{
+			<div class="my-1">@(name1)(@GetParams(item1.Parameters))</div>
+		}
+	</div>
+}
+
+@if (info1.HasProperties)
+{
+	<div class="my-3 lh-sm">
+		<div class="my-1 fw-bold text-primary">Properties:</div>
+		@if (info1.HasReadWriteProperties)
+		{
+			OutProps(info1.ReadWriteProperties, "{ get; set; }");
+		}
+		@if (info1.HasReadonlyProperties)
+		{
+			OutProps(info1.ReadOnlyProperties, "{ get; }");
+		}
+		@if (info1.HasWriteonlyProperties)
+		{
+			OutProps(info1.WriteOnlyProperties, "{ set; }");
+		}
+	</div>
+}
+
+@if (info1.Functions?.Count() > 0)
+{
+	<div class="my-3 lh-sm">
+		<div class="my-1 fw-bold text-primary">Functions:</div>
+		@{
+			OutFuncs(info1.Functions);
+		}
+	</div>
+}
+
+@if (info1.Methods?.Count() > 0)
+{
+	<div class="my-3 lh-sm">
+		<div class="my-1 fw-bold text-primary">Methods:</div>
+		@foreach (var item1 in info1.Methods.OrderBy(x => x.Name))
+		{
+			<div class="my-1">@item1.Name<span class='opacity-50'>@item1.Generics</span>(@GetParams(item1.Parameters))</div>
+		}
+	</div>
+}
+
+@functions {
+
+	HtmlString GetParams(IEnumerable<string> pars)
+	{
+		if (!(pars?.Count() > 0))
+			return HtmlString.Empty;
+		return pars
+			.Select(x => x.Replace("<", "&lt;"))
+			.MakeFromCollection(null, "<span class=\"opacity-50\">{0}</span>", ", ").ToHtml();
+	}
+
+	void OutProps(IEnumerable<ObjInfoProperty> items, string methods)
+	{
+		foreach (var group1 in items
+			.GroupBy(x => x.TypeName)
+			.OrderBy(x => x.Key, StringComparer.Ordinal))
+		{
+			foreach (var item1 in group1.OrderBy(x => x.Name))
+			{
+				OutInfo(item1, methods);
+			}
+		}
+	}
+
+	void OutFuncs(IEnumerable<ObjInfoFunction> items)
+	{
+		foreach (var group1 in items
+			.GroupBy(x => x.Return)
+			.OrderBy(x => x.Key, StringComparer.Ordinal))
+		{
+			foreach (var item1 in group1.OrderBy(x => x.Name))
+			{
+				OutInfo(item1);
+			}
+		}
+	}
+
+	void OutInfo(ObjInfoProperty item, string methods)
+	{
+		<div class="my-1"><span class="opacity-50">@item.TypeName</span> @item.Name <span class="opacity-50">@methods</span></div>
+	}
+
+	void OutInfo(ObjInfoFunction item)
+	{
+		<div class="my-1"><span class='opacity-50'>@item.Return</span> @item.Name<span class='opacity-50'>@item.Generics</span>(@GetParams(item.Parameters))</div>
+	}
+
+}

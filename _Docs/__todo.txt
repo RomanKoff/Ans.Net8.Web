@@ -1,0 +1,267 @@
+
+	Current.GetPageUrl(target)
+	Current.GetResUrl(target, useAbsoluteUrl)
+
+	Site.ResUrl
+	//Site.GetResUrl(filepath, useAbsoluteUrl)
+	//Site.GetPageUrl(pagepath)
+
+	Node.ResPath
+	Node.ResUrl
+	//Node.GetResUrl(filepath, useAbsoluteUrl)
+	//Node.GetPageUrl(pagepath)
+
+	Page.ResPath
+	Page.ResUrl
+	//Page.GetResUrl(filepath, useAbsoluteUrl)			
+
+
+
+
+
+
+
+
+
+
+
+public class Book
+{
+    [DataMember]
+    [Column("Bok_Name")]
+    [Author("AuthorName")]
+    public string Name{ get; set; }
+
+    [DataMember]
+    [Column("Bok_Publisher")]
+    public string Publisher{ get; set; }
+}
+
+
+
+var book = new Book { Name = "Jitterbug Perfume" };
+
+PropertyInfo bokName = typeof(Book)
+    .GetProperties(BindingFlags.Public | BindingFlags.Instance) // add other bindings if needed
+    .FirstOrDefault(x => x.GetCustomAttribute<ColumnAttribute>() != null
+       && x.GetCustomAttribute<ColumnAttribute>().Name.Equals("Bok_Name", StringComparison.OrdinalIgnoreCase));
+
+// the above query only gets the first property with Column attribute equal to "Bok_Name"
+// if there are more than one, then use a .Where clause instead of FirstOrDefault.
+if (bokName != null)
+{
+    string name = bokName.GetValue(book).ToString();
+    // do other stuff
+}
+
+
+
+
+
+
+
+	Node Profile
+
+
+	Page Title Hidden
+
+	Page.AppendParent -> включить в BrowserTitle
+
+	PaginationHelper
+		Page 1 link
+		Next Button fix|add
+
+	Navigation custom attributes
+
+	Menu List Helper (nav nav-menu-footer flex-column)
+
+
+
+
+
+
+	@ селектор для Html (if not empty 1 else 2)
+
+
+
+		/*
+		public static void SetUserCulture(
+			string culture = null)
+		{
+			var context1 = HttpContext.Current;
+			if (context1.Session != null)
+			{
+				CultureInfo info1 = (CultureInfo)context1
+					.Session[_Const.CULTURE_SESSION_KEY];
+				if (info1 == null)
+				{
+					string s1 = (context1.Request.UserLanguages != null
+						&& context1.Request.UserLanguages.Any())
+							? context1.Request.UserLanguages[0].Substring(0, 2)
+							: culture ?? _CONS.CULTURE_DEFAULT;
+					info1 = new CultureInfo(s1);
+					context1.Session[_CONS.CULTURE_SESSION_KEY] = info1;
+				}
+				SetCulture(info1);
+			}
+		}
+		*/
+
+
+
+	
+	BrowserTitle	— заголовок браузера
+	SiteTitle		— название сайта
+	SiteMenu		— навигация
+	Breadcrumb		— текущий путь (хлебные крошки)
+	PageTitle		— название страницы
+
+	AppMap			— струкутра приложения
+		
+		MapNode
+			MapNode
+			MapItem
+
+
+		страница
+		скрытая страницы
+		каталог
+		скрытый каталог
+		каталог с стартовой страницей
+		линк
+
+
+
+
+
+
+			
+	<div itemscope itemtype="http://schema.org/Organization">
+		<span itemprop="name" title="Федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский государственный университет аэрокосмического приборостроения»</span>
+		<span itemprop="url" title="https://guap.ru</span>
+		Почтовый адрес:
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+			<span itemprop="streetAddress" title="ул. Большая Морская, д. 67, лит. А</span>,
+			<span itemprop="addressLocality" title="Санкт-Петербург</span>,
+			<!-- <span itemprop="addressRegion" title="Санкт-Петербург</span>, -->
+			<span itemprop="addressCountry" title="Россия</span>,
+			<span itemprop="postalCode" title="190000</span>			
+		</div>
+		Телефоны:
+		<div>
+			<span itemprop="telephone" title="+7-812-710-65-10 (приемная ректора)</span>,
+			<span itemprop="telephone" title="+7-812-571-15-22 (приемная президента)</span>
+		</div>
+		Факсы:
+		<div>
+			<span itemprop="faxNumber" title="+7-812-494-70-57</span>,
+			<span itemprop="faxNumber" title="+7-812-710-65-10</span>,
+			<span itemprop="faxNumber" title="+7-812-494-70-18</span>
+		</div>
+		Электронная почта: <span itemprop="email" title="info@guap.ru</span>
+		Локация: <span itemprop="location" title="На набережной реки Мойки напротив Юсуповского дворца, рядом с Центральным военно-морским музеем и Санкт-Петербургским Почтамтом.</span>
+		<div itemprop="geo" itemscope>
+			<span itemprop="latitude" title="59.929473</span>,
+			<span itemprop="longitude" title="30.296659</span>			
+		</div>
+		Время работы:
+		<time itemprop="openingHours" datetime="Mo-Sa 9:00−22:00">
+			C понедельника по субботу с 9:00 до 22:00
+		</time>
+	</div>
+
+
+
+	name (Text)* − полное название организации.
+	url (URL)* − URL сайта.
+	address (PostalAddress)* — почтовый адрес:
+		addressCountry (Text или Country) − страна. Например, Россия. Также вы можете указать двухбуквенный код страны по стандарту ISO 3166−1 alpha-2. Для стран в формате schema.org/Country поддерживается поле:
+			name (Text) − название страны.
+		addressLocality (Text) − населенный пункт, например «Гадюкино».
+		addressRegion (Text) − регион, например «Московская область».
+		postOfficeBoxNumber (Text) − номер абонентского ящика.
+		postalCode (Text) − почтовый индекс.
+		streetAddress (Text) − адрес, например «ул. Двадцати Шести Бакинских Комиссаров, дом 1».
+	faxNumber (Text) − номер факса.
+	telephone (Text)* − номер телефона.
+	location (Place) − месторасположение организации. Если организация (или филиал) располагаются в торговом центре, то его название необходимо указывать в этом поле.
+	geo (только GeoCoordinates, GeoShape не поддерживается) − географические координаты:
+		latitude (Number или Text) − широта, например 29.58.
+		longitude (Number или Text) − долгота, например 31.08.
+	openingHours (Duration) − время работы для организации. Duration − текст в формате ISO 8601. Могут быть определены как промежутки в рамках недели, сначала дни, затем время в эти дни. Несколько дней перечисляются через запятую ",". Промежутки дней и часов указываются через дефис "-".
+		Дни указываются двухбуквенными комбинациями: Mo, Tu, We, Th, Fr, Sa, Su.
+		Время указывается в 24-часовом формате. Например, 15:00.
+			<time itemprop="openingHours" datetime="Tu,Th 16:00−20:00" title="По вторникам и четвергам с 16.00 до 20.00</time>
+		Если организация работает всю неделю, это может быть указано так:
+			<time itemprop="openingHours" datetime="Mo-Su" title="С понедельника по воскресенье, круглосуточно</time>
+
+	
+
+	<div itemscope itemtype="http://schema.org/Organization">
+		<span itemprop="name" title="Яндекс</span>
+		Контакты:
+		<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+			Адрес:
+			<span itemprop="streetAddress" title="Льва Толстого, 16</span>
+			<span itemprop="postalCode" title="119021</span>
+			<span itemprop="addressLocality" title="Москва</span>,
+		</div>
+		Телефон: <span itemprop="telephone" title="+7 495 739–70–00</span>,
+		Факс: <span itemprop="faxNumber" title="+7 495 739–70–70</span>,
+		Электронная почта: <span itemprop="email" title="pr@yandex-team.ru</span>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+OK
+
+	string MetaDescription { get; set; }
+	string MetaOg_SiteName { get; set; }
+	string MetaOg_Title { get; set; }
+	string MetaOg_Description { get; set; }
+	string MetaOg_Image { get; set; }
+	string MetaOg_Url { get; set; }
+	string MetaOg_Type { get; set; }
+
+
+	MetaDescription = "text" // (100-140-160)
+		<meta name="description" content="text" />
+		<meta property="og:description" content="text" />
+
+	
+	MetaOg_SiteName = "text"
+		<meta property="og:site_name" content="text" />
+		Node.Title + Site.Title
+	
+	MetaOg_Title = "text"
+		<meta property="og:title" content="text" />
+		Page.FullTitle
+
+	MetaOg_Image = "text"
+		<meta property="og:image" content="text" />
+		Page.DefaultImage
+		Node.DefaultImage
+		Site.DefaultImage		
+		
+	MetaOg_Url = "text"
+		<meta property="og:url" content="text" />
+		
+	MetaOg_Type = "text"
+		<meta property="og:type" content="text" />
+	
+
+	MetaRobots.NoIndex();
+		<meta name="robots" content="noindex" />
+	
+	MetaRobots.NoFollow();
+		<meta name="robots" content="nofollow" />

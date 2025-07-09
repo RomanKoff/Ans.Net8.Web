@@ -1,0 +1,87 @@
+@*
+Компонент библиотеки Ans.Net8.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+<h4>Current.Site.MapNodes</h4>
+
+@if (Current.Site.MapNodes != null)
+{
+	<div class="lh-sm">
+		@{
+			OutBranch(Current.Site.MapNodes.TopItems);
+		}
+	</div>
+}
+else
+{
+	<p>Empty.</p>
+}
+
+@functions {
+
+	void OutBranch(IEnumerable<IMapItem> items)
+	{
+		if (items?.Count() > 0)
+		{
+			foreach (var item1 in items)
+			{
+				<div class="me-1 mb-1 ps-2 border border-5">
+					@{
+						OutItem((MapNodesItem)item1);
+						OutBranch(item1.Slaves);
+					}
+				</div>
+			}
+		}
+	}
+
+	void OutItem(MapNodesItem item)
+	{
+		var title1 = GetTitle(item);
+		var props1 = GetProps(item);
+		var css1 = new TagClassBuilder();
+		css1.AppendIf(item.IsHidden, "opacity-50");
+		css1.AppendIf(item.Link.IsActive, "bg-warning");
+		css1.AppendIf(item.Link.IsSubActive, "bg-info");
+		var sb1 = new StringBuilder();
+		switch (item.Type)
+		{
+			case MapItemTypeEnum.Group:
+				sb1.Append($"<div class=\"fw-bold\">{item.Link.Href}</div>");
+				break;
+			case MapItemTypeEnum.InternalPath:
+				sb1.Append($"<div class=\"text-success\">~{item.Link.Href}</div>");
+				break;
+			case MapItemTypeEnum.ExternalUrl:
+				sb1.Append($"<div class=\"text-danger\">{item.Link.Href}</div>");
+				break;
+			default: // node : MapItemTypeEnum.Item
+				sb1.Append($"<div class=\"opacity-50\">{item.Link.Href}</div>");
+				break;
+		}
+		sb1.Append(item.Link.GetTag());
+		if (item.IsShortTitleUnique)
+			sb1.Append($" —&nbsp;{item.Title}");
+		sb1.Append($"<code>{props1}</code>");
+		<div class="py-1 @css1">@sb1.ToString().ToHtml()</div>
+	}
+
+	string GetTitle(MapNodesItem item)
+	{
+		var s1 = item.IsShortTitleUnique
+			? $"{item.ShortTitle} — {item.Title}"
+			: item.Title;
+		return s1.GetTypografMin();
+	}
+
+	string GetProps(MapNodesItem item)
+	{
+		var sb1 = new StringBuilder();
+		if (item.HasMasters)
+			sb1.Append($"&nbsp;↑{item.Masters.Count()}");
+		if (item.HasSlaves)
+			sb1.Append($"&nbsp;↓{item.Slaves.Count()}");
+		return sb1.ToString();
+	}
+
+}

@@ -1,0 +1,30 @@
+@*
+Компонент библиотеки Ans.Net8.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model Type
+@{
+	var info1 = new ObjInfoBuilder(Model);
+	var name1 = info1.InfoType.GetCSharpTypeName();
+}
+
+<h4 id="@name1">@name1</h4>
+@{
+	var code1 = new StringBuilder();
+	code1.Append($@"
+public class {name1}
+{{");
+	if (info1.ReadWriteProperties?.Count() > 0)
+		foreach (var item1 in info1.ReadWriteProperties)
+			code1.Append($@"
+	public {item1.TypeName} {item1.Name} {{ get; set; }}");
+	if (info1.ReadOnlyProperties?.Count() > 0)
+		foreach (var item1 in info1.ReadOnlyProperties)
+			code1.Append($@"
+	public {item1.TypeName} {item1.Name} {{ get; set; }}");
+	code1.Append($@"
+}}
+");
+}
+
+<div class="prism-code-sample-csharp py-1">@SuppTypograph.GetText2Html(code1.ToString())</div>

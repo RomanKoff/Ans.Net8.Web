@@ -1,0 +1,35 @@
+﻿@*
+    Компонент библиотеки Ans.Net8.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@page
+@model Ans.Net8.Web.AnsPageModel
+@{
+    Current.Page.Title = "Classes";
+}
+
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(LinkBuilder)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(QueryStringHelper)' />
+
+
+<h2>CurrentContext</h2>
+
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(CurrentContext)' />
+
+<p class="opacity-50">Datas:</p>
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(HostData)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(RequestData)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(MapsData)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(MetaData)' />
+
+<p class="opacity-50">Profiles:</p>
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(SiteProfile)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(NodeProfile)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(PageProfile)' />
+
+<p class="opacity-50">Services:</p>
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(CacheService)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(CookiesService)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(NetworkService)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(QueryStringService)' />
+<partial name="/Areas/Ans/Helpers/ObjInfoClassCollapsed.cshtml" model='typeof(WebApiService)' />
