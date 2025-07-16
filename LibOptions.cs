@@ -45,6 +45,7 @@ namespace Ans.Net8.Web
 		public ErrorsOptions Errors { get; set; }
 		public SubnetsOptions Subnets { get; set; }
 		public MailServiceOptions MailService { get; set; }
+		public Dictionary<string, Dictionary<string, string>> Regs { get; set; }
 	}
 
 

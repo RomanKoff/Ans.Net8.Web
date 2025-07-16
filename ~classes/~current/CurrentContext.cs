@@ -185,14 +185,16 @@ namespace Ans.Net8.Web
 		public bool IsOn(
 			string key)
 		{
-			return HttpContext.Items.ContainsKey($"{key}_on");
+			return HttpContext.Items.ContainsKey(
+				_getKeyOn(key));
 		}
 
 
 		public bool IsNotOff(
 			string key)
 		{
-			return !HttpContext.Items.ContainsKey($"{key}_off");
+			return !HttpContext.Items.ContainsKey(
+				_getKeyOff(key));
 		}
 
 
@@ -243,7 +245,7 @@ namespace Ans.Net8.Web
 			string key,
 			DateTime? defaultValue = null)
 		{
-			return SuppDateTime.GetDateTime(GetData(key)) ?? defaultValue;
+			return GetData(key)?.ToDateTime() ?? defaultValue;
 		}
 
 
@@ -251,7 +253,7 @@ namespace Ans.Net8.Web
 			string key,
 			DateOnly? defaultValue = null)
 		{
-			return SuppDateTime.GetDateOnly(GetData(key)) ?? defaultValue;
+			return GetData(key)?.ToDateOnly() ?? defaultValue;
 		}
 
 
@@ -259,7 +261,25 @@ namespace Ans.Net8.Web
 			string key,
 			TimeOnly? defaultValue = null)
 		{
-			return SuppDateTime.GetTimeOnly(GetData(key)) ?? defaultValue;
+			return GetData(key)?.ToTimeOnly() ?? defaultValue;
+		}
+
+
+		private Dictionary<string, Dictionary<string, string>> _appRegs;
+		public Dictionary<string, string> GetAppReg(
+			string regName)
+		{
+			_appRegs ??= Configuration.GetOptions_AnsNet8Web().Regs;
+			return _appRegs.GetValueOrDefault(regName, null);
+		}
+
+
+		public string GetAppRegValue(
+			string regName,
+			string key,
+			string defaultValue = null)
+		{
+			return GetAppReg(regName)?.GetValueOrDefault(key, defaultValue);
 		}
 
 
@@ -269,16 +289,16 @@ namespace Ans.Net8.Web
 		public void SetOn(
 			string key)
 		{
-			var s1 = $"{key}_on";
-			HttpContext.Items.Add(s1, "on");
+			HttpContext.Items.Add(
+				_getKeyOn(key), "on");
 		}
 
 
 		public void SetOff(
 			string key)
 		{
-			var s1 = $"{key}_off";
-			HttpContext.Items.Add(s1, "off");
+			HttpContext.Items.Add(
+				_getKeyOff(key), "off");
 		}
 
 
@@ -367,6 +387,18 @@ namespace Ans.Net8.Web
 			items1.Add($"{Page.ParentsTitles.Make("{0}. ")}{Page.ShortTitle}");
 			items1.Reverse();
 			return [.. items1];
+		}
+
+
+		private static string _getKeyOn(string key)
+		{
+			return $"{key}_on";
+		}
+
+
+		private static string _getKeyOff(string key)
+		{
+			return $"{key}_off";
 		}
 
 	}

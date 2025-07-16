@@ -102,8 +102,6 @@ namespace Ans.Net8.Web
 		{
 			return (int?)viewData.Eval(name);
 		}
-
-
 		public static int GetInt(
 			this ViewDataDictionary viewData,
 			string name,
@@ -128,8 +126,6 @@ namespace Ans.Net8.Web
 		{
 			return (DateTime?)viewData.Eval(name);
 		}
-
-
 		public static DateTime GetDateTime(
 			this ViewDataDictionary viewData,
 			string name,
@@ -145,8 +141,6 @@ namespace Ans.Net8.Web
 		{
 			return (DateOnly?)viewData.Eval(name);
 		}
-
-
 		public static DateOnly GetDateOnly(
 			this ViewDataDictionary viewData,
 			string name,
@@ -162,8 +156,6 @@ namespace Ans.Net8.Web
 		{
 			return (TimeOnly?)viewData.Eval(name);
 		}
-
-
 		public static TimeOnly GetTimeOnly(
 			this ViewDataDictionary viewData,
 			string name,

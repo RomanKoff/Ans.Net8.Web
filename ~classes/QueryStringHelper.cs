@@ -110,7 +110,7 @@ namespace Ans.Net8.Web
 			string key)
 		{
 			return TestKey(key)
-				? SuppDateTime.GetDateTime(Params[key].ToString())
+				? Params[key].ToString().ToDateTime()
 				: null;
 		}
 		public DateTime GetDateTime(
@@ -125,7 +125,7 @@ namespace Ans.Net8.Web
 			string key)
 		{
 			return TestKey(key)
-				? SuppDateTime.GetDateOnly(Params[key].ToString())
+				? Params[key].ToString().ToDateOnly()
 				: null;
 		}
 		public DateOnly GetDateOnly(
@@ -140,7 +140,7 @@ namespace Ans.Net8.Web
 			string key)
 		{
 			return TestKey(key)
-				? SuppDateTime.GetTimeOnly(Params[key].ToString())
+				? Params[key].ToString().ToTimeOnly()
 				: null;
 		}
 		public TimeOnly GetTimeOnly(
@@ -230,32 +230,36 @@ namespace Ans.Net8.Web
 
 		public void AppendString(
 			ViewDataDictionary viewData,
-			string key)
+			string key,
+			string defaultValue = null)
 		{
-			var value1 = viewData.GetString(key);
+			var value1 = viewData.GetString(key, defaultValue);
 			Append(key, value1);
 		}
 		public void AppendString(
 			QueryStringHelper helper,
-			string key)
+			string key,
+			string defaultValue = null)
 		{
-			var value1 = helper.GetString(key);
+			var value1 = helper.GetString(key, defaultValue);
 			Append(key, value1);
 		}
 
 
 		public void AppendInt(
 			ViewDataDictionary viewData,
-			string key)
+			string key,
+			int defaultValue = 0)
 		{
-			var value1 = viewData.GetInt(key);
+			var value1 = viewData.GetInt(key, defaultValue);
 			Append(key, value1);
 		}
 		public void AppendInt(
 			QueryStringHelper helper,
-			string key)
+			string key,
+			int defaultValue = 0)
 		{
-			var value1 = helper.GetInt(key);
+			var value1 = helper.GetInt(key, defaultValue);
 			Append(key, value1);
 		}
 
@@ -278,48 +282,66 @@ namespace Ans.Net8.Web
 
 		public void AppendDateTime(
 			ViewDataDictionary viewData,
-			string key)
+			string key,
+			DateTime? defaultValue = null)
 		{
-			var value1 = viewData.GetDateTime(key);
+			var value1 = defaultValue == null
+				? viewData.GetDateTime(key)
+				: viewData.GetDateTime(key, defaultValue.Value);
 			Append(key, value1);
 		}
 		public void AppendDateTime(
 			QueryStringHelper helper,
-			string key)
+			string key,
+			DateTime? defaultValue = null)
 		{
-			var value1 = helper.GetDateTime(key);
+			var value1 = defaultValue == null
+				? helper.GetDateTime(key)
+				: helper.GetDateTime(key, defaultValue.Value);
 			Append(key, value1);
 		}
 
 
 		public void AppendDateOnly(
 			ViewDataDictionary viewData,
-			string key)
+			string key,
+			DateOnly? defaultValue = null)
 		{
-			var value1 = viewData.GetDateOnly(key);
+			var value1 = defaultValue == null
+				? viewData.GetDateOnly(key)
+				: viewData.GetDateOnly(key, defaultValue.Value);
 			Append(key, value1);
 		}
 		public void AppendDateOnly(
 			QueryStringHelper helper,
-			string key)
+			string key,
+			DateOnly? defaultValue = null)
 		{
-			var value1 = helper.GetDateOnly(key);
+			var value1 = defaultValue == null
+				? helper.GetDateOnly(key)
+				: helper.GetDateOnly(key, defaultValue.Value);
 			Append(key, value1);
 		}
 
 
 		public void AppendTimeOnly(
 			ViewDataDictionary viewData,
-			string key)
+			string key,
+			TimeOnly? defaultValue)
 		{
-			var value1 = viewData.GetTimeOnly(key);
+			var value1 = defaultValue == null
+				? viewData.GetTimeOnly(key)
+				: viewData.GetTimeOnly(key, defaultValue.Value);
 			Append(key, value1);
 		}
 		public void AppendTimeOnly(
 			QueryStringHelper helper,
-			string key)
+			string key,
+			TimeOnly? defaultValue)
 		{
-			var value1 = helper.GetTimeOnly(key);
+			var value1 = defaultValue == null
+				? helper.GetTimeOnly(key)
+				: helper.GetTimeOnly(key, defaultValue.Value);
 			Append(key, value1);
 		}
 

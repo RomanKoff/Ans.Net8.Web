@@ -1,50 +1,56 @@
 {
 
-  "Ans.Net8.Web": {
+	"Ans.Net8.Web": {
 
-    "Culture": "",
-    "DefaultTelCode": "+7-812",
-    "DefaultCssContainer": "",
-    "DefaultLayout": "",
-    "SystemLayout": "",
-    "CorsProfile": "",
-    "UseDeveloperMode": false,
-    "UseRuntimeCompilation": false,
-    "UseSessions": false,
-    "SystemToken": "",
-    "Mimetypes": [ ".apk|application/vnd.android.package-archive" ],
-    "Routes": [ "name|template|controller|action" ],
+		"Culture": "",
+		"DefaultTelCode": "+7-812",
+		"DefaultCssContainer": "",
+		"DefaultLayout": "",
+		"SystemLayout": "",
+		"CorsProfile": "",
+		"UseDeveloperMode": false,
+		"UseRuntimeCompilation": false,
+		"UseSessions": false,
+		"SystemToken": "",
+		"Mimetypes": [ ".apk|application/vnd.android.package-archive" ],
+		"Routes": [ "name|template|controller|action" ],
 
-    "Errors": {
-      "Layout": "",
-      "ServerErrorPath": "",
-      "HttpErrorPath": "",
-      "ShowInfo": false,
-      "Picture400": "",
-      "Picture403": "",
-      "Picture404": "",
-      "Picture500": ""
-    },
+		"Errors": {
+			"Layout": "",
+			"ServerErrorPath": "",
+			"HttpErrorPath": "",
+			"ShowInfo": false,
+			"Picture400": "",
+			"Picture403": "",
+			"Picture404": "",
+			"Picture500": ""
+		},
 
-    "Subnets": {
-      "Admin": "0.0.0.0/0",
-      "Safe": "0.0.0.0/0",
-      "Unsafe": "0.0.0.0/0",
-      "Allow": "0.0.0.0/0",
-      "Deny": "0.0.0.0/0"
-    },
+		"Subnets": {
+			"Admin": "0.0.0.0/0",
+			"Safe": "0.0.0.0/0",
+			"Unsafe": "0.0.0.0/0",
+			"Allow": "0.0.0.0/0",
+			"Deny": "0.0.0.0/0"
+		},
 
-    "MailService": {
-      "SmtpServer": "",
-      "SmtpPort": 0,
-      "SmtpUseSsl": false,
-      "SmtpUsername": "",
-      "SmtpPassword": "",
-      "DefaultFromAddress": "",
-      "DefaultFromTitle": "",
-      "DebugCc": ""
-    }
+		"MailService": {
+			"SmtpServer": "",
+			"SmtpPort": 0,
+			"SmtpUseSsl": false,
+			"SmtpUsername": "",
+			"SmtpPassword": "",
+			"DefaultFromAddress": "",
+			"DefaultFromTitle": "",
+			"DebugCc": ""
+		},
 
-  }
+		"Regs": {
+			"RegName1": {
+				"Key1": "Value 1"
+			}
+		}
+
+	}
 
 }
