@@ -135,6 +135,76 @@ namespace Ans.Net8.Web
 		}
 
 
+		/* methods */
+
+
+		public void SetOn(
+			string key)
+		{
+			HttpContext.Items.Add(
+				_getKeyOn(key), "on");
+		}
+
+
+		public void SetOff(
+			string key)
+		{
+			HttpContext.Items.Add(
+				_getKeyOff(key), "off");
+		}
+
+
+		public void SetData(
+			string key,
+			string value)
+		{
+			HttpContext.Items[key] = value;
+		}
+
+		public void SetData(
+			string key,
+			int value)
+		{
+			HttpContext.Items[key] = value;
+		}
+
+		public void SetData(
+			string key,
+			bool value)
+		{
+			HttpContext.Items[key] = value;
+		}
+
+		public void SetData(
+			string key,
+			DateTime value)
+		{
+			HttpContext.Items[key] = value;
+		}
+
+		public void SetData(
+			string key,
+			DateOnly value)
+		{
+			HttpContext.Items[key] = value;
+		}
+
+		public void SetData(
+			string key,
+			TimeOnly value)
+		{
+			HttpContext.Items[key] = value;
+		}
+
+
+		public static void ThrowNotFound()
+			=> throw new AnsHttpException(HttpStatusCode.NotFound);
+
+
+		public static void ThrowForbidden()
+			=> throw new AnsHttpException(HttpStatusCode.Forbidden);
+
+
 		/* functions */
 
 
@@ -226,18 +296,20 @@ namespace Ans.Net8.Web
 		}
 
 
-		public int? GetDataInt(
+		public int GetDataInt(
 			string key,
-			int? defaultValue = null)
+			int defaultValue = 0)
 		{
-			return GetData(key).ToInt() ?? defaultValue;
+			var value1 = HttpContext.Items[key];
+			return value1 == null ? defaultValue : (int)value1;
 		}
 
 
 		public bool GetDataBool(
 			string key)
 		{
-			return GetData(key).ToBool();
+			var value1 = HttpContext.Items[key];
+			return value1 != null && (bool)value1;
 		}
 
 
@@ -245,7 +317,7 @@ namespace Ans.Net8.Web
 			string key,
 			DateTime? defaultValue = null)
 		{
-			return GetData(key)?.ToDateTime() ?? defaultValue;
+			return (DateTime?)HttpContext.Items[key] ?? defaultValue;
 		}
 
 
@@ -253,7 +325,7 @@ namespace Ans.Net8.Web
 			string key,
 			DateOnly? defaultValue = null)
 		{
-			return GetData(key)?.ToDateOnly() ?? defaultValue;
+			return (DateOnly?)HttpContext.Items[key] ?? defaultValue;
 		}
 
 
@@ -261,7 +333,7 @@ namespace Ans.Net8.Web
 			string key,
 			TimeOnly? defaultValue = null)
 		{
-			return GetData(key)?.ToTimeOnly() ?? defaultValue;
+			return (TimeOnly?)HttpContext.Items[key] ?? defaultValue;
 		}
 
 
@@ -281,81 +353,6 @@ namespace Ans.Net8.Web
 		{
 			return GetAppReg(regName)?.GetValueOrDefault(key, defaultValue);
 		}
-
-
-		/* methods */
-
-
-		public void SetOn(
-			string key)
-		{
-			HttpContext.Items.Add(
-				_getKeyOn(key), "on");
-		}
-
-
-		public void SetOff(
-			string key)
-		{
-			HttpContext.Items.Add(
-				_getKeyOff(key), "off");
-		}
-
-
-		public void SetData(
-			string key,
-			string value)
-		{
-			HttpContext.Items[key] = value;
-		}
-
-
-		public void SetDataInt(
-			string key,
-			int value)
-		{
-			HttpContext.Items[key] = value;
-		}
-
-
-		public void SetDataBool(
-			string key,
-			bool value)
-		{
-			HttpContext.Items[key] = value;
-		}
-
-
-		public void SetDataDateTime(
-			string key,
-			DateTime value)
-		{
-			HttpContext.Items[key] = value;
-		}
-
-
-		public void SetDataDateOnly(
-			string key,
-			DateOnly value)
-		{
-			HttpContext.Items[key] = value;
-		}
-
-
-		public void SetDataTimeOnly(
-			string key,
-			TimeOnly value)
-		{
-			HttpContext.Items[key] = value;
-		}
-
-
-		public static void ThrowNotFound()
-			=> throw new AnsHttpException(HttpStatusCode.NotFound);
-
-
-		public static void ThrowForbidden()
-			=> throw new AnsHttpException(HttpStatusCode.Forbidden);
 
 
 		/* privates */
