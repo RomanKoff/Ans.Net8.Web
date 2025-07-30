@@ -355,6 +355,54 @@ namespace Ans.Net8.Web
 		}
 
 
+		public MediaModel GetMediaModel(
+			string url)
+		{
+			if (string.IsNullOrEmpty(url))
+				return null;
+			var reg1 = GetAppReg("Medias");
+			foreach (var item1 in reg1)
+			{
+				var i1 = url.IndexOf(item1.Key);
+				if (i1 != -1)
+				{
+					if (item1.Value[0] == '@')
+						return new MediaModel
+						{
+							Mode = MediaModeEnum.Other,
+							Title = item1.Value[1..],
+							Url = url,
+						};
+					return new MediaModel
+					{
+						Mode = MediaModeEnum.Known,
+						Title = url[(i1 + item1.Key.Length)..],
+						Icon = item1.Value,
+						Url = url,
+					};
+				}
+			}
+			return new MediaModel
+			{
+				Mode = MediaModeEnum.Other,
+				Title = url,
+				Url = url,
+			};
+		}
+
+
+		public string GetMediaLink(string url)
+		{
+			var media1 = GetMediaModel(url);
+			return media1.Mode switch
+			{
+				MediaModeEnum.Known => $"<a target=\"_blank\" class=\"text-nowrap icon-link-sm\" href=\"{media1.Url}\"><i class=\"{media1.Icon}\"></i>{media1.Title}</a>",
+				MediaModeEnum.Other => $"<a target=\"_blank\" class=\"text-nowrap\" href=\"{media1.Url}\">{media1.Title}</a>",
+				_ => null
+			};
+		}
+
+
 		/* privates */
 
 

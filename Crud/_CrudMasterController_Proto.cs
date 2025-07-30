@@ -150,7 +150,7 @@ namespace Ans.Net8.Web.Crud
 		/* functions */
 
 
-		public IQueryable<T> GetListQuery()
+		public virtual IQueryable<T> GetListQuery()
 		{
 			return Repository.GetItemsAsQueryable(ListFilter);
 		}

@@ -6,6 +6,17 @@ using System.Resources;
 namespace Ans.Net8.Web.Forms
 {
 
+	public static partial class _e
+	{
+		public static HtmlString ToHtml(
+			this IFormCellControl control)
+		{
+			return control.ToString().ToHtml();
+		}
+	}
+
+
+
 	public interface IFormCellControl
 	{
 		string ToString();

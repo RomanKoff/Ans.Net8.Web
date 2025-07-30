@@ -6,8 +6,7 @@ namespace Ans.Net8.Web.TagHelpers
 	/*
 	 * <site-container>content</site-container>
 	 * <node-container>content</node-container>
-	 * <page-container>content</page-container>
-	 * <page-container-body>content</page-container-body>
+	 * <page-container>content</page-container>	 
 	 * <admin-container free="false">content</admin-container>
 	 */
 
@@ -21,6 +20,7 @@ namespace Ans.Net8.Web.TagHelpers
 			TagHelperContext context,
 			TagHelperOutput output)
 		{
+			UseAutoContent = true;
 			output.TagMode = TagMode.StartTagAndEndTag;
 			output.TagName = "div";
 			ClassBefore = Current.Site.ContainerClasses;
@@ -38,6 +38,7 @@ namespace Ans.Net8.Web.TagHelpers
 			TagHelperContext context,
 			TagHelperOutput output)
 		{
+			UseAutoContent = true;
 			output.TagMode = TagMode.StartTagAndEndTag;
 			output.TagName = "div";
 			ClassBefore = Current.Node.ContainerClasses;
@@ -55,28 +56,7 @@ namespace Ans.Net8.Web.TagHelpers
 			TagHelperContext context,
 			TagHelperOutput output)
 		{
-			output.TagMode = TagMode.StartTagAndEndTag;
-			output.TagName = "div";
-			ClassBefore = Current.Page.ContainerClasses;
-			base.Process(context, output);
-		}
-	}
-
-
-
-	public class PageContainerBodyTagHelper(
-		CurrentContext current)
-		: _AnsTagHelper_Base(current)
-	{
-		public override void Process(
-			TagHelperContext context,
-			TagHelperOutput output)
-		{
-			if (Current.Page.UseDesignerMode)
-			{
-				output.TagName = null;
-				return;
-			}
+			UseAutoContent = true;
 			output.TagMode = TagMode.StartTagAndEndTag;
 			output.TagName = "div";
 			ClassBefore = Current.Page.ContainerClasses;
@@ -108,6 +88,7 @@ namespace Ans.Net8.Web.TagHelpers
 			TagHelperContext context,
 			TagHelperOutput output)
 		{
+			UseAutoContent = true;
 			output.TagName = null;
 			if (!Current.Network.IsAdmin)
 			{

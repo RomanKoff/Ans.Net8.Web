@@ -39,7 +39,6 @@ namespace Ans.Net8.Web
 
 
 		public string CustomBrowserTitle { get; set; }
-		public bool UseDesignerMode { get; set; }
 
 
 		private string _resPath;

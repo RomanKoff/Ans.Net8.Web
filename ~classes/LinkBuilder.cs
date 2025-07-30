@@ -13,11 +13,11 @@ namespace Ans.Net8.Web
 		public LinkBuilder(
 			string href,
 			string title,
-			bool isAutoDisabled = false)
+			bool isDisabled = false)
 		{
 			Href = href;
 			InnerHtml = SuppTypograph.GetTypografMin(title);
-			IsDisabled = isAutoDisabled && string.IsNullOrEmpty(href);
+			IsDisabled = isDisabled; // || string.IsNullOrEmpty(href);
 		}
 
 
@@ -48,7 +48,7 @@ namespace Ans.Net8.Web
 			string innerHtml = null)
 		{
 			TagBuilderExt tag1;
-			if (IsDisabled)
+			if (IsDisabled || string.IsNullOrEmpty(Href))
 			{
 				tag1 = new("span", TagRenderMode.Normal);
 				tag1.AddCssClass("link-disabled disabled opacity-75");

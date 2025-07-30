@@ -25,7 +25,7 @@ namespace Ans.Net8.Web
 			Properties = properties?.Split(';').ToStringDictionary();
 			Remark = remark;
 			SetFace(face ?? target);
-			Link = new(null,ShortTitle);
+			Link = new(null, ShortTitle);
 			//{
 			//	InnerHtml = ShortTitleHtml.ToString()
 			//};

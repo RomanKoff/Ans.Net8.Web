@@ -60,7 +60,8 @@ namespace Ans.Net8.Web.Services
 				var data1 = SuppXml.GetObjectFromXmlFile<MapNodesXmlRoot>(
 					file1, Common._Consts.ENCODING_UTF8,
 					"http://tempuri.org/Ans.Net8.Web.MapNodes.xsd");
-				_map = new MapNodes(_getBranch(data1.Items), virtualPath);
+				var branch1 = _getBranch(data1.Items);
+				_map = new MapNodes(branch1, virtualPath);
 				Debug.WriteLine($"[Ans.Net8.Web] MapNodesProvider_Xml.GetMapNodes() : LOADED");
 			}
 			catch (Exception)

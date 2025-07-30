@@ -51,7 +51,8 @@ namespace Ans.Net8.Web.Services
 				var data1 = SuppXml.GetObjectFromXmlFile<MapPagesXmlRoot>(
 					file1, Common._Consts.ENCODING_UTF8,
 					"http://tempuri.org/Ans.Net8.Web.MapPages.xsd");
-				map2 = new MapPages(_getBranch(data1.Items), virtualPath, node);
+				var branch1 = _getBranch(data1.Items);
+				map2 = new MapPages(branch1, virtualPath, node);
 				Debug.WriteLine($"[Ans.Net8.Web] MapPagesProvider_Xml.GetMapPages(\"{node1}\") : LOADED");
 			}
 			catch (Exception)

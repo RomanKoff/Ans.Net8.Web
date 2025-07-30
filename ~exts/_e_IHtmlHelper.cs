@@ -9,7 +9,7 @@ namespace Ans.Net8.Web
 	public static partial class _e_IHtmlHelper
 	{
 
-		public static string GetStringFromHtml(
+		public static string GetStringFromRazor(
 			this IHtmlHelper helper,
 			Func<dynamic, IHtmlContent> html)
 		{
@@ -22,7 +22,15 @@ namespace Ans.Net8.Web
 		}
 
 
-		public static string GetStringFromHtml(
+		public static HtmlString GetHtmlFromRazor(
+			this IHtmlHelper helper,
+			Func<dynamic, IHtmlContent> html)
+		{
+			return new HtmlString(helper.GetStringFromRazor(html));
+		}
+
+
+		public static string GetStringFromRazor(
 			this IHtmlHelper helper,
 			string template,
 			params Func<dynamic, IHtmlContent>[] args)
@@ -38,6 +46,15 @@ namespace Ans.Net8.Web
 				_args1.Add(sb1.ToString());
 			}
 			return string.Format(template, [.. _args1]);
+		}
+
+
+		public static HtmlString GetHtmlFromRazor(
+			this IHtmlHelper helper,
+			string template,
+			params Func<dynamic, IHtmlContent>[] args)
+		{
+			return new HtmlString(helper.GetStringFromRazor(template, args));
 		}
 
 	}
