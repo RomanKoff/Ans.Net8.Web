@@ -197,13 +197,17 @@ namespace Ans.Net8.Web
 		}
 
 
-		public static void ThrowNotFound()
+#pragma warning disable CA1822 // Mark members as static
+
+		public void ThrowNotFound()
+
 			=> throw new AnsHttpException(HttpStatusCode.NotFound);
 
 
-		public static void ThrowForbidden()
+		public void ThrowForbidden()
 			=> throw new AnsHttpException(HttpStatusCode.Forbidden);
 
+#pragma warning restore CA1822 // Mark members as static
 
 		/* functions */
 

@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Globalization;
+using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -28,6 +31,24 @@ namespace Ans.Net8.Web
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
 			var options1 = configuration.GetOptions_AnsNet8Web();
+
+			// Swagger
+			if (options1.Swagger?.Length > 0)
+			{
+				builder.Services.AddEndpointsApiExplorer();
+				builder.Services.AddSwaggerGen(o =>
+				{
+					foreach (var item1 in options1.Swagger)
+					{
+						var a1 = item1.Split('|');
+						o.SwaggerDoc(a1[0], new OpenApiInfo { Title = a1[1] });
+					}
+					o.EnableAnnotations();
+					o.IncludeXmlComments(Path.Combine(
+						AppContext.BaseDirectory,
+						$"{Assembly.GetEntryAssembly().GetName().Name}.xml"));
+				});
+			}
 
 			// IServiceCollection (singleton)
 
@@ -112,6 +133,22 @@ namespace Ans.Net8.Web
 			IConfiguration configuration)
 		{
 			var options1 = configuration.GetOptions_AnsNet8Web();
+
+			// Swagger
+			if (options1.Swagger?.Length > 0)
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI(o =>
+				{
+					var s1 = app.Environment.IsDevelopment()
+						? "/swagger/" : null;
+					foreach (var item1 in options1.Swagger)
+					{
+						var a1 = item1.Split('|');
+						o.SwaggerEndpoint($"{s1}{a1[0]}/swagger.json", a1[1]);
+					}
+				}); // use reset browser cache
+			}
 
 			if (options1.UseDeveloperMode)
 			{

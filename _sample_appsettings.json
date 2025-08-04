@@ -15,6 +15,10 @@
 		"Mimetypes": [ ".apk|application/vnd.android.package-archive" ],
 		"Routes": [ "name|template|controller|action" ],
 
+		"Swagger": [
+			"name-v1|Name API v1"
+		],
+
 		"Errors": {
 			"Layout": "",
 			"ServerErrorPath": "",

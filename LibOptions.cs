@@ -39,6 +39,7 @@ namespace Ans.Net8.Web
 		public bool UseDeveloperMode { get; set; }
 		public bool UseRuntimeCompilation { get; set; }
 		public bool UseSessions { get; set; }
+		public string[] Swagger { get; set; }
 		public string SystemToken { get; set; }
 		public string[] Mimetypes { get; set; }
 		public string[] Routes { get; set; }
