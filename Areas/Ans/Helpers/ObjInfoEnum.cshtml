@@ -1,6 +1,6 @@
 @*
-Компонент библиотеки Ans.Net8.Web.
-Код не предназначен для редактирования и компиляции во время выполнения!
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
 *@
 @model Type
 @{
@@ -11,22 +11,16 @@
 <h4 id="@name1">@name1</h4>
 @{
 	var code1 = new StringBuilder();
-	code1.Append($@"
-public enum {name1}
-{{");
+
+	code1.AppendLine($"public enum {name1}\n{{");
+
 	foreach (var item1 in Enum.GetNames(Model))
-	{
-		code1.Append($@"
-	{item1} =,");
-	}
+		code1.AppendLine($"{item1} =,");
+
 	foreach (var item1 in Enum.GetValues(Model))
-	{
-		code1.Append($@"
-	= {item1},");
-	}
-	code1.Append($@"
-}}
-");
+		code1.AppendLine($"= {item1},");
+
+	code1.AppendLine($"}}");
 }
 
-<div class="prism-code-sample-csharp py-1">@SuppTypograph.GetText2Html(code1.ToString())</div>
+<pre><code class="language-csharp line-numbers py-1">@SuppTypograph.GetText2Html(code1.ToString())</code></pre>

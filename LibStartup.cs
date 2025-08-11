@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
 using System.Reflection;
@@ -32,23 +31,9 @@ namespace Ans.Net8.Web
 
 			var options1 = configuration.GetOptions_AnsNet8Web();
 
-			// Swagger
-			if (options1.Swagger?.Length > 0)
-			{
-				builder.Services.AddEndpointsApiExplorer();
-				builder.Services.AddSwaggerGen(o =>
-				{
-					foreach (var item1 in options1.Swagger)
-					{
-						var a1 = item1.Split('|');
-						o.SwaggerDoc(a1[0], new OpenApiInfo { Title = a1[1] });
-					}
-					o.EnableAnnotations();
-					o.IncludeXmlComments(Path.Combine(
-						AppContext.BaseDirectory,
-						$"{Assembly.GetEntryAssembly().GetName().Name}.xml"));
-				});
-			}
+			var culture1 = new CultureInfo(options1.Culture);			
+			CultureInfo.DefaultThreadCurrentCulture = culture1;
+			CultureInfo.DefaultThreadCurrentUICulture = culture1;
 
 			// IServiceCollection (singleton)
 
@@ -89,6 +74,24 @@ namespace Ans.Net8.Web
 				builder.Services.AddSession();
 			}
 
+			// Swagger
+			if (options1.Swagger?.Length > 0)
+			{
+				builder.Services.AddEndpointsApiExplorer();
+				builder.Services.AddSwaggerGen(o =>
+				{
+					foreach (var item1 in options1.Swagger)
+					{
+						var a1 = item1.Split('|');
+						o.SwaggerDoc(a1[0], new OpenApiInfo { Title = a1[1] });
+					}
+					o.EnableAnnotations();
+					o.IncludeXmlComments(Path.Combine(
+						AppContext.BaseDirectory,
+						$"{Assembly.GetEntryAssembly().GetName().Name}.xml"));
+				});
+			}
+
 			// IMvcBuilder
 
 			var mvc1 = builder.Services.AddMvc(o =>
@@ -105,17 +108,6 @@ namespace Ans.Net8.Web
 				//o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 				o.JsonSerializerOptions.DefaultIgnoreCondition
 					= JsonIgnoreCondition.WhenWritingDefault; // .WhenWritingNull;
-			});
-
-			mvc1.Services.Configure<RequestLocalizationOptions>(o =>
-			{
-				var supportedCultures = new[] {
-					new CultureInfo("en"),
-					new CultureInfo("ru")
-				};
-				o.SupportedCultures = supportedCultures;
-				o.SupportedUICultures = supportedCultures;
-				o.DefaultRequestCulture = new(options1.Culture, options1.Culture);
 			});
 
 			if (options1.UseRuntimeCompilation)
@@ -203,7 +195,6 @@ namespace Ans.Net8.Web
 			if (options1.Routes?.Length > 0)
 				app.AddRoutes(options1.Routes);
 
-			app.UseMiddleware<AnsCultureMiddleware>();
 			app.UseMiddleware<AnsHttpExceptionHandler>();
 		}
 

@@ -1,6 +1,6 @@
 @*
-Компонент библиотеки Ans.Net8.Web.
-Код не предназначен для редактирования и компиляции во время выполнения!
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
 *@
 @model Type
 @{
@@ -11,20 +11,18 @@
 <h4 id="@name1">@name1</h4>
 @{
 	var code1 = new StringBuilder();
-	code1.Append($@"
-public class {name1}
-{{");
+
+	code1.AppendLine($"public class {name1}\n{{");
+
 	if (info1.ReadWriteProperties?.Count() > 0)
 		foreach (var item1 in info1.ReadWriteProperties)
-			code1.Append($@"
-	public {item1.TypeName} {item1.Name} {{ get; set; }}");
+			code1.AppendLine($"\tpublic {item1.TypeName} {item1.Name} {{ get; set; }}");
+
 	if (info1.ReadOnlyProperties?.Count() > 0)
 		foreach (var item1 in info1.ReadOnlyProperties)
-			code1.Append($@"
-	public {item1.TypeName} {item1.Name} {{ get; set; }}");
-	code1.Append($@"
-}}
-");
+			code1.AppendLine($"\tpublic {item1.TypeName} {item1.Name} {{ get; set; }}");
+
+	code1.AppendLine($"}}");
 }
 
-<div class="prism-code-sample-csharp py-1">@SuppTypograph.GetText2Html(code1.ToString())</div>
+<pre><code class="language-csharp line-numbers py-1">@SuppTypograph.GetText2Html(code1.ToString())</code></pre>
