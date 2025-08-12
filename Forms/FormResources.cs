@@ -16,7 +16,7 @@ namespace Ans.Net8.Web.Forms
 
 		private string _titlePluralize;
 		public string TitlePluralize
-			=> _titlePluralize ??= GetString("_TitlePluralize");
+			=> _titlePluralize ??= GetCalcFaceHelper("_TitlePluralize").Title;
 
 		private HtmlString _titlePluralize_Html;
 		public HtmlString TitlePluralize_Html
@@ -25,7 +25,7 @@ namespace Ans.Net8.Web.Forms
 
 		private string _titleWhoWhat;
 		public string TitleWhoWhat
-			=> _titleWhoWhat ??= GetString("_TitleWhoWhat");
+			=> _titleWhoWhat ??= GetCalcFaceHelper("_TitleWhoWhat").Title;
 
 		private HtmlString _titleWhoWhat_Html;
 		public HtmlString TitleWhoWhat_Html

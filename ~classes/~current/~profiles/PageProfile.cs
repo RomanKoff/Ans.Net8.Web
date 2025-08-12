@@ -80,12 +80,12 @@ namespace Ans.Net8.Web
 		/* methods */
 
 
-		public void ImportTitleFromLastBreadcrumbs()
-		{
-			var item1 = ParentsLinks?.Count > 0
-				? ParentsLinks.Last() : null;
-			Title = item1?.InnerHtml;
-		}
+		//public void ImportTitleFromLastBreadcrumbs()
+		//{
+		//	var item1 = ParentsLinks?.Count > 0
+		//		? ParentsLinks.Last() : null;
+		//	Title = item1?.InnerHtml;
+		//}
 
 
 		/* privates */

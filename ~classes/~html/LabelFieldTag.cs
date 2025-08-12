@@ -29,7 +29,7 @@ namespace Ans.Net8.Web
 			if (face.HasHelpLink)
 				InnerHtml.AppendHtml(
 					$"<a class=\"link-info me-1\" target=\"_blank\" href=\"{face.HelpLink}\" title=\"{Form.Text_Help}\"><i class=\"bi-question-circle\"></i></a>");
-			InnerHtml.AppendHtml(face.Title);
+			InnerHtml.AppendHtml(face.TitleCalc);
 			if (errors?.Length > 0)
 				InnerHtml.AppendHtml(
 					errors.MakeFromCollection(
