@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -10,15 +11,23 @@ namespace Ans.Net8.Web
 	{
 
 		public static string GetStringFromRazor(
-			this IHtmlHelper helper,
+			this HttpContext context,
 			Func<dynamic, IHtmlContent> html)
 		{
 			var sb1 = new StringBuilder();
 			using TextWriter writer1 = new StringWriter(sb1);
-			var encoder1 = (HtmlEncoder)helper.ViewContext.HttpContext.RequestServices
+			var encoder1 = (HtmlEncoder)context.RequestServices
 				.GetService(typeof(HtmlEncoder)) ?? HtmlEncoder.Default;
 			html("").WriteTo(writer1, encoder1);
 			return sb1.ToString();
+		}
+
+
+		public static string GetStringFromRazor(
+			this IHtmlHelper helper,
+			Func<dynamic, IHtmlContent> html)
+		{
+			return helper.ViewContext.HttpContext.GetStringFromRazor(html);
 		}
 
 

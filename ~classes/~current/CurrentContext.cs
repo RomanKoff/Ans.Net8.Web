@@ -3,6 +3,7 @@ using Ans.Net8.Web.Services;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System.Globalization;
@@ -151,6 +152,14 @@ namespace Ans.Net8.Web
 		{
 			HttpContext.Items.Add(
 				_getKeyOff(key), "off");
+		}
+
+
+		public void SetData(
+			string key,
+			Func<dynamic, IHtmlContent> value)
+		{
+			HttpContext.Items[key] = HttpContext.GetStringFromRazor(value);
 		}
 
 
@@ -415,7 +424,7 @@ namespace Ans.Net8.Web
 			var items1 = new List<LinkBuilder>();
 			items1.AddRange(Site.ParentsLinks);
 			var url1 = Request.IsStartSite
-				? null : SuppValues.Detault(Site.Url, "/");
+				? null : SuppValues.Default(Site.Url, "/");
 			items1.Add(new LinkBuilder(url1, Site.ShortTitle));
 			items1.AddRange(Node.ParentsLinks);
 			if (Node.NodeItem != null)

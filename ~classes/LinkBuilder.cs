@@ -58,7 +58,7 @@ namespace Ans.Net8.Web
 			else
 			{
 				tag1 = new("a", TagRenderMode.Normal);
-				tag1.MergeAttribute("href", SuppValues.Detault(Href, "/"));
+				tag1.MergeAttribute("href", SuppValues.Default(Href, "/"));
 				if (IsActive)
 				{
 					tag1.AddCssClass("active");

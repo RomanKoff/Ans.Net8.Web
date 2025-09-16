@@ -90,18 +90,20 @@ namespace Ans.Net8.Web.Forms
 
 
 		public HtmlString AddView(
-			IFormViewControl control)
+			IFormViewControl control,
+			bool onlyTitle = false)
 		{
-			return _addField(control, false, null);
+			return _addField(control, false, null, onlyTitle);
 		}
 
 
 		public HtmlString AddEdit(
 			IFormEditControl control,
-			bool isRequired = false)
+			bool isRequired = false,
+			bool onlyTitle = false)
 		{
 			var errors1 = Helper.ViewContext.ModelState.GetFieldErrors(control.Name);
-			return _addField(control, isRequired, errors1);
+			return _addField(control, isRequired, errors1, onlyTitle);
 		}
 
 
@@ -111,19 +113,23 @@ namespace Ans.Net8.Web.Forms
 		private HtmlString _addField(
 			IFormFieldControl control,
 			bool isRequired,
-			string[] errors)
+			string[] errors,
+			bool onlyTitle)
 		{
 			var tag1 = new TagBuilderExt("div", TagRenderMode.Normal);
 			tag1.AddCssClass("form-field");
 			var face1 = Res?.GetFaceHelper(control.Name);
 			var label1 = new LabelFieldTag(control.Name, isRequired, face1, errors);
 			tag1.InnerHtml.AppendHtmlLine(label1.ToString());
-			if (face1.HasDescription)
-				tag1.InnerHtml.AppendHtmlLine(
-					$"<div id=\"{control.Name}_desc\" class=\"form-text\">{SuppTypograph.GetTypografMin(face1.Description)}</div>");
-			if (face1.HasSample)
-				tag1.InnerHtml.AppendHtmlLine(
-					$"<div id=\"{control.Name}_sample\" class=\"form-text\">Пример: <code>{face1.Sample}</code></div>");
+			if (!onlyTitle)
+			{
+				if (face1.HasDescription)
+					tag1.InnerHtml.AppendHtmlLine(
+						$"<div id=\"{control.Name}_desc\" class=\"form-text\">{SuppTypograph.GetTypografMin(face1.Description)}</div>");
+				if (face1.HasSample)
+					tag1.InnerHtml.AppendHtmlLine(
+						$"<div id=\"{control.Name}_sample\" class=\"form-text\">Пример: <code>{face1.Sample}</code></div>");
+			}
 			tag1.InnerHtml.AppendHtmlLine(control.ToString());
 			return tag1.ToHtml();
 		}
