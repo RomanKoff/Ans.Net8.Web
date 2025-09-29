@@ -82,6 +82,15 @@ namespace Ans.Net8.Web
 			=> NodeItem?.HasSlaves ?? false;
 
 
+		public bool HasParentNode
+			=> ParentNode != null;
+
+
+		private MapNodesItem _parentNode;
+		public MapNodesItem ParentNode
+			=> _parentNode ??= _getParentNode();
+
+
 		/* methods */
 
 
@@ -90,6 +99,20 @@ namespace Ans.Net8.Web
 			params MapPagesItem[] pages)
 		{
 			MapPages = new(pages, _Current.Host.VirtualPath, path);
+		}
+
+
+		/* privates */
+
+
+		private MapNodesItem _getParentNode()
+		{
+			if (!NodeItem.HasMasters)
+				return null;
+			foreach (var item1 in NodeItem.Masters)
+				if (item1.Type != MapItemTypeEnum.Group)
+					return (MapNodesItem)item1;
+			return null;
 		}
 
 	}

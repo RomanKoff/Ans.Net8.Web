@@ -34,7 +34,7 @@ namespace Ans.Net8.Web
 		public static string GetVirtualPath(
 			this HttpContext context)
 		{
-			return _virtualPath ??= context.Request.PathBase; // $"{context.Request.PathBase}";
+			return _virtualPath ??= context.Request.PathBase;
 		}
 
 
