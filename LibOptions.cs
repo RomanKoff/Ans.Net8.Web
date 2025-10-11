@@ -7,14 +7,12 @@ namespace Ans.Net8.Web
 
 	public static partial class _e
 	{
-
 		private static LibOptions _libOptions;
 		public static LibOptions GetOptions_AnsNet8Web(
 			this IConfiguration configuration)
 		{
 			return _libOptions ??= configuration.GetOptions<LibOptions>("Ans.Net8.Web");
 		}
-
 	}
 
 

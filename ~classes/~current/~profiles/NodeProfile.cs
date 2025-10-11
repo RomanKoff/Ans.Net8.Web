@@ -109,7 +109,7 @@ namespace Ans.Net8.Web
 		{
 			if (!NodeItem.HasMasters)
 				return null;
-			foreach (var item1 in NodeItem.Masters)
+			foreach (var item1 in NodeItem.Masters.Reverse())
 				if (item1.Type != MapItemTypeEnum.Group)
 					return (MapNodesItem)item1;
 			return null;

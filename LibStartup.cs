@@ -31,7 +31,7 @@ namespace Ans.Net8.Web
 
 			var options1 = configuration.GetOptions_AnsNet8Web();
 
-			var culture1 = new CultureInfo(options1.Culture);			
+			var culture1 = new CultureInfo(options1.Culture);
 			CultureInfo.DefaultThreadCurrentCulture = culture1;
 			CultureInfo.DefaultThreadCurrentUICulture = culture1;
 
@@ -139,6 +139,10 @@ namespace Ans.Net8.Web
 						var a1 = item1.Split('|');
 						o.SwaggerEndpoint($"{s1}{a1[0]}/swagger.json", a1[1]);
 					}
+					o.DefaultModelRendering(
+						Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Model);
+					o.DefaultModelsExpandDepth(5);
+					o.DefaultModelExpandDepth(5);
 				}); // use reset browser cache
 			}
 
