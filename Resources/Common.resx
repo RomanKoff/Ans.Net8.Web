@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Html_CellFalse" xml:space="preserve">
-    <value>&lt;em&gt;нет&lt;/em&gt;</value>
+    <value>&lt;span title="Нет"&gt;&amp;nbsp;&lt;/span&gt;</value>
   </data>
   <data name="Html_CellTrue" xml:space="preserve">
-    <value>&lt;b&gt;Да&lt;/b&gt;</value>
+    <value>&lt;span class="text-success text-nowrap"&gt;&lt;i class="bi-check-lg"&gt;&lt;/i&gt;да&lt;/span&gt;</value>
   </data>
   <data name="Html_EditChecked" xml:space="preserve">
     <value>Да</value>
   </data>
   <data name="Html_EditFalse" xml:space="preserve">
-    <value>Нет</value>
+    <value>нет</value>
   </data>
   <data name="Html_EditTrue" xml:space="preserve">
-    <value>Да</value>
+    <value>да</value>
   </data>
   <data name="Html_ViewFalse" xml:space="preserve">
     <value>Нет</value>

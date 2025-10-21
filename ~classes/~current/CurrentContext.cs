@@ -408,7 +408,9 @@ namespace Ans.Net8.Web
 		}
 
 
+#pragma warning disable CA1822 // Mark members as static
 		public string GetMediaLink(
+#pragma warning restore CA1822 // Mark members as static
 			MediaModel media)
 		{
 			var label1 = media.Label?.ToHtml("<span>{0}</span>", true);

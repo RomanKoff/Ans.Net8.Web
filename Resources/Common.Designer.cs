@@ -61,7 +61,7 @@ namespace Ans.Net8.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;em&gt;нет&lt;/em&gt;.
+        ///   Looks up a localized string similar to &lt;span title=&quot;Нет&quot;&gt;&amp;nbsp;&lt;/span&gt;.
         /// </summary>
         public static string Html_CellFalse {
             get {
@@ -70,7 +70,7 @@ namespace Ans.Net8.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;b&gt;Да&lt;/b&gt;.
+        ///   Looks up a localized string similar to &lt;span class=&quot;text-success text-nowrap&quot;&gt;&lt;i class=&quot;bi-check-lg&quot;&gt;&lt;/i&gt;да&lt;/span&gt;.
         /// </summary>
         public static string Html_CellTrue {
             get {
@@ -88,7 +88,7 @@ namespace Ans.Net8.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Нет.
+        ///   Looks up a localized string similar to нет.
         /// </summary>
         public static string Html_EditFalse {
             get {
@@ -97,7 +97,7 @@ namespace Ans.Net8.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Да.
+        ///   Looks up a localized string similar to да.
         /// </summary>
         public static string Html_EditTrue {
             get {

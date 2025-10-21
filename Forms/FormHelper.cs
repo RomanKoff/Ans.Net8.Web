@@ -76,16 +76,30 @@ namespace Ans.Net8.Web.Forms
 		}
 
 
+#pragma warning disable CA1822 // Mark members as static
 		public HtmlString AddCell(
-			IFormCellControl control,
+#pragma warning restore CA1822 // Mark members as static
+			string control,
 			string cssClasses = null,
 			string styles = null,
 			string attributes = null)
 		{
 			var tag1 = new TagBuilderExt("td", TagRenderMode.Normal);
 			tag1.Prepare(cssClasses, styles, attributes);
-			tag1.InnerHtml.AppendHtml(control.ToString());
+			tag1.InnerHtml.AppendHtml(control);
 			return tag1.ToHtml();
+		}
+
+
+#pragma warning disable CA1822 // Mark members as static
+		public HtmlString AddCell(
+#pragma warning restore CA1822 // Mark members as static
+			IFormCellControl control,
+			string cssClasses = null,
+			string styles = null,
+			string attributes = null)
+		{
+			return AddCell(control.ToString(), cssClasses, styles, attributes);
 		}
 
 

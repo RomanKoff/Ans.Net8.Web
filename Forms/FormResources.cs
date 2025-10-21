@@ -44,6 +44,10 @@ namespace Ans.Net8.Web.Forms
 			=> string.Format(Form.Template_PageTitle_Edit, TitleWhoWhat);
 
 
+		public string DetailPageTitle
+			=> string.Format(Form.Template_PageTitle_Details, TitleWhoWhat);
+
+
 		public string DeletePageTitle
 			=> string.Format(Form.Template_PageTitle_Delete, TitleWhoWhat);
 
@@ -86,6 +90,11 @@ namespace Ans.Net8.Web.Forms
 		private HtmlString _title_Edit_Html;
 		public HtmlString Title_Edit_Html
 			=> _title_Edit_Html ??= Form.Title_Edit.ToHtml(true);
+
+
+		private HtmlString _title_Detail_Html;
+		public HtmlString Title_Detail_Html
+			=> _title_Detail_Html ??= Form.Title_Detail.ToHtml(true);
 
 
 		private HtmlString _title_Delete_Html;

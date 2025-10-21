@@ -28,7 +28,7 @@ namespace Ans.Net8.Web.Forms
 			var s1 = useRaw
 				? Value : SuppTypograph.GetText2Html(Value);
 			Control = new(s1);
-			Control.AddCssClass("form-control bg-light text-dark-emphasis");
+			Control.AddCssClass("form-control bg-light text-dark");
 			if (MaxWidth > 0)
 				Control.AddStyle($"max-width:{MaxWidth}rem;");
 			_hidden = new(Name, ValueData);

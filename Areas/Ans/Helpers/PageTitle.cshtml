@@ -5,7 +5,7 @@
 @{
 	var parents1 = (Current.IsOn("Page.Title.Parents"))
 		? Current.Page.ParentsTitles
-			.Make("<span class=\"d-block opacity-75 fs-5\">{0}.</span> ")
+			.Make("<span class=\"d-block opacity-75 fs-6 fw-light\">{0}</span> ")
 		: null;
 }
-<h1 class="my-3">@parents1.ToHtml()@Current.Page.TitleHtml</h1>
+<h1 class="my-4">@parents1.ToHtml()@Current.Page.TitleHtml</h1>
