@@ -20,7 +20,7 @@
 
 	if (info1.ReadOnlyProperties?.Count() > 0)
 		foreach (var item1 in info1.ReadOnlyProperties)
-			code1.AppendLine($"\tpublic {item1.TypeName} {item1.Name} {{ get; set; }}");
+			code1.AppendLine($"\tpublic {item1.TypeName} {item1.Name} {{ get; }}");
 
 	code1.AppendLine($"}}");
 }

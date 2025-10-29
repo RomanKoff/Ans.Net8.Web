@@ -352,12 +352,14 @@ namespace Ans.Net8.Web
 		}
 
 
-		private Dictionary<string, Dictionary<string, string>> _appRegs;
+		private static Dictionary<string, Dictionary<string, string>> _appRegs;
 		public Dictionary<string, string> GetAppReg(
 			string regName)
 		{
 			_appRegs ??= Configuration.GetOptions_AnsNet8Web().Regs;
-			return _appRegs.GetValueOrDefault(regName, null);
+			return _appRegs.GetValueOrDefault(regName, null)
+				?? throw new Exception(
+					$"[appsettings.json/Ans.Net8.Web/Regs/{regName}] is required!");
 		}
 
 
@@ -366,7 +368,51 @@ namespace Ans.Net8.Web
 			string key,
 			string defaultValue = null)
 		{
-			return GetAppReg(regName)?.GetValueOrDefault(key, defaultValue);
+			return GetAppReg(regName)?.GetValueOrDefault(key, defaultValue)
+				?? throw new Exception(
+					$"[appsettings.json/Ans.Net8.Web/Regs/{regName}/{key}] is required!"); ;
+		}
+
+
+		public string GetVar(
+			string name)
+		{
+			return GetAppRegValue("Vars", name);
+		}
+
+
+		public string GetEndpoint(
+			string name)
+		{
+			return GetAppRegValue("Endpoints", name);
+		}
+
+
+		private static readonly Dictionary<string, DictString> _dictsString = [];
+		public DictString GetEnumString(
+			string name)
+		{
+			var dict1 = _dictsString.GetValueOrDefault(name, null);
+			if (dict1 == null)
+			{
+				var s1 = GetAppRegValue("Enums", name);
+				dict1 = new DictString(s1);
+			}
+			return dict1;
+		}
+
+
+		private static readonly Dictionary<string, DictHtml> _dictsHtml = [];
+		public DictHtml GetEnumHtml(
+			string name)
+		{
+			var dict1 = _dictsHtml.GetValueOrDefault(name, null);
+			if (dict1 == null)
+			{
+				var s1 = GetAppRegValue("Enums", name);
+				dict1 = new DictHtml(s1);
+			}
+			return dict1;
 		}
 
 
