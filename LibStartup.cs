@@ -44,6 +44,12 @@ namespace Ans.Net8.Web
 			builder.Services.AddSingleton<IMapNodesProvider, MapNodesProvider_Xml>();
 			builder.Services.AddSingleton<IMapPagesProvider, MapPagesProvider_Xml>();
 
+			if (options1.MailService != null)
+			{
+				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
+					x => new(options1.MailService));
+			}
+
 			// IServiceCollection (scoped)
 
 			builder.Services.AddScoped(

@@ -1,4 +1,5 @@
 ﻿using Ans.Net8.Common;
+using Ans.Net8.Common.Services;
 using Ans.Net8.Web.Services;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
@@ -32,6 +33,7 @@ namespace Ans.Net8.Web
 			IHttpClientFactory httpClientFactory,
 			IMemoryCache memoryCache,
 			IUrlHelper urlHelper,
+			IMailerService mailer,
 			IViewRenderService viewRender,
 			IMapNodesProvider mapNodesProvider,
 			IMapPagesProvider mapPagesProvider)
@@ -41,13 +43,15 @@ namespace Ans.Net8.Web
 			HttpClientFactory = httpClientFactory;
 			MemoryCache = memoryCache;
 			UrlHelper = urlHelper;
+			Mailer = mailer;
+			ViewRender = viewRender;
 
 			Options = Configuration.GetOptions_AnsNet8Web();
 			Culture = CultureInfo.CurrentCulture;
 			DateTimeHelper = new();
 
 			Host = new(this);
-			Request = new(this, viewRender);
+			Request = new(this);
 			Maps = new(this, mapNodesProvider, mapPagesProvider);
 			Meta = new(this);
 
@@ -59,6 +63,7 @@ namespace Ans.Net8.Web
 			Cookies = new(this);
 			Network = new(this);
 			QueryString = new(this);
+			Send = new(this);
 			WebApi = new(this);
 		}
 
@@ -71,6 +76,8 @@ namespace Ans.Net8.Web
 		public IHttpClientFactory HttpClientFactory { get; }
 		public IMemoryCache MemoryCache { get; }
 		public IUrlHelper UrlHelper { get; }
+		public IMailerService Mailer { get; }
+		public IViewRenderService ViewRender { get; }
 
 		public LibOptions Options { get; }
 		public CultureInfo Culture { get; }
@@ -89,6 +96,7 @@ namespace Ans.Net8.Web
 		public CookiesService Cookies { get; }
 		public NetworkService Network { get; }
 		public QueryStringService QueryString { get; }
+		public SendService Send { get; }
 		public WebApiService WebApi { get; }
 
 

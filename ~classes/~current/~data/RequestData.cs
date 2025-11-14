@@ -11,18 +11,15 @@ namespace Ans.Net8.Web
 	{
 
 		private readonly CurrentContext _current;
-		private readonly IViewRenderService _viewRender;
-
+		
 
 		/* ctor */
 
 
 		public RequestData(
-			CurrentContext current,
-			IViewRenderService viewRender)
+			CurrentContext current)
 		{
 			_current = current;
-			_viewRender = viewRender;
 			RelativeUrl = _current.HttpContext.Request.Path.ToString().ToLower().TrimEnd('/');
 			AbsoluteUrl = $"{_current.Host.ApplicationUrl}{RelativeUrl}";
 			Params = _current.HttpContext.Request.QueryString.Value;
@@ -123,7 +120,7 @@ namespace Ans.Net8.Web
 				}
 
 				//var path1 = path; // path.TrimEnd('/');
-				engine1 = _viewRender.GetViewEngineResult($"Nodes/{path}");
+				engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{path}");
 				if (engine1.View != null)
 				{
 					// обычная страница сайта, узла или каталога
@@ -132,7 +129,7 @@ namespace Ans.Net8.Web
 				else
 				{
 					var view1 = $"{path}/start";
-					engine1 = _viewRender.GetViewEngineResult($"Nodes/{view1}");
+					engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view1}");
 					if (engine1.View != null)
 					{
 						// стартовая страница узла или каталога
@@ -141,7 +138,7 @@ namespace Ans.Net8.Web
 					else
 					{
 						var view2 = $"_main/{path}";
-						engine1 = _viewRender.GetViewEngineResult($"Nodes/{view2}");
+						engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view2}");
 						if (engine1.View != null)
 						{
 							// обычная страница узла по умолчанию (_main)
@@ -150,7 +147,7 @@ namespace Ans.Net8.Web
 						else
 						{
 							var view3 = $"_main/{path}/start";
-							engine1 = _viewRender.GetViewEngineResult($"Nodes/{view3}");
+							engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view3}");
 							if (engine1.View != null)
 							{
 								// стартовая страница каталога узла по умолчанию (_main)
