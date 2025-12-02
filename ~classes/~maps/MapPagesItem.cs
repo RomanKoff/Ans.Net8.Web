@@ -24,7 +24,7 @@ namespace Ans.Net8.Web
 			HasStart = hasStart;
 			IsHidden = isHidden;
 			Tags = tags?.Split(Common._Consts.SEPS_ARRAY);
-			Properties = properties?.Split(';').ToStringDictionary();
+			Properties = SuppDictionary.GetDictString(properties);
 			Remark = remark;
 			SetFace(face ?? target);
 			Link = new(null, ShortTitle);

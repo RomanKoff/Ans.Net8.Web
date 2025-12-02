@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
@@ -44,11 +44,11 @@ namespace Ans.Net8.Web
 			builder.Services.AddSingleton<IMapNodesProvider, MapNodesProvider_Xml>();
 			builder.Services.AddSingleton<IMapPagesProvider, MapPagesProvider_Xml>();
 
-			if (options1.MailService != null)
-			{
+			if (options1.MailService == null)
+				builder.Services.AddSingleton<IMailerService, FakeMailerService>();
+			else
 				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
 					x => new(options1.MailService));
-			}
 
 			// IServiceCollection (scoped)
 

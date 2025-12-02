@@ -9,23 +9,21 @@
 
 	<style>
 		.ans-cpanel {
-			padding: .3rem;
-			border: dotted .2rem #cc9;
+			padding: .1rem .3rem;
+			border-bottom: solid 1px #cc9;
 			background-color: #ffc;
-			font-size: .9rem
+			font-size: .75rem
 		}
 	</style>
 
 	<div class="ans-cpanel d-flex flex-wrap gap-3">
 		<div>
-			<b>CPanel</b>
-		</div>
-		<div>
 			IP: @Current.Network.RemoteIpAddress
 		</div>
-		<div class="d-flex gap-2">
+		<div class="d-flex gap-3">
 			<a class="" href="#" onclick="resetNodes(event);" role="button">Reset nodes</a>
 			<a class="" href="#" onclick="resetPages(event);" role="button">Reset pages (@node1)</a>
+			<a class="" href="~/help/tests/pages" role="button">Test pages</a>
 		</div>		
 	</div>
 

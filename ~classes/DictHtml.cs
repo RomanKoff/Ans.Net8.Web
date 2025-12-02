@@ -5,13 +5,17 @@ namespace Ans.Net8.Web
 {
 
 	public class DictHtml
-		: Dict<HtmlString>,
-		IDictionary<string, HtmlString>
+		: _Dict_Proto<string, HtmlString>
 	{
+
+		/* ctors */
+
+
 		public DictHtml()
 			: base()
 		{
 		}
+
 
 		public DictHtml(
 			string serialization)
@@ -19,13 +23,43 @@ namespace Ans.Net8.Web
 		{
 		}
 
-		public bool UseTypograf { get; set; } = true;
 
-		public override HtmlString ToValue(
+		/* overrides */
+
+
+		public override string StringToKey(
+			string key)
+		{
+			return key;
+		}
+
+
+		public override HtmlString StringToValue(
 			string value)
 		{
 			return value.ToHtml(UseTypograf);
 		}
+
+
+		public override string KeyToString(
+			string key)
+		{
+			return key;
+		}
+
+
+		public override string ValueToString(
+			HtmlString value)
+		{
+			return value.ToString();
+		}
+
+
+		/* properties */
+
+
+		public bool UseTypograf { get; set; } = true;
+
 	}
 
 }
