@@ -4,10 +4,8 @@ using Ans.Net8.Web.Services;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
-using Org.BouncyCastle.Asn1.X509;
 using System.Globalization;
 using System.Net;
 
@@ -46,7 +44,7 @@ namespace Ans.Net8.Web
 			Mailer = mailer;
 			ViewRender = viewRender;
 
-			Options = Configuration.GetOptions_AnsNet8Web();
+			Options = Configuration.GetLibWebOptions();
 			Culture = CultureInfo.CurrentCulture;
 			DateTimeHelper = new();
 
@@ -79,7 +77,7 @@ namespace Ans.Net8.Web
 		public IMailerService Mailer { get; }
 		public IViewRenderService ViewRender { get; }
 
-		public LibOptions Options { get; }
+		public LibWebOptions Options { get; }
 		public CultureInfo Culture { get; }
 		public DateTimeHelper DateTimeHelper { get; }
 
@@ -364,7 +362,7 @@ namespace Ans.Net8.Web
 		public Dictionary<string, string> GetAppReg(
 			string regName)
 		{
-			_appRegs ??= Configuration.GetOptions_AnsNet8Web().Regs;
+			_appRegs ??= Configuration.GetLibWebOptions().Regs;
 			return _appRegs.GetValueOrDefault(regName, null)
 				?? throw new Exception(
 					$"[appsettings.json/Ans.Net8.Web/Regs/{regName}] is required!");

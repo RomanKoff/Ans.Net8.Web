@@ -8,7 +8,7 @@ namespace Ans.Net8.Web
 		: PageModel
 	{
 		public readonly CurrentContext Current = current;
-		public readonly LibOptions Options = current.Configuration.GetOptions_AnsNet8Web();
+		public readonly LibWebOptions Options = current.Configuration.GetLibWebOptions();
 	}
 
 }

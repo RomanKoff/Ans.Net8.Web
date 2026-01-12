@@ -1,4 +1,5 @@
 ﻿using Ans.Net8.Common;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Ans.Net8.Web
@@ -94,6 +95,15 @@ namespace Ans.Net8.Web
 		{
 			return (string)viewData.Eval(name) ?? defaultValue;
 		}
+
+
+		//public static HtmlString GetHtml(
+		//	this ViewDataDictionary viewData,
+		//	string name,
+		//	HtmlString defaultValue = null)
+		//{
+		//	return (HtmlString)viewData.Eval(name) ?? defaultValue;
+		//}
 
 
 		public static int? GetInt(

@@ -81,7 +81,7 @@ namespace Ans.Net8.Web
 				return;
 			}
 
-			if (Common._Consts.G_REGEX_NAME().IsMatch(Target))
+			if (Common._Consts.G_REGEX_PAGENAME().IsMatch(Target))
 			{
 				// page
 				Id = $"{path1}/{Target}";

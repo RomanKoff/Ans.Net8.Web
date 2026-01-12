@@ -60,7 +60,7 @@ namespace Ans.Net8.Web
 				return;
 			}
 
-			if (Common._Consts.G_REGEX_NAME().IsMatch(Target))
+			if (Common._Consts.G_REGEX_NODENAME().IsMatch(Target))
 			{
 				// node
 				Id = Target;

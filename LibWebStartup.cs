@@ -17,7 +17,7 @@ using System.Text.Json.Serialization;
 namespace Ans.Net8.Web
 {
 
-	public static class LibStartup
+	public static class LibWebStartup
 	{
 
 		/* functions */
@@ -29,7 +29,7 @@ namespace Ans.Net8.Web
 		{
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-			var options1 = configuration.GetOptions_AnsNet8Web();
+			var options1 = configuration.GetLibWebOptions();
 
 			var culture1 = new CultureInfo(options1.Culture);
 			CultureInfo.DefaultThreadCurrentCulture = culture1;
@@ -130,7 +130,7 @@ namespace Ans.Net8.Web
 			this WebApplication app,
 			IConfiguration configuration)
 		{
-			var options1 = configuration.GetOptions_AnsNet8Web();
+			var options1 = configuration.GetLibWebOptions();
 
 			// Swagger
 			if (options1.Swagger?.Length > 0)

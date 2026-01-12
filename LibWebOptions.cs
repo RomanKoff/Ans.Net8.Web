@@ -7,17 +7,17 @@ namespace Ans.Net8.Web
 
 	public static partial class _e
 	{
-		private static LibOptions _libOptions;
-		public static LibOptions GetOptions_AnsNet8Web(
+		private static LibWebOptions _options;
+		public static LibWebOptions GetLibWebOptions(
 			this IConfiguration configuration)
 		{
-			return _libOptions ??= configuration.GetOptions<LibOptions>("Ans.Net8.Web");
+			return _options ??= configuration.GetOptions<LibWebOptions>("Ans.Net8.Web");
 		}
 	}
 
 
 
-	public class LibOptions
+	public class LibWebOptions
 		: _AppSettingsOptions_Proto
 	{
 		public override void Test()

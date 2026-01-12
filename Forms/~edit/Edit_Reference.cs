@@ -12,14 +12,30 @@ namespace Ans.Net8.Web.Forms
 			string name,
 			int? value,
 			RegistryList registry,
-			string cssClasses = null)
+			RegistryModeEnum mode,
+			string cssClasses)
 			: base(
 				  name,
 				  value?.ToString(),
 				  registry,
-				  RegistryModeEnum.Auto,
+				  mode,
 				  cssClasses,
 				  false)
+		{
+		}
+
+
+		public Edit_Reference(
+			string name,
+			int? value,
+			RegistryList registry,
+			string cssClasses = null)
+			: this(
+				  name,
+				  value,
+				  registry,
+				  RegistryModeEnum.Auto,
+				  cssClasses)
 		{
 		}
 

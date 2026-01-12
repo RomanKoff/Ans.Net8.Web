@@ -1,0 +1,29 @@
+@*
+	Компонент библиотеки Ans.Net8.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@*
+
+	<li class="nav-item dropdown">
+		@Html.Partial("/Areas/Bs53/Dropdowns.cshtml", item1)
+	</li>
+
+	<div class="dropdown">
+		@Html.Partial("/Areas/Bs53/Dropdowns.cshtml", item1)
+	</div>
+
+*@
+@model IMapItem
+@{
+	var css1 = new TagClassBuilder("nav-link dropdown-toggle");
+	css1.AppendIf(Model.Link.IsActive || Model.Link.IsSubActive, "active");
+}
+<a class="@css1" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">@Model.ShortTitleHtml</a>
+<ul class="dropdown-menu">
+	@foreach (var item1 in Model.Slaves.Where(x => !x.IsHidden))
+	{
+		var tag1 = item1.Link.GetTag();
+		tag1.AddCssClass("dropdown-item");
+		<li>@tag1</li>
+	}
+</ul>

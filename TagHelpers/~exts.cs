@@ -52,7 +52,7 @@ namespace Ans.Net8.Web.TagHelpers
 		private const string Href_Node_AttributeName = "href-node";
 		private const string Href_Page_AttributeName = "href-page";
 
-		private readonly LibOptions _options = config.GetOptions_AnsNet8Web();
+		private readonly LibWebOptions _options = config.GetLibWebOptions();
 		private readonly CurrentContext _current = current;
 
 
@@ -222,7 +222,7 @@ namespace Ans.Net8.Web.TagHelpers
 		private const string Src_Node_Res_AttributeName = "src-node-res";
 		private const string Src_Page_Res_AttributeName = "src-page-res";
 
-		private readonly LibOptions _options = config.GetOptions_AnsNet8Web();
+		private readonly LibWebOptions _options = config.GetLibWebOptions();
 		private readonly CurrentContext _current = current;
 
 

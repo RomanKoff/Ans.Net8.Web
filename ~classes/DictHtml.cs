@@ -24,6 +24,13 @@ namespace Ans.Net8.Web
 		}
 
 
+		public DictHtml(
+			IEnumerable<string> serialization)
+			: base(serialization)
+		{
+		}
+
+
 		/* overrides */
 
 

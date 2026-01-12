@@ -106,19 +106,19 @@ namespace Ans.Net8.Web.Forms
 
 		public HtmlString AddView(
 			IFormViewControl control,
-			bool onlyTitle = false)
+			bool hideDetails = false)
 		{
-			return _addField(control, false, null, onlyTitle);
+			return _addField(control, false, null, hideDetails);
 		}
 
 
 		public HtmlString AddEdit(
 			IFormEditControl control,
 			bool isRequired = false,
-			bool onlyTitle = false)
+			bool hideDetails = false)
 		{
 			var errors1 = Helper.ViewContext.ModelState.GetFieldErrors(control.Name);
-			return _addField(control, isRequired, errors1, onlyTitle);
+			return _addField(control, isRequired, errors1, hideDetails);
 		}
 
 
@@ -129,14 +129,14 @@ namespace Ans.Net8.Web.Forms
 			IFormFieldControl control,
 			bool isRequired,
 			string[] errors,
-			bool onlyTitle)
+			bool hideDetails)
 		{
 			var tag1 = new TagBuilderExt("div", TagRenderMode.Normal);
 			tag1.AddCssClass("form-field");
 			var face1 = Res?.GetFaceHelper(control.Name);
 			var label1 = new LabelFieldTag(control.Name, isRequired, face1, errors);
 			tag1.InnerHtml.AppendHtmlLine(label1.ToString());
-			if (!onlyTitle)
+			if (!hideDetails)
 			{
 				if (face1.HasDescription)
 					tag1.InnerHtml.AppendHtmlLine(

@@ -25,10 +25,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="[8.0.22,9)" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.3.9" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="[8,9)" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.0.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,0 +1,60 @@
+﻿@*
+	Простой навигатор
+*@
+@{
+	var pages1 = Current.Node.MapPages?.TopItems?.Where(x => !x.IsHidden);
+	if (pages1?.Count() > 0)
+	{
+		<style>
+			.nav-node {
+				--bs-nav-link-font-size: .9rem;
+				--bs-nav-link-padding-x: 0;
+				--bs-nav-link-padding-y: .3rem;
+				--bs-nav-link-hover-color: var(--bs-link-hover-color);
+				--bs-nav-underline-gap: .3rem 1.5rem;
+				--bs-nav-underline-border-width: .2rem;
+				--bs-nav-underline-link-active-color: var(--bs-link-hover-color);
+
+				--bs-dropdown-font-size: .6rem;
+			}
+
+			.nav-node .nav-link.active,
+			.nav-node .show>.nav-link {
+				font-weight: var(--bs-body-font-weight);
+			}
+		</style>
+		<ul class="nav nav-underline nav-node">
+			@{
+				OutItems(pages1);
+			}
+		</ul>
+	}
+}
+
+
+
+@functions {
+
+	void OutItems(IEnumerable<IMapItem> items)
+	{
+		foreach (var item1 in items)
+		{
+			var subs1 = item1.Slaves?.Where(x => !x.IsHidden);
+			if (subs1?.Count() > 0)
+			{
+				<li class="nav-item dropdown">
+					@Html.Partial("NodeNav_Dropdowns.cshtml", item1)
+				</li>
+			}
+			else
+			{
+				var tag1 = item1.Link.GetTag();
+				tag1.AddCssClass("nav-link");
+				if (item1.Link.IsSubActive)
+					tag1.AddCssClass("active");
+				<li class="nav-item">@tag1</li>
+			}
+		}
+	}
+
+}

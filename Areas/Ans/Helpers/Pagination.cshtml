@@ -9,7 +9,7 @@
 	Model.CurrentPage = page1;
 }
 <nav class="my-3" aria-label="Page navigation">
-	<ul class="pagination pagination-sm">
+	<ul class="pagination pagination-sm d-flex flex-wrap row-gap-1">
 		@if (Model.HasItemsBefore)
 		{
 			qs2.Append("page", Model.PreviousPage);
